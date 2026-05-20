@@ -4,7 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, '..', 'data');
+// ORNAMENT_DATA_DIR allows the SSG script to override the path when importing
+// this module via tsx (where __dirname points to src/lib, not dist/).
+const DATA_DIR = process.env.ORNAMENT_DATA_DIR ?? path.join(__dirname, '..', 'data');
 const DB_PATH = path.join(DATA_DIR, 'ornament.db');
 const SCHEMA_PATH = path.join(DATA_DIR, 'schema.sql');
 
@@ -130,24 +132,42 @@ type RawPageRow = {
   region: string;
 };
 
+export function getRelatedCityPages(
+  nicheKey: string,
+  intentType: string,
+  stateName: string,
+  excludeSlug: string,
+  limit = 8,
+): PageLink[] {
+  return getDb().prepare(`
+    SELECT slug, title, h1_heading FROM programmatic_pages
+    WHERE niche_key = ? AND intent_type = ? AND page_type = 'city' AND target_state = ? AND slug != ?
+    LIMIT ?
+  `).all(nicheKey, intentType, stateName, excludeSlug, limit) as PageLink[];
+}
+
+export function getRelatedStatePages(
+  nicheKey: string,
+  intentType: string,
+  excludeSlug: string,
+  limit = 4,
+): PageLink[] {
+  return getDb().prepare(`
+    SELECT slug, title, h1_heading FROM programmatic_pages
+    WHERE niche_key = ? AND intent_type = ? AND page_type = 'state' AND slug != ?
+    LIMIT ?
+  `).all(nicheKey, intentType, excludeSlug, limit) as PageLink[];
+}
+
 export function getPageBySlug(slug: string): PageDetail | null {
   const db = getDb();
   const page = db.prepare(`SELECT * FROM programmatic_pages WHERE slug = ?`).get(slug) as RawPageRow | undefined;
   if (!page) return null;
-
-  const relatedCity = db.prepare(`
-    SELECT slug, title, h1_heading FROM programmatic_pages
-    WHERE niche_key = ? AND intent_type = ? AND page_type = 'city' AND target_state = ? AND slug != ?
-    LIMIT 8
-  `).all(page.niche_key, page.intent_type, page.target_state, slug) as PageLink[];
-
-  const relatedState = db.prepare(`
-    SELECT slug, title, h1_heading FROM programmatic_pages
-    WHERE niche_key = ? AND intent_type = ? AND page_type = 'state' AND slug != ?
-    LIMIT 4
-  `).all(page.niche_key, page.intent_type, slug) as PageLink[];
-
-  return { ...page, related_city_pages: relatedCity, related_state_pages: relatedState };
+  return {
+    ...page,
+    related_city_pages: getRelatedCityPages(page.niche_key, page.intent_type, page.target_state, slug),
+    related_state_pages: getRelatedStatePages(page.niche_key, page.intent_type, slug),
+  };
 }
 
 export function getAllSlugs(): SlugEntry[] {
