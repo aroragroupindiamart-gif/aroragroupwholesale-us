@@ -21,7 +21,7 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { FOUNDER_VIDEO_ID } from '../src/lib/brandConstants.js';
+import { FOUNDER_VIDEO_ID, REVIEWS } from '../src/lib/brandConstants.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
@@ -137,6 +137,21 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     return `<a href="${BASE_URL}/${esc(targetSlug)}"${active}>${intent}s</a>`;
   }).join('\n          ');
 
+  const reviewStripHtml = '<div style="margin-bottom:1.75rem">'
+    + '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.875rem">'
+    + '<span style="color:#FFC629;letter-spacing:.1em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+    + '<span style="font-size:.875rem;font-weight:700;color:#1E1E1E">5.0 on Google</span>'
+    + '<span style="font-size:.75rem;color:#999">&nbsp;&middot;&nbsp;10 reviews</span>'
+    + '</div>'
+    + Array.from(REVIEWS).slice(0, 3).map(r =>
+        '<div style="background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;gap:.75rem;align-items:flex-start">'
+        + '<span style="color:#FFC629;font-size:.75rem;flex-shrink:0;margin-top:.125rem;letter-spacing:.05em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+        + '<div><p style="font-size:.8125rem;color:#555;font-style:italic;margin-bottom:.25rem">&ldquo;' + esc(r.text) + '&rdquo;</p>'
+        + '<p style="font-size:.75rem;font-weight:600;color:#1E1E1E">&mdash; ' + esc(r.name) + ' &middot; ' + esc(r.role) + '</p></div>'
+        + '</div>'
+      ).join('')
+    + '</div>';
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,6 +221,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);margin-bottom:2rem">
         <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — ${esc(nd)} Founder Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
       </div>
+      ${reviewStripHtml}
       <div class="trust-badges">
         <div class="trust-badge">🌐 Direct Global Importing (No Middlemen)</div>
         <div class="trust-badge">💧 100% Tarnish-Free Guarantee</div>
@@ -285,6 +301,15 @@ function renderHomepageContent(): string {
     </div>`;
   }).join('\n');
 
+  const reviewsGridHtml = Array.from(REVIEWS).map(r =>
+    '<div style="background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem">'
+    + '<span style="color:#FFC629;letter-spacing:.08em;font-size:.875rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+    + '<p style="font-size:.875rem;color:#555;font-style:italic;flex:1">&ldquo;' + esc(r.text) + '&rdquo;</p>'
+    + '<div><p style="font-size:.875rem;font-weight:600;color:#1E1E1E">' + esc(r.name) + '</p>'
+    + '<p style="font-size:.75rem;color:#999">' + esc(r.role) + '</p></div>'
+    + '</div>'
+  ).join('\n        ');
+
   return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
   <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000</div>
   <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
@@ -316,6 +341,22 @@ function renderHomepageContent(): string {
     <p style="color:#666;margin-bottom:1.5rem;font-size:.9375rem">Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.</p>
     <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12)">
       <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — Founder Product Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
+    </div>
+  </section>
+
+  <section style="background:#FFF8F0;border-top:1px solid #e8dcc8;padding:3.5rem 1.5rem">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:2rem">
+        <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:.375rem">
+          <span style="color:#FFC629;font-size:1.25rem;letter-spacing:.1em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <span style="font-family:Georgia,serif;font-size:1.375rem;font-weight:700;color:#1E1E1E">5.0</span>
+        </div>
+        <p style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">10 Google Reviews &middot; Verified Retailers</p>
+        <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1E1E1E">What Boutique Owners Say</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
+        ${reviewsGridHtml}
+      </div>
     </div>
   </section>
 

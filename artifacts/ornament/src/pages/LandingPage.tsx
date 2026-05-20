@@ -2,7 +2,7 @@ import { useParams, Link } from "wouter";
 import { useGetPage } from "@workspace/api-client-react";
 import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
 import NotFound from "@/pages/not-found";
-import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL, FOUNDER_VIDEO_ID } from "@/lib/brandConfig";
+import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
 
 function getWaUrl(niche: string, city: string) {
   const nd = NICHE_DISPLAY[niche] ?? niche;
@@ -205,6 +205,26 @@ export default function LandingPage() {
                 />
               </div>
             </section>
+
+            {/* (b.5) Reviews Strip */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[#FFC629] tracking-wider text-sm">★★★★★</span>
+                <span className="text-sm font-bold text-[#1E1E1E]">5.0 on Google</span>
+                <span className="text-xs text-[#1E1E1E]/40">· 10 reviews</span>
+              </div>
+              <div className="space-y-2">
+                {REVIEWS.slice(0, 3).map((r) => (
+                  <div key={r.name} className="bg-white border border-amber-200 rounded-xl px-4 py-3 flex gap-3 items-start">
+                    <span className="text-[#FFC629] text-xs shrink-0 mt-0.5 tracking-wider">★★★★★</span>
+                    <div>
+                      <p className="text-xs text-[#1E1E1E]/65 leading-relaxed italic">"{r.text}"</p>
+                      <p className="text-xs font-semibold text-[#1E1E1E] mt-1">— {r.name} · {r.role}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* (c) Sticky WhatsApp CTA */}
             <div className="bg-[#FFC629]/10 border border-[#FFC629] rounded-2xl p-6 mb-8">

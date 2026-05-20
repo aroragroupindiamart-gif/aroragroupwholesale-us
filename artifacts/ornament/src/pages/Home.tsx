@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useListNiches, useListStates } from "@workspace/api-client-react";
-import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID } from "@/lib/brandConfig";
+import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
 
 const WHATSAPP_MSG = `Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
 
@@ -111,6 +111,32 @@ export default function Home() {
               allowFullScreen
               loading="lazy"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── REVIEWS ─────────────────────────────────────────── */}
+      <section className="py-14 bg-[#FFF8F0] border-t border-amber-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <span className="text-[#FFC629] text-xl tracking-wider">★★★★★</span>
+              <span className="font-serif text-2xl font-bold text-[#1E1E1E]">5.0</span>
+            </div>
+            <p className="text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-2">10 Google Reviews · Verified Retailers</p>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E1E1E]">What Boutique Owners Say</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {REVIEWS.map((r) => (
+              <div key={r.name} className="bg-white border border-amber-200 rounded-xl p-5 shadow-sm flex flex-col gap-3">
+                <span className="text-[#FFC629] tracking-wider text-sm">★★★★★</span>
+                <p className="text-sm text-[#1E1E1E]/65 leading-relaxed italic flex-1">"{r.text}"</p>
+                <div>
+                  <p className="text-sm font-semibold text-[#1E1E1E]">{r.name}</p>
+                  <p className="text-xs text-[#1E1E1E]/45">{r.role}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
