@@ -6,7 +6,7 @@ import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL } 
 
 function getWaUrl(niche: string, city: string) {
   const nd = NICHE_DISPLAY[niche] ?? niche;
-  const msg = `Hi Arora Group, I'm a retailer inquiring about direct factory supply for ${nd} for my business in ${city}.`;
+  const msg = `Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending ${nd} for my store in ${city}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -121,7 +121,7 @@ export default function LandingPage() {
 
       {/* ─── TOP BANNER ────────────────────────────────────────── */}
       <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs sm:text-sm font-semibold py-2.5 px-4">
-        Direct Factory-to-Retail Logistics from {BRAND_NAME} to {locationLabel} — Minimum Order Value ₹5,000
+        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to {locationLabel}
       </div>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -226,21 +226,22 @@ export default function LandingPage() {
             {/* (d) Manufacturing paragraph */}
             <section className="mb-6">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-3">
-                Factory-Direct {nd} Manufacturing for {locationLabel} Retailers
+                Trend-Dominant {nd} for {locationLabel} Boutiques — Designs That Sell Out Fast
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
                 <p>
-                  <strong>{BRAND_NAME}</strong> operates as a vertically integrated {nd} manufacturer and {id?.noun ?? page.intent_type}, producing
-                  every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material
-                  procurement, electroplating, stone setting, quality inspection, and packaging under one roof —
-                  enabling us to deliver <strong>factory-direct pricing</strong> to B2B buyers in {locationLabel} without any
-                  distributor markup.
+                  <strong>{BRAND_NAME}</strong> is the direct manufacturer and importer supplying {locationLabel}'s most
+                  forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and
+                  waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for
+                  maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry
+                  trends before they fade.
                 </p>
                 <p>
-                  Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in {locationLabel},
-                  <strong>{BRAND_NAME}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design{" "}
-                  <strong>customisation, and co-branding options</strong> for established wholesale accounts. Our {nd} catalogue covers contemporary,
-                  fusion, and export-inspired designs updated each season to match retail demand trends across {page.target_state}.
+                  We update our {nd} catalogue rapidly so your shelves stay stocked with fresh, highly shareable
+                  items your customers are already searching for. <strong>{BRAND_NAME}</strong> offers{" "}
+                  <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable{" "}
+                  <strong>customisation, and co-branding options</strong> for established wholesale accounts across
+                  {" "}{page.target_state} — all at factory-direct pricing with zero distributor markup.
                 </p>
               </div>
             </section>

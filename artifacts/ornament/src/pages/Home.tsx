@@ -44,7 +44,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">
       {/* ─── TOP BANNER ──────────────────────────────────────── */}
       <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs sm:text-sm font-semibold py-2.5 px-4">
-        Direct Factory-to-Retail Jewellery Logistics Across India — Minimum Order Value ₹5,000
+        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — MOV ₹5,000
       </div>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -67,12 +67,11 @@ export default function Home() {
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1E1E1E] leading-tight mb-6">
             {BRAND_NAME}:{" "}
-            <span className="text-[#FFC629]">Factory-Direct</span>{" "}
-            Jewellery Supply Across India
+            <span className="text-[#FFC629]">Viral, Trend-Driven</span>{" "}
+            Jewelry Supply Across India
           </h1>
           <p className="text-lg text-[#1E1E1E]/70 max-w-2xl mx-auto mb-8">
-            We are the direct manufacturer, importer, and master supply partner for 6 specialised jewellery lines —
-            serving retailers and traders in every major Indian city with certified purity, insured logistics, and scalable custom manufacturing.
+            We are the direct manufacturer and importer behind India's fastest-moving jewelry trends. From viral Instagram aesthetics to high-demand Pinterest styles, we supply retail brands and online sellers in every major city with premium, fast-selling collections. Skip the outdated stock — source the exact designs your customers are hunting for, backed by scalable custom manufacturing and certified quality.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <WhatsAppButton className="text-base px-8 py-3.5" />

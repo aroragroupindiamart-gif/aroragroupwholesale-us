@@ -91,7 +91,7 @@ function esc(s: string): string {
 
 function waLink(niche: string, _intent: string, location: string): string {
   const nd = NICHE_DESC[niche] ?? niche;
-  const msg = `Hi Arora Group, I'm a retailer inquiring about direct factory supply for ${nd} for my business in ${location}.`;
+  const msg = `Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending ${nd} for my store in ${location}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -184,7 +184,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹5,000 per invoice."}}]}]})}</script>
 </head>
 <body>
-  <div class="top-banner">Direct Factory-to-Retail Logistics from ${BRAND_NAME} to ${esc(location)} — Minimum Order Value ₹5,000</div>
+  <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}</div>
   <header>
     <a class="logo" href="${BASE_URL}"><span>Arora</span> Group Wholesale</a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
@@ -211,9 +211,9 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <p>WhatsApp us your business requirements — get MOV, purity certificate, and a custom catalogue within 4 hours.</p>
         <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp ${esc(BRAND_NAME)}</a>
       </div>
-      <h2 class="section-h">Factory-Direct ${esc(nd)} Manufacturing for ${esc(location)} Retailers</h2>
-      <p><strong>${esc(BRAND_NAME)}</strong> operates as a vertically integrated ${esc(nd)} manufacturer and ${page.intent_type}, producing every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material procurement, electroplating, stone setting, quality inspection, and packaging under one roof — enabling us to deliver <strong>factory-direct pricing</strong> to B2B buyers in ${esc(location)} without any distributor markup.</p>
-      <p>Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in ${esc(location)}, <strong>${esc(BRAND_NAME)}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design <strong>customisation, and co-branding options</strong> for established wholesale accounts.</p>
+      <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Boutiques — Designs That Sell Out Fast</h2>
+      <p><strong>${esc(BRAND_NAME)}</strong> is the direct manufacturer and importer supplying ${esc(location)}'s most forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry trends before they fade.</p>
+      <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design <strong>customisation, and co-branding options</strong> for established wholesale accounts across ${esc(page.target_state)} — all at factory-direct pricing with zero distributor markup.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates on a factory-direct B2B model with a minimum order value of ₹5,000. Orders are processed against GST-registered business invoices. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
       <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
@@ -253,7 +253,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 function renderHomepageContent(): string {
   const niches = getAllNiches();
   const states = getAllStates();
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending jewelry for my store.")}`;
 
   const nicheCards = niches.map(n => {
     const href = `${BASE_URL}/${n.niche_key}-wholesaler-new-delhi`;
@@ -280,7 +280,7 @@ function renderHomepageContent(): string {
   }).join('\n');
 
   return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
-  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">Direct Factory-to-Retail Jewellery Logistics Across India — Minimum Order Value ₹5,000</div>
+  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — MOV ₹5,000</div>
   <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
     <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E;text-decoration:none"><span style="color:#FFC629">Arora</span> Group Wholesale</a>
     <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
@@ -289,8 +289,8 @@ function renderHomepageContent(): string {
   <section style="background:linear-gradient(to bottom right,#fef3e2,#FFF8F0);padding:4rem 1.5rem;text-align:center;border-bottom:1px solid #e8dcc8">
     <div style="max-width:800px;margin:0 auto">
       <span style="display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#1E1E1E;background:rgba(255,198,41,.2);border:1px solid rgba(255,198,41,.4);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">Direct Manufacturer &amp; Importer · B2B Wholesale · Pan-India</span>
-      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1E1E1E;line-height:1.25;margin-bottom:1.5rem">${esc(BRAND_NAME)}: <span style="color:#FFC629">Factory-Direct</span> Jewellery Supply Across India</h1>
-      <p style="font-size:1.0625rem;color:#444;max-width:640px;margin:0 auto 2rem">We are the direct manufacturer, importer, and master supply partner for 6 specialised jewellery lines — serving retailers and traders in every major Indian city with certified purity, insured logistics, and scalable custom manufacturing.</p>
+      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1E1E1E;line-height:1.25;margin-bottom:1.5rem">${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across India</h1>
+      <p style="font-size:1.0625rem;color:#444;max-width:640px;margin:0 auto 2rem">We are the direct manufacturer and importer behind India's fastest-moving jewelry trends. From viral Instagram aesthetics to high-demand Pinterest styles, we supply retail brands and online sellers in every major city with premium, fast-selling collections. Skip the outdated stock — source the exact designs your customers are hunting for, backed by scalable custom manufacturing and certified quality.</p>
       <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2rem">
         <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
         <a href="#product-lines" style="display:inline-flex;align-items:center;background:#fff;color:#1E1E1E;font-weight:600;border:1px solid #e8dcc8;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Our Product Lines</a>
