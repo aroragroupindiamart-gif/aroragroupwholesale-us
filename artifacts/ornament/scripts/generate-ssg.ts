@@ -21,6 +21,7 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { FOUNDER_VIDEO_ID } from '../src/lib/brandConstants.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
@@ -60,7 +61,6 @@ if (!existsSync(OUT_DIR)) {
 // ── Constants ──────────────────────────────────────────────────────────────
 
 const WHATSAPP_NUMBER = (process.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
-const FOUNDER_VIDEO_ID = '2J4ztUw796I';
 
 const NICHE_DESC: Record<string, string> = {
   'korean-jewellery': 'Korean Jewellery',

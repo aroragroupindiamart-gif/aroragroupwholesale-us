@@ -1,6 +1,4 @@
-export const BRAND_NAME = 'Arora Group Wholesale';
-export const FOUNDER_VIDEO_ID = '2J4ztUw796I';
-export const SITE_URL = 'https://www.aroragroupwholesale.com';
+export { BRAND_NAME, SITE_URL, FOUNDER_VIDEO_ID } from './brandConstants';
 export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
 
 export const NICHE_DISPLAY: Record<string, string> = {
