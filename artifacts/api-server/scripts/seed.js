@@ -41,7 +41,7 @@ const NICHES = [
 
 const INTENTS = ['wholesaler', 'supplier', 'manufacturer', 'importer'];
 
-// 36 Indian states and union territories
+// 36 Indian states and union territories (static — no separate DB table)
 const STATES = [
   { state_name: 'Delhi', state_slug: 'delhi', region: 'North' },
   { state_name: 'Haryana', state_slug: 'haryana', region: 'North' },
@@ -231,9 +231,6 @@ const INTENT_DISPLAY = {
 
 // ─── SEED ──────────────────────────────────────────────────────────────────
 
-const insertState = db.prepare(`
-  INSERT OR IGNORE INTO states (state_name, state_slug, region) VALUES (?, ?, ?)
-`);
 const insertLocation = db.prepare(`
   INSERT OR IGNORE INTO locations (city_name, state_name, city_slug, state_slug, region) VALUES (?, ?, ?, ?, ?)
 `);
@@ -242,26 +239,20 @@ const insertKeyword = db.prepare(`
 `);
 const insertPage = db.prepare(`
   INSERT OR IGNORE INTO programmatic_pages
-    (page_type, slug, title, h1_heading, niche_key, intent_type, target_city, target_state, region)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (page_type, slug, title, h1_heading, niche_key, intent_type, target_city, target_state, state_slug, region)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 // Wrap in a transaction for speed
 db.exec('BEGIN');
 
-// 1. States
-for (const s of STATES) {
-  insertState.run(s.state_name, s.state_slug, s.region);
-}
-console.log(`Inserted ${STATES.length} states.`);
-
-// 2. Cities
+// 1. Cities (locations table)
 for (const c of CITIES) {
   insertLocation.run(c.city_name, c.state_name, c.city_slug, c.state_slug, c.region);
 }
 console.log(`Inserted ${CITIES.length} cities.`);
 
-// 3. Keywords
+// 2. Keywords
 for (const niche of NICHES) {
   for (const intent of INTENTS) {
     insertKeyword.run(
@@ -273,7 +264,7 @@ for (const niche of NICHES) {
 }
 console.log(`Inserted ${NICHES.length * INTENTS.length} keywords.`);
 
-// 4. City pages: 6 × 4 × 122 = 2,928
+// 3. City pages: 6 × 4 × 122 = 2,928
 let cityCount = 0;
 for (const niche of NICHES) {
   for (const intent of INTENTS) {
@@ -283,14 +274,14 @@ for (const niche of NICHES) {
       const slug = `${niche.niche_key}-${intent}-${city.city_slug}`;
       const title = `${nd} ${id} in ${city.city_name} | B2B Wholesale`;
       const h1 = `Trusted ${nd} ${id}s in ${city.city_name}, ${city.state_name}`;
-      insertPage.run('city', slug, title, h1, niche.niche_key, intent, city.city_name, city.state_name, city.region);
+      insertPage.run('city', slug, title, h1, niche.niche_key, intent, city.city_name, city.state_name, city.state_slug, city.region);
       cityCount++;
     }
   }
 }
 console.log(`Inserted ${cityCount} city pages.`);
 
-// 5. State pages: 6 × 4 × 36 = 864
+// 4. State pages: 6 × 4 × 36 = 864
 let stateCount = 0;
 for (const niche of NICHES) {
   for (const intent of INTENTS) {
@@ -300,7 +291,7 @@ for (const niche of NICHES) {
       const slug = `${niche.niche_key}-${intent}-${state.state_slug}`;
       const title = `${nd} ${id}s in ${state.state_name} | B2B Wholesale Directory`;
       const h1 = `Find Verified ${nd} ${id}s Across ${state.state_name}`;
-      insertPage.run('state', slug, title, h1, niche.niche_key, intent, null, state.state_name, state.region);
+      insertPage.run('state', slug, title, h1, niche.niche_key, intent, null, state.state_name, state.state_slug, state.region);
       stateCount++;
     }
   }

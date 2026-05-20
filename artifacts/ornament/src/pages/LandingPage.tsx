@@ -107,7 +107,7 @@ export default function LandingPage() {
         <nav className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
           <Link href="/" className="hover:text-primary transition-colors" data-testid="breadcrumb-home">Home</Link>
           <span>/</span>
-          <Link href={`/gold-jewelry-wholesaler-${page.target_state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-primary transition-colors capitalize" data-testid="breadcrumb-state">
+          <Link href={`/${page.niche_key}-${page.intent_type}-${page.state_slug}`} className="hover:text-primary transition-colors capitalize" data-testid="breadcrumb-state">
             {page.target_state}
           </Link>
           {page.target_city && (
@@ -346,7 +346,8 @@ export default function LandingPage() {
               <h4 className="font-semibold text-foreground text-xs uppercase tracking-widest text-muted-foreground mb-3">Looking For</h4>
               <div className="space-y-1.5">
                 {["wholesaler", "supplier", "manufacturer", "importer"].map((intent) => {
-                  const targetSlug = `${page.niche_key}-${intent}-${(page.target_city ?? page.target_state).toLowerCase().replace(/\s+/g, '-')}`;
+                  const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
+                  const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
                   const isActive = page.intent_type === intent;
                   return (
                     <Link

@@ -1,0 +1,142 @@
+This completely changes the positioning—and it makes the site much more powerful. Instead of looking like a cold, generic "yellow pages" directory listing random companies, the entire site will now read as a dominant factory footprint layout for Arora Group Wholesale.
+Every page will position your brand as the primary direct manufacturer and supply chain partner establishing localized logistics, regional air courier networks, and dedicated wholesale support across all 122 commercial hubs in India.
+Here is your fully tailored, single-shot master build prompt for the Replit Agent. It hardcodes your brand name, realigns the conversion hooks for your business, and shifts the copy from "directory aggregation" to direct corporate supply acquisition.
+Master Build Prompt for Replit Agent (Arora Group Wholesale Edition)
+
+
+
+Plaintext
+Act as a world-class Programmatic SEO engineer and Next.js architect. Build a highly optimized, lightning-fast Direct-to-Retail B2B Wholesale Jewelry Programmatic Network for our brand, Arora Group Wholesale, inside this Next.js App Router workspace.
+
+### BRAND STRATEGY & INTENT REALIGNMENT
+CRITICAL: This website is NOT a directory or a marketplace listing third-party businesses. This site is the primary B2B digital distribution wing for our own brand: Arora Group Wholesale. Every landing page must position Arora Group Wholesale as the direct manufacturer, importer, and master supply partner for that specific city. The messaging must be authoritative, factory-direct, and transactional—focused entirely on converting retail shop owners and resellers into direct accounts via WhatsApp.
+
+### ARCHITECTURAL MANDATE: STATIC JSON DATA LAYER
+To ensure zero database query latency and perfect portability, follow the exact structural blueprint from our benchmark: DO NOT use a live database or ORM for the public frontend. Instead, bundle all data inside static JSON files and build high-performance O(1) in-memory lookup maps at module load.
+
+---
+
+## 1. FILE SYSTEM ARCHITECTURE
+Create the directory structure exactly as follows:
+
+
+├── app/
+│ ├── layout.tsx → Root layout (Global styling, config metadata)
+│ ├── page.tsx → Homepage (Full state grid list & Arora Group B2B overview)
+│ ├── globals.css → Custom styling adjustments
+│ ├── robots.ts → Standard robots.txt configuration mapping sitemaps
+│ ├── sitemap.xml/route.ts → Dynamic sitemap index mapping individual state child files
+│ ├── sitemap/[state]/route.ts → Individual state-level XML chunked sitemap routes
+│ ├── [state]/page.tsx → State Hub page (Lists available cities within that state)
+│ ├── [state]/[place]/page.tsx → City Hub page (Lists available Arora Group product niches in that city)
+│ └── [state]/[place]/[service]/page.tsx → Master B2B Product Landing Page (The conversion funnel)
+└── lib/
+├── config.ts → Hardcoded production configuration data & fallbacks
+├── data.ts → In-memory Map caches & O(1) synchronous query interfaces
+├── spintax.ts → Deterministic content generator system
+└── data/
+├── locations.json → Dataset containing 122 Indian commercial jewelry hubs
+└── services.json → Dataset containing 24 distinct B2B jewelry permutations
+
+
+
+---
+
+## 2. EXACT SERVICE PERMUTATIONS MATRIX (`lib/data/services.json`)
+Populate `services.json` with exactly 24 distinct B2B programmatic records. You must generate these records by mapping out our 6 core product segments across the 4 commercial B2B roles specified below:
+
+### Core Catalog Segments (6)
+1. "Korean Jewellery"
+2. "Fashion Jewellery"
+3. "Anti Tarnish Jewellery"
+4. "18k Gold Plated Jewellery"
+5. "Demi Fine Jewellery"
+6. "Western Jewellery"
+
+### Commercial Intent Suffixes (4)
+1. "Wholesaler"
+2. "Supplier"
+3. "Manufacturer"
+4. "Importer"
+
+### Generated Array Structure
+Generate all 24 logical pairs (e.g., "korean jewellery wholesaler", "korean jewellery supplier", "anti tarnish jewellery manufacturer", "18k gold plated jewellery importer", etc.). 
+
+Include fields for each of the 24 records:
+- `id`: unique number (1 to 24)
+- `service_name`: full display name capitalized correctly (e.g., "Korean Jewellery Wholesaler")
+- `service_slug`: URL-safe slug (e.g., "korean-jewellery-wholesaler")
+- `service_tier`: assignment priority (Tier 1 = entries 1-8, Tier 2 = entries 9-16, Tier 3 = entries 17-24)
+- `base_keywords`: an array of 3 specific search phrases (e.g., `["wholesale korean jewellery", "bulk anti tarnish items", "premium jewelry suppliers"]`)
+
+---
+
+## 3. GEOGRAPHICAL SOURCING DATA (`lib/data/locations.json`)
+Populate with a clean dataset mapping out 122 core commercial cities across Indian States and Union Territories (e.g., Maharashtra/Mumbai, Karnataka/Bangalore, Rajasthan/Jaipur, Delhi/New Delhi, Tamil Nadu/Coimbatore, Punjab/Ludhiana, Gujarat/Surat, West Bengal/Kolkata).
+Every single entry must contain: `id`, `state_code`, `state_name`, `state_slug`, `place_name`, `place_slug`, and an assigned market `tier` (1, 2, or 3 based on market scale).
+
+### Population-Based B2B Tier Matrix Constraints (Total Pages: 2,928)
+- **Tier 1 Cities (30 Mega Markets):** Access to all 24 wholesale niche combinations.
+- **Tier 2 Cities (50 Growing Hubs):** Access to top 16 wholesale niche combinations.
+- **Tier 3 Cities (42 Regional Markets):** Access to top 8 wholesale niche combinations.
+
+---
+
+## 4. BRAND HARDCODING LAYER (`lib/config.ts`)
+Hardcode corporate production fallbacks to prevent local testing environments from corrupting canonical tracking metadata or sitemaps:
+- `WHATSAPP_NUMBER` = "919999999999" (Formatted with country code, no symbols)
+- `BRAND_NAME` = "Arora Group Wholesale"
+- `SITE_URL` = "https://www.aroragroupwholesale.com"
+
+---
+
+## 5. IN-MEMORY QUERY ENGINE (`lib/data.ts`)
+Import the static JSON files. Immediately upon module initialization, process the arrays into synchronous, high-efficiency lookup structures using JavaScript `Map` objects. 
+Expose clean, asynchronous wrapper functions that resolve instantly using the cached lookup states:
+- `getStates()`: Extracts unique states with aggregate page metrics.
+- `getLocationsByState(stateSlug)`: Returns matching cities within a state.
+- `getLocation(stateSlug, placeSlug)`: O(1) retrieval using a composite key: `state_slug|place_slug`.
+- `getService(serviceSlug)`: O(1) retrieval using the specific niche slug.
+- `getSiblingServices(tier, currentId, limit)`: Cross-links within the same city.
+- `getNearbyLocations(stateSlug, currentId, limit)`: Geographical interlinking within the same state.
+
+---
+
+## 6. DETERMINISTIC SPINTAX SYNTHESIS (`lib/spintax.ts`)
+To protect our index health from search engine duplicate content penalties, implement a deterministic variation picker. Use a numeric hashing multiplier of `(locationId * serviceId)` to calculate a stable index choice. The text layout must remain perfectly stable across rebuilds (do not use random generation).
+
+The spintax engine must dynamically spin:
+- H1 Headings and intro paragraphs framing Arora Group Wholesale as the direct master supply link.
+- High-value B2B bullet points emphasizing custom enterprise manufacturing, regional express air transit to that specific city, zero middleman margins, and stable supply reliability.
+- Answers for a 5-question FAQ section focusing on corporate purchasing terms, metal content purity tests, and customized wholesale processing. Use the `<details>` accordion element.
+
+---
+
+## 7. LANDING PAGE FUNNEL (`[state]/[place]/[service]/page.tsx`)
+Construct a conversion-optimized corporate B2B landing page with an elegant, minimalist aesthetic: soft cream backdrop (`#FFF8F0`), charcoal headers (`#1E1E1E`), and distinct gold conversion accents (`#FFC629`).
+
+The layout must render the following sections in order:
+1. **Dynamic Top Banner:** "Direct Factory-to-Retail Logistics from Arora Group Wholesale to [City Name] - Minimum Order Value ₹5,000"
+2. **Hero Core Canvas:** High-impact, transactional H1 title (e.g., "Arora Group Wholesale — Direct [Niche Name] Manufacturer & Supplier in [City, State]"), an optimized spun introductory block showcasing our supply scale, star ratings, and an urgent B2B call-out card.
+3. **Primary WhatsApp Conversion Action:** A large, sticky button linked directly to `https://wa.me/{WHATSAPP_NUMBER}?text=Hi%20Arora%20Group,%20I'm%20a%20retailer%20inquiring%20about%20direct%20factory%20supply%20for%20[Niche Name]%20for%20my%20business%20in%20[City Name].`
+4. **B2B Infrastructure Badges Grid:** 4 structured cards focusing on our internal operational trust metrics: Direct Factory Pricing (No Middlemen), Fully Insured Blazing-Fast Air Freight to [City Name], Certified Metallic & Anti-Tarnish Purity Standards, and Scalable Custom Design Manufacturing.
+5. **Main Spun Body Block:** 2 extensive structural paragraphs explaining Arora Group's raw manufacturing capabilities, direct importing channels, and localized retail shipping pipelines.
+6. **B2B FAQ Accordion:** 5 programmatic corporate supply questions handled natively via standard `<details>` structures to earn search engine rich text snippets.
+7. **Dense Crawl Authority Cross-Links Footer:** A clean navigation grid showing 5 alternative jewelry lines managed by Arora Group in that city, and 5 neighboring state cities serviced by our supply network.
+
+### Multi-Layer SEO JSON-LD Injections
+Inject these three critical schema arrays directly into the page metadata block for every single service page:
+1. `WholesaleStore` (Mapping out Arora Group Wholesale, corporate availability, contact details, and targeted geographical city parameters).
+2. `BreadcrumbList` (Navigating: Home → [State Hub] → [City Hub] → [Current Programmatic Niche Page]).
+3. `FAQPage` (Mapping the structural entities for our 5 spun accordion answers).
+
+---
+
+## 8. PROGRAMMATIC INFRASTRUCTURE AND SITEMAPS
+- **`app/sitemap.xml/route.ts`:** Generates a structured sitemap index document routing directly to individual chunked state files.
+- **`app/sitemap/[state]/route.ts`:** Resolves incoming parameters dynamically, outputting clean, state-level URL links. Include explicit cache management headers (`Cache-Control: public, max-age=3600`) to guarantee fast crawling performance under intense robot traffic.
+- **`app/robots.ts`:** Outputs clean standard parameters pointing to our main `/sitemap.xml` hub location.
+
+Review this entire framework instruction set, ensure no third-party listing directory layouts are used, verify all text speaks strictly of Arora Group Wholesale's direct commercial enterprise network, and build out the system files completely.
+
+

@@ -135,7 +135,7 @@ components:
 
     PageDetail:
       type: object
-      required: [id, page_type, slug, title, h1_heading, niche_key, intent_type, target_state, region, related_city_pages, related_state_pages]
+      required: [id, page_type, slug, title, h1_heading, niche_key, intent_type, target_state, state_slug, region, related_city_pages, related_state_pages]
       properties:
         id:
           type: integer
@@ -154,6 +154,8 @@ components:
         target_city:
           type: ["string", "null"]
         target_state:
+          type: string
+        state_slug:
           type: string
         region:
           type: string

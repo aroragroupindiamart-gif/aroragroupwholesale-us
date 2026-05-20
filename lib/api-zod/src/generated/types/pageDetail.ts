@@ -18,6 +18,7 @@ export interface PageDetail {
   /** @nullable */
   target_city?: string | null;
   target_state: string;
+  state_slug: string;
   region: string;
   related_city_pages: PageLink[];
   related_state_pages: PageLink[];

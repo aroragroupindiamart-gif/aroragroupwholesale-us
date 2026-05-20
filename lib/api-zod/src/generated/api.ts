@@ -47,6 +47,7 @@ export const GetPageResponse = zod.object({
   "intent_type": zod.string(),
   "target_city": zod.string().nullish(),
   "target_state": zod.string(),
+  "state_slug": zod.string(),
   "region": zod.string(),
   "related_city_pages": zod.array(zod.object({
   "slug": zod.string(),
