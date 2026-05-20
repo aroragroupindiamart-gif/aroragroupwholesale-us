@@ -1,17 +1,17 @@
 import { Link } from "wouter";
 import { useListNiches, useListStates } from "@workspace/api-client-react";
-import { Gem, Sparkles, Diamond, Star, Heart, Crown } from "lucide-react";
+import { Gem, Sparkles, Layers, Star, Zap, Globe } from "lucide-react";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER ?? "919999999999";
-const WHATSAPP_MSG = "Hello, I'm interested in wholesale jewelry sourcing. Please guide me.";
+const WHATSAPP_MSG = "Hi Arora Group Wholesale, I am a commercial buyer inquiring about direct factory supply for our business.";
 
 const NICHE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  "gold-jewelry": Crown,
-  "silver-jewelry": Sparkles,
-  "diamond-jewelry": Diamond,
-  "artificial-jewelry": Gem,
-  "bridal-jewelry": Heart,
-  "fashion-jewelry": Star,
+  "korean-jewellery":          Star,
+  "fashion-jewellery":         Sparkles,
+  "anti-tarnish-jewellery":    Layers,
+  "18k-gold-plated-jewellery": Gem,
+  "demi-fine-jewellery":       Zap,
+  "western-jewellery":         Globe,
 };
 
 const INTENT_LABELS = [
@@ -56,8 +56,8 @@ export default function Home() {
       <header className="border-b border-border bg-card sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" data-testid="link-home-logo">
-            <span className="font-serif text-2xl font-bold text-primary tracking-tight">
-              Ornament
+            <span className="font-serif text-xl font-bold text-primary tracking-tight">
+              Arora Group Wholesale
             </span>
           </Link>
           <WhatsAppButton className="text-sm px-4 py-2" />
@@ -68,43 +68,44 @@ export default function Home() {
       <section className="bg-gradient-to-br from-amber-50 via-background to-background py-16 sm:py-24 border-b border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-4 bg-primary/10 px-3 py-1 rounded-full">
-            B2B Wholesale Directory — India
+            Direct Factory Supply — India
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6">
-            Find Trusted Jewelry{" "}
-            <span className="text-primary">Wholesalers &amp; Suppliers</span>
-            {" "}Across India
+            Direct Factory Jewelry Supply{" "}
+            <span className="text-primary">for Indian Retailers &amp; Resellers</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Connecting retailers and traders with verified B2B jewelry manufacturers, wholesalers,
-            importers and suppliers in every major Indian city and state.
+            Arora Group Wholesale operates mass-import sourcing pipelines and custom manufacturing
+            capabilities across all 6 product segments. We deliver door-to-door insured air cargo
+            with end-to-end shipment tracking to all 122 commercial regions across India — eliminating
+            every intermediate distributor markup between our factory floor and your storefront.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <WhatsAppButton className="text-base px-8 py-3.5" />
             <a
-              href="#niches"
+              href="#product-lines"
               className="inline-flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold px-8 py-3.5 rounded-lg transition-colors border border-border"
               data-testid="link-browse-niches"
             >
-              Browse by Category
+              Browse Product Lines
             </a>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">3,792</strong> pages</span>
-            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">122</strong> cities</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">3,792</strong> supply pages</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">122</strong> commercial regions</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">36</strong> states &amp; UTs</span>
-            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">6</strong> jewelry niches</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-foreground">6</strong> product lines</span>
           </div>
         </div>
       </section>
 
-      {/* ─── NICHES ──────────────────────────────────────────── */}
-      <section id="niches" className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
+      {/* ─── PRODUCT LINES ───────────────────────────────────── */}
+      <section id="product-lines" className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <h2 className="font-serif text-3xl font-bold text-foreground text-center mb-2">
-          Browse by Jewelry Category
+          Our 6 Product Lines
         </h2>
         <p className="text-muted-foreground text-center mb-10">
-          Select a niche to find wholesale partners across India
+          Source directly from Arora Group Wholesale manufacturing infrastructure
         </p>
         {nichesLoading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -142,7 +143,7 @@ export default function Home() {
           {INTENT_LABELS.map((intent) => (
             <Link
               key={intent.key}
-              href={`/gold-jewelry-${intent.key}-jaipur`}
+              href={`/korean-jewellery-${intent.key}-jaipur`}
               data-testid={`link-intent-${intent.key}`}
               className="px-4 py-1.5 rounded-full border border-border text-sm text-muted-foreground hover:border-primary/60 hover:text-primary transition-colors"
             >
@@ -159,7 +160,7 @@ export default function Home() {
             Browse by State
           </h2>
           <p className="text-muted-foreground text-center mb-10">
-            Discover wholesale jewelry suppliers in every Indian state and union territory
+            Arora Group Wholesale ships factory-direct to every Indian state and union territory
           </p>
           {statesLoading ? (
             <div className="h-48 bg-card animate-pulse rounded-xl" />
@@ -174,7 +175,7 @@ export default function Home() {
                     {regionStates.map((s) => (
                       <li key={s.state_slug}>
                         <Link
-                          href={`/gold-jewelry-wholesaler-${s.state_slug}`}
+                          href={`/korean-jewellery-wholesaler-${s.state_slug}`}
                           data-testid={`link-state-${s.state_slug}`}
                           className="text-sm text-muted-foreground hover:text-primary hover:underline transition-colors"
                         >
@@ -194,9 +195,9 @@ export default function Home() {
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           {[
-            { icon: "🤝", title: "Verified B2B Partners", desc: "All listed businesses are verified wholesale suppliers and manufacturers." },
-            { icon: "📦", title: "Bulk Order Ready", desc: "Source jewelry at wholesale prices directly from manufacturers and importers." },
-            { icon: "💬", title: "Instant WhatsApp Connect", desc: "One click to chat with suppliers on WhatsApp — no sign-up required." },
+            { icon: "🏭", title: "Factory-Direct Pricing", desc: "No intermediary markups. Source directly from Arora Group's own manufacturing and import infrastructure." },
+            { icon: "✈️", title: "Insured Air Cargo Tracking", desc: "Door-to-door insured air cargo with full end-to-end shipment tracking to all 122 commercial regions." },
+            { icon: "💬", title: "Instant WhatsApp Access", desc: "One message to open a direct supply chain account with Arora Group — no sign-up, no delay." },
           ].map((item) => (
             <div key={item.title} className="bg-card border border-border rounded-xl p-6">
               <div className="text-3xl mb-3">{item.icon}</div>
@@ -211,10 +212,10 @@ export default function Home() {
       <section className="bg-primary/10 border-t border-primary/20 py-14">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-serif text-3xl font-bold text-foreground mb-3">
-            Ready to Source Wholesale Jewelry?
+            Open a Direct Supply Account with Arora Group
           </h2>
           <p className="text-muted-foreground mb-6">
-            Connect with India's top B2B jewelry suppliers today.
+            Boutique showrooms, retail merchants, and online resellers — establish your factory-direct supply chain today.
           </p>
           <WhatsAppButton className="text-base px-10 py-4 text-lg" />
         </div>
@@ -223,11 +224,11 @@ export default function Home() {
       {/* ─── FOOTER ──────────────────────────────────────────── */}
       <footer className="border-t border-border bg-card py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg font-bold text-primary">Ornament</span>
+          <span className="font-serif text-lg font-bold text-primary">Arora Group Wholesale</span>
           <p className="text-xs text-muted-foreground text-center">
-            India's B2B Jewelry Wholesale Directory — Connecting Buyers &amp; Sellers Since 2024
+            Direct Factory Jewelry Supply — Serving 122 Commercial Regions Across India
           </p>
-          <p className="text-xs text-muted-foreground">© 2024 Ornament. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2024 Arora Group Wholesale. All rights reserved.</p>
         </div>
       </footer>
     </div>

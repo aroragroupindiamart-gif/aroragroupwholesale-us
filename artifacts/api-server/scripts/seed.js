@@ -31,12 +31,12 @@ console.log('Schema initialized.');
 // ─── DATA ──────────────────────────────────────────────────────────────────
 
 const NICHES = [
-  { niche_key: 'gold-jewelry', display_name: 'Gold Jewelry' },
-  { niche_key: 'silver-jewelry', display_name: 'Silver Jewelry' },
-  { niche_key: 'diamond-jewelry', display_name: 'Diamond Jewelry' },
-  { niche_key: 'artificial-jewelry', display_name: 'Artificial Jewelry' },
-  { niche_key: 'bridal-jewelry', display_name: 'Bridal Jewelry' },
-  { niche_key: 'fashion-jewelry', display_name: 'Fashion Jewelry' },
+  { niche_key: 'korean-jewellery',         display_name: 'Korean Jewellery' },
+  { niche_key: 'fashion-jewellery',        display_name: 'Fashion Jewellery' },
+  { niche_key: 'anti-tarnish-jewellery',   display_name: 'Anti Tarnish Jewellery' },
+  { niche_key: '18k-gold-plated-jewellery',display_name: '18k Gold Plated Jewellery' },
+  { niche_key: 'demi-fine-jewellery',      display_name: 'Demi Fine Jewellery' },
+  { niche_key: 'western-jewellery',        display_name: 'Western Jewellery' },
 ];
 
 const INTENTS = ['wholesaler', 'supplier', 'manufacturer', 'importer'];
@@ -214,12 +214,12 @@ const CITIES = [
 ];
 
 const NICHE_DISPLAY = {
-  'gold-jewelry': 'Gold Jewelry',
-  'silver-jewelry': 'Silver Jewelry',
-  'diamond-jewelry': 'Diamond Jewelry',
-  'artificial-jewelry': 'Artificial Jewelry',
-  'bridal-jewelry': 'Bridal Jewelry',
-  'fashion-jewelry': 'Fashion Jewelry',
+  'korean-jewellery':          'Korean Jewellery',
+  'fashion-jewellery':         'Fashion Jewellery',
+  'anti-tarnish-jewellery':    'Anti Tarnish Jewellery',
+  '18k-gold-plated-jewellery': '18k Gold Plated Jewellery',
+  'demi-fine-jewellery':       'Demi Fine Jewellery',
+  'western-jewellery':         'Western Jewellery',
 };
 
 const INTENT_DISPLAY = {
@@ -244,6 +244,10 @@ const insertPage = db.prepare(`
 `);
 
 const seedAll = db.transaction(() => {
+  // 0. Wipe existing data so re-runs always produce a clean state
+  db.exec('DELETE FROM programmatic_pages; DELETE FROM keywords; DELETE FROM locations;');
+  console.log('Wiped existing data.');
+
   // 1. Cities (locations table)
   for (const c of CITIES) {
     insertLocation.run(c.city_name, c.state_name, c.city_slug, c.state_slug, c.region);
@@ -270,8 +274,8 @@ const seedAll = db.transaction(() => {
         const nd = NICHE_DISPLAY[niche.niche_key];
         const id = INTENT_DISPLAY[intent];
         const slug = `${niche.niche_key}-${intent}-${city.city_slug}`;
-        const title = `${nd} ${id} in ${city.city_name} | B2B Wholesale`;
-        const h1 = `Trusted ${nd} ${id}s in ${city.city_name}, ${city.state_name}`;
+        const title = `${nd} ${id} in ${city.city_name} | Arora Group Wholesale`;
+        const h1 = `Arora Group Wholesale — Direct ${nd} ${id} in ${city.city_name}, ${city.state_name}`;
         insertPage.run('city', slug, title, h1, niche.niche_key, intent, city.city_name, city.state_name, city.state_slug, city.region);
         cityCount++;
       }
@@ -287,8 +291,8 @@ const seedAll = db.transaction(() => {
         const nd = NICHE_DISPLAY[niche.niche_key];
         const id = INTENT_DISPLAY[intent];
         const slug = `${niche.niche_key}-${intent}-${state.state_slug}`;
-        const title = `${nd} ${id}s in ${state.state_name} | B2B Wholesale Directory`;
-        const h1 = `Find Verified ${nd} ${id}s Across ${state.state_name}`;
+        const title = `${nd} ${id}s in ${state.state_name} | Arora Group Wholesale`;
+        const h1 = `Arora Group Wholesale — Direct ${nd} ${id} Across ${state.state_name}`;
         insertPage.run('state', slug, title, h1, niche.niche_key, intent, null, state.state_name, state.state_slug, state.region);
         stateCount++;
       }

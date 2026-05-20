@@ -110,12 +110,12 @@ const STATES: StateInfo[] = [
 ];
 
 const NICHE_DISPLAY: Record<string, string> = {
-  'gold-jewelry': 'Gold Jewelry',
-  'silver-jewelry': 'Silver Jewelry',
-  'diamond-jewelry': 'Diamond Jewelry',
-  'artificial-jewelry': 'Artificial Jewelry',
-  'bridal-jewelry': 'Bridal Jewelry',
-  'fashion-jewelry': 'Fashion Jewelry',
+  'korean-jewellery':          'Korean Jewellery',
+  'fashion-jewellery':         'Fashion Jewellery',
+  'anti-tarnish-jewellery':    'Anti Tarnish Jewellery',
+  '18k-gold-plated-jewellery': '18k Gold Plated Jewellery',
+  'demi-fine-jewellery':       'Demi Fine Jewellery',
+  'western-jewellery':         'Western Jewellery',
 };
 
 export function getRelatedCityPages(

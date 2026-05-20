@@ -1,0 +1,53 @@
+CRITICAL BUG FIX: The current layout and copy are completely wrong. This website is NOT a multi-vendor directory, a marketplace, or a listing platform to "find other partners". It is the official exclusive wholesale storefront for our own brand: Arora Group Wholesale. 
+
+You must completely overwrite the content, headings, data arrays, and page generation copy across all files (`app/page.tsx`, `lib/data/services.json`, and `app/[state]/[place]/[service]/page.tsx`) to match the rules below.
+
+---
+
+## 1. DATA OVERWRITE (`lib/data/services.json`)
+Completely erase the generic categories (Gold, Silver, Diamond, Bridal, Artificial). Replace the data array with exactly our 24 brand keyword catalog records created by pairing our 6 product segments with our 4 operational roles:
+
+### Our 6 Product Lines:
+1. "Korean Jewellery"
+2. "Fashion Jewellery"
+3. "Anti Tarnish Jewellery"
+4. "18k Gold Plated Jewellery"
+5. "Demi Fine Jewellery"
+6. "Western Jewellery"
+
+### Our 4 Business Target Suffixes:
+1. "Wholesaler"
+2. "Supplier"
+3. "Manufacturer"
+4. "Importer"
+
+Every single generated slug must strictly map to these pairs (e.g., `korean-jewellery-wholesaler`, `fashion-jewellery-manufacturer`, `anti-tarnish-jewellery-supplier`).
+
+---
+
+## 2. LANDING PAGE COPY REFACTOR (`app/[state]/[place]/[service]/page.tsx`)
+Completely replace the directory-style copy with direct enterprise brand authority lines.
+
+- **Main Heading (H1) Formula:** Change from "Find Verified Wholesalers Across..." to:
+  "Arora Group Wholesale — Direct [Service Name] in [City Name], [State Name]"
+- **Subheading & Body Copy:** Rewrite all spun content to state: 
+  "Arora Group Wholesale delivers factory-direct production line access for premium [Product Line] to boutique showrooms, retail merchants, and online resellers across [City Name]. Eliminate intermediate distribution markups and source directly from our manufacturing infrastructure."
+- **Side Card Text:** Change from "Source Gold jewelry in..." to:
+  "Establish Direct Supply Chain Account with Arora Group"
+
+---
+
+## 3. HOMEPAGE OVERWRITE (`app/page.tsx`)
+- Update the navigation logo element to read text: "Arora Group Wholesale"
+- Change the core Hero H1 Title to:
+  "Direct Factory Jewelry Supply for Indian Retailers & Resellers"
+- Change the sub-header overview paragraph to explicitly outline Arora Group Wholesale's mass importing, custom manufacturing capabilities, and door-to-door insured air cargo tracking solutions to all 122 commercial regions.
+- Update the category grid layout to display links for our 6 product lines instead of raw raw precious metals.
+
+---
+
+## 4. WHATSAPP CTA STRING ADJUSTMENT
+Update all CTA href links to pass this precise tracking query parameter to our desk:
+`https://wa.me/919999999999?text=Hi%20Arora%20Group%20Wholesale,%20I%20am%20a%20commercial%20buyer%20inquiring%20about%20direct%20factory%20supply%20for%20[Service Name]%20for%20my%20business%20in%20[City Name].`
+
+Re-compile the application code blocks, wipe out any residual references to "finding trusted third-party partners", and ensure the entire portal positions Arora Group Wholesale as the single source supplier.

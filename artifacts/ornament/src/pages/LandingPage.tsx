@@ -6,12 +6,12 @@ import NotFound from "@/pages/not-found";
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER ?? "919999999999";
 
 const NICHE_DESCRIPTIONS: Record<string, string> = {
-  "gold-jewelry": "gold jewelry",
-  "silver-jewelry": "silver jewelry",
-  "diamond-jewelry": "diamond jewelry",
-  "artificial-jewelry": "artificial & imitation jewelry",
-  "bridal-jewelry": "bridal & wedding jewelry",
-  "fashion-jewelry": "fashion & costume jewelry",
+  "korean-jewellery":          "Korean jewellery",
+  "fashion-jewellery":         "fashion jewellery",
+  "anti-tarnish-jewellery":    "anti tarnish jewellery",
+  "18k-gold-plated-jewellery": "18k gold plated jewellery",
+  "demi-fine-jewellery":       "demi fine jewellery",
+  "western-jewellery":         "western jewellery",
 };
 
 const INTENT_DESCRIPTIONS: Record<string, { verb: string; noun: string; plural: string }> = {
@@ -21,20 +21,11 @@ const INTENT_DESCRIPTIONS: Record<string, { verb: string; noun: string; plural: 
   importer: { verb: "import", noun: "importer", plural: "importers" },
 };
 
-function formatPageTitle(niche: string, intent: string, city: string | null, state: string) {
-  const nd = NICHE_DESCRIPTIONS[niche] ?? niche;
-  const id = INTENT_DESCRIPTIONS[intent];
-  if (!id) return city ? `${nd} in ${city}` : `${nd} in ${state}`;
-  if (city) return `${nd} ${id.plural} in ${city}, ${state}`;
-  return `${nd} ${id.plural} across ${state}`;
-}
-
 function WATriggerBtn({ niche, intent, location, className = "" }: {
   niche: string; intent: string; location: string; className?: string;
 }) {
-  const nd = NICHE_DESCRIPTIONS[niche] ?? niche;
-  const id = INTENT_DESCRIPTIONS[intent];
-  const msg = `Hello, I'm looking for a trusted ${nd} ${id?.noun ?? intent} in ${location}. Please share your catalogue and pricing.`;
+  const nd = NICHE_DESCRIPTIONS[niche] ?? niche.replace(/-/g, " ");
+  const msg = `Hi Arora Group Wholesale, I am a commercial buyer inquiring about direct factory supply for ${nd} for my business in ${location}.`;
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   return (
     <a
@@ -83,9 +74,9 @@ export default function LandingPage() {
   if (isError || !page) return <NotFound />;
 
   const locationLabel = page.target_city ?? page.target_state;
-  const nd = NICHE_DESCRIPTIONS[page.niche_key] ?? page.niche_key;
+  const nd = NICHE_DESCRIPTIONS[page.niche_key] ?? page.niche_key.replace(/-/g, " ");
   const id = INTENT_DESCRIPTIONS[page.intent_type];
-  const waMsg = `Hello, I need a verified ${nd} ${id?.noun ?? page.intent_type} in ${locationLabel}. Please share your catalogue.`;
+  const waMsg = `Hi Arora Group Wholesale, I am a commercial buyer inquiring about direct factory supply for ${nd} for my business in ${locationLabel}.`;
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
 
   return (
@@ -93,8 +84,8 @@ export default function LandingPage() {
       {/* ─── NAV ─────────────────────────────────────────────── */}
       <header className="border-b border-border bg-card sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" data-testid="link-home-logo" className="font-serif text-2xl font-bold text-primary tracking-tight">
-            Ornament
+          <Link href="/" data-testid="link-home-logo" className="font-serif text-xl font-bold text-primary tracking-tight">
+            Arora Group Wholesale
           </Link>
           <WATriggerBtn niche={page.niche_key} intent={page.intent_type} location={locationLabel} className="text-sm px-4 py-2" />
         </div>
@@ -136,19 +127,20 @@ export default function LandingPage() {
                 {page.h1_heading}
               </h1>
               <p className="text-muted-foreground text-base">
-                Looking for a reliable <strong>{nd} {id?.noun ?? page.intent_type}</strong> in{" "}
-                <strong>{locationLabel}</strong>? Connect directly with verified B2B partners
-                who offer bulk pricing, quality assurance, and fast dispatch.
+                Arora Group Wholesale delivers factory-direct production line access for premium{" "}
+                <strong>{nd}</strong> to boutique showrooms, retail merchants, and online resellers
+                across <strong>{locationLabel}</strong>. Eliminate intermediate distribution markups
+                and source directly from our manufacturing infrastructure.
               </p>
             </div>
 
             {/* Trust badges */}
             <div className="flex flex-wrap gap-3 mb-8">
               {[
-                { icon: CheckCircle, label: "Verified B2B" },
-                { icon: Shield, label: "Quality Assured" },
+                { icon: CheckCircle, label: "Factory-Direct" },
+                { icon: Shield, label: "Insured Cargo" },
                 { icon: TrendingUp, label: "Bulk Pricing" },
-                { icon: Star, label: "Wholesale Rates" },
+                { icon: Star, label: "No Middlemen" },
               ].map(({ icon: Icon, label }) => (
                 <span key={label} className="inline-flex items-center gap-1.5 text-xs font-medium bg-primary/10 text-primary px-3 py-1.5 rounded-full">
                   <Icon className="w-3.5 h-3.5" />
@@ -160,7 +152,7 @@ export default function LandingPage() {
             {/* WhatsApp CTA (inline) */}
             <div className="bg-[#25D366]/8 border border-[#25D366]/30 rounded-2xl p-6 mb-8">
               <h2 className="font-semibold text-foreground mb-1 text-lg">
-                Connect with {formatPageTitle(page.niche_key, page.intent_type, page.target_city ?? null, page.target_state)}
+                Establish Direct Supply Chain Account with Arora Group
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
                 Send your requirements on WhatsApp — get catalogue, MOQ, and pricing within minutes.
@@ -176,21 +168,20 @@ export default function LandingPage() {
             {/* Content section 1 */}
             <section className="prose prose-sm max-w-none mb-8">
               <h2 className="font-serif text-xl font-bold text-foreground not-prose mb-3">
-                Why Source {nd.charAt(0).toUpperCase() + nd.slice(1)} from {locationLabel}?
+                Why Source {nd.charAt(0).toUpperCase() + nd.slice(1)} Directly from Arora Group?
               </h2>
               <div className="text-muted-foreground space-y-3 text-sm leading-relaxed">
                 <p>
-                  {locationLabel} is a well-established hub for B2B{" "}
-                  {page.intent_type === "importer" ? "jewelry importers" : `jewelry ${id?.plural ?? page.intent_type}`}{" "}
-                  in the {page.region} India region. Retailers, boutiques, and traders across the country
-                  source {nd} from {locationLabel} to benefit from competitive pricing,
-                  diverse designs, and reliable supply chains.
+                  Arora Group Wholesale operates mass-import sourcing pipelines and custom
+                  manufacturing capabilities specifically for{" "}
+                  {nd} — delivering direct to boutique showrooms, retail merchants, and online
+                  resellers across {locationLabel} in {page.region} India.
                 </p>
                 <p>
-                  Whether you're looking to place a one-time bulk order or establish a long-term
-                  wholesale relationship, our verified {nd} {id?.plural ?? page.intent_type} in{" "}
-                  {locationLabel} offer flexible MOQs, customisation options, and both branded
-                  and unbranded {nd} collections.
+                  By sourcing {nd} directly through Arora Group, you bypass every layer of
+                  intermediate distribution. Our door-to-door insured air cargo with end-to-end
+                  shipment tracking means your inventory arrives securely, on schedule, with full
+                  invoice support for GST-registered buyers.
                 </p>
               </div>
             </section>
@@ -198,15 +189,15 @@ export default function LandingPage() {
             {/* Content section 2 */}
             <section className="mb-8">
               <h2 className="font-serif text-xl font-bold text-foreground mb-3">
-                What to Expect from Our {nd.charAt(0).toUpperCase() + nd.slice(1)} {id?.plural.charAt(0).toUpperCase()}{id?.plural.slice(1) ?? "Partners"} in {locationLabel}
+                What Arora Group {id?.plural.charAt(0).toUpperCase()}{id?.plural.slice(1) ?? "Supply"} Includes for {locationLabel}
               </h2>
               <ul className="space-y-2">
                 {[
-                  `Direct factory or importer pricing — no middlemen`,
-                  `Wide range of designs including traditional, contemporary, and fusion styles`,
-                  `Flexible minimum order quantities (MOQ) for all business sizes`,
-                  `Pan-India shipping and B2B invoice support for GST-registered buyers`,
-                  `WhatsApp-first communication for fast quotations and sample requests`,
+                  `Factory-direct pricing — zero middlemen between our floor and your storefront`,
+                  `Custom manufacturing capabilities for private-label and branded collections`,
+                  `Mass-import sourcing pipelines with consistent stock availability`,
+                  `Insured air cargo with door-to-door tracking to ${locationLabel}`,
+                  `Pan-India B2B invoice support for GST-registered commercial buyers`,
                 ].map((point) => (
                   <li key={point} className="flex items-start gap-2.5 text-sm text-muted-foreground">
                     <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -222,8 +213,8 @@ export default function LandingPage() {
                 <Phone className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">Need to speak directly?</p>
-                <p className="text-xs text-muted-foreground">WhatsApp us your requirements and we'll connect you with the right {id?.noun ?? "partner"}.</p>
+                <p className="text-sm font-semibold text-foreground">Ready to open a supply account?</p>
+                <p className="text-xs text-muted-foreground">WhatsApp us your requirements and Arora Group will respond with catalogue, MOQ, and pricing.</p>
               </div>
               <a
                 href={waUrl}
@@ -293,10 +284,10 @@ export default function LandingPage() {
             {/* Primary CTA card */}
             <div className="bg-primary text-primary-foreground rounded-2xl p-6 shadow-lg">
               <h3 className="font-serif text-xl font-bold mb-2">
-                Source {nd.charAt(0).toUpperCase() + nd.slice(1)} in {locationLabel}
+                Establish Direct Supply Chain Account with Arora Group
               </h3>
               <p className="text-sm opacity-90 mb-4">
-                Talk to verified {id?.plural ?? "partners"} now. Free consultation.
+                Factory-direct {nd} supply for {locationLabel}. No intermediaries.
               </p>
               <a
                 href={waUrl}
@@ -314,14 +305,14 @@ export default function LandingPage() {
 
             {/* Page info card */}
             <div className="bg-card border border-border rounded-xl p-5 text-sm space-y-3">
-              <h4 className="font-semibold text-foreground text-xs uppercase tracking-widest text-muted-foreground">Page Details</h4>
+              <h4 className="font-semibold text-foreground text-xs uppercase tracking-widest text-muted-foreground">Supply Details</h4>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Category</span>
+                  <span className="text-muted-foreground">Product Line</span>
                   <span className="font-medium text-foreground capitalize">{nd}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Type</span>
+                  <span className="text-muted-foreground">Role</span>
                   <span className="font-medium text-foreground capitalize">{id?.noun ?? page.intent_type}</span>
                 </div>
                 <div className="flex justify-between">
@@ -341,7 +332,7 @@ export default function LandingPage() {
 
             {/* Intent selector */}
             <div className="bg-card border border-border rounded-xl p-5">
-              <h4 className="font-semibold text-foreground text-xs uppercase tracking-widest text-muted-foreground mb-3">Looking For</h4>
+              <h4 className="font-semibold text-foreground text-xs uppercase tracking-widest text-muted-foreground mb-3">Supply Role</h4>
               <div className="space-y-1.5">
                 {["wholesaler", "supplier", "manufacturer", "importer"].map((intent) => {
                   const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
@@ -371,11 +362,11 @@ export default function LandingPage() {
       {/* ─── FOOTER ──────────────────────────────────────────── */}
       <footer className="border-t border-border bg-card py-8 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-lg font-bold text-primary">Ornament</Link>
+          <Link href="/" className="font-serif text-lg font-bold text-primary">Arora Group Wholesale</Link>
           <p className="text-xs text-muted-foreground text-center">
-            India's B2B Jewelry Wholesale Directory — Connecting Buyers &amp; Sellers
+            Direct Factory Jewelry Supply — Serving 122 Commercial Regions Across India
           </p>
-          <p className="text-xs text-muted-foreground">© 2024 Ornament. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2024 Arora Group Wholesale. All rights reserved.</p>
         </div>
       </footer>
     </div>
