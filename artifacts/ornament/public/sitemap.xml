@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-north.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-north-2.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-south.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-west.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-east-central.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ornament.replit.app/sitemap-east-central-2.xml</loc>
+    <lastmod>2026-05-20</lastmod>
+  </sitemap>
+</sitemapindex>

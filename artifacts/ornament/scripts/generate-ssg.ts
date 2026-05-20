@@ -24,6 +24,10 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
+// Sitemaps go to public/ so they are committed as static assets and served
+// by Vite in dev mode. Vite copies public/ → dist/ at build time so they
+// are also accessible in the deployed app at /sitemap.xml.
+const SITEMAP_DIR = path.join(__dirname, '..', 'public');
 const BASE_URL = 'https://ornament.replit.app';
 const SITEMAP_URL_CAP = 1000;
 
@@ -384,7 +388,7 @@ function writeSitemapBucket(name: string, slugs: string[], today: string): strin
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}
 </urlset>`;
-    writeFileSync(path.join(OUT_DIR, filename), xml, 'utf-8');
+    writeFileSync(path.join(SITEMAP_DIR, filename), xml, 'utf-8');
     filenames.push(filename);
   });
   return filenames;
@@ -447,7 +451,7 @@ for (const [name, slugs] of Object.entries(buckets)) {
   allSitemapFiles.push(...files);
 }
 
-// Write sitemap index
+// Write sitemap index as sitemap.xml (committed to public/, served at /sitemap.xml)
 const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allSitemapFiles.map(f => `  <sitemap>
@@ -455,7 +459,7 @@ ${allSitemapFiles.map(f => `  <sitemap>
     <lastmod>${today}</lastmod>
   </sitemap>`).join('\n')}
 </sitemapindex>`;
-writeFileSync(path.join(OUT_DIR, 'sitemap-index.xml'), sitemapIndex, 'utf-8');
-console.log('✅ sitemap-index.xml written with', allSitemapFiles.length, 'sitemaps.');
+writeFileSync(path.join(SITEMAP_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
+console.log('✅ sitemap.xml written with', allSitemapFiles.length, 'regional sitemaps.');
 
 console.log('\n🎉 SSG complete.');
