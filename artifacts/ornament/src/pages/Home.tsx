@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { useListNiches, useListStates } from "@workspace/api-client-react";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
+import SiteFooter from "@/components/SiteFooter";
 
 const WHATSAPP_MSG = `Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
 
@@ -263,16 +264,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── FOOTER ──────────────────────────────────────────── */}
-      <footer className="border-t border-amber-900/20 bg-[#1E1E1E] py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg font-bold text-[#FFC629]">{BRAND_NAME}</span>
-          <p className="text-xs text-white/50 text-center">
-            Direct Premium Importer &amp; Trend Wholesaler Across India
-          </p>
-          <p className="text-xs text-white/30">© 2025 {BRAND_NAME}. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

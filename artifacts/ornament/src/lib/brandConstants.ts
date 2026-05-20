@@ -28,3 +28,10 @@ export const REVIEWS = [
     rating: 5,
   },
 ] as const;
+
+export const ADDRESS = 'E-134, 1st Floor, Tagore Garden Extension, New Delhi – 110027';
+export const PHONE = '+91 83684 84361';
+export const GOOGLE_MAPS_URL = 'https://share.google/iixMlvHVU6EAIkYWo';
+export const INSTAGRAM_URL = 'https://www.instagram.com/arora_group_wholesale/';
+export const YOUTUBE_URL = 'https://www.youtube.com/watch?v=2J4ztUw796I&pp=ygUVYXJvcmEgZ3JvdXAgd2hvbGVzYWxl';
+export const FACEBOOK_URL = 'https://www.facebook.com/share/r/1EjSCvh19b/';

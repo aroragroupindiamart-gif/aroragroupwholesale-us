@@ -21,7 +21,7 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { FOUNDER_VIDEO_ID, REVIEWS } from '../src/lib/brandConstants.js';
+import { FOUNDER_VIDEO_ID, REVIEWS, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL } from '../src/lib/brandConstants.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
@@ -261,10 +261,31 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       </div>
     </aside>
   </main>
-  <footer>
-    <a class="logo" href="${BASE_URL}">Arora Group Wholesale</a>
-    <p>Direct Premium Importer &amp; Trend Wholesaler Across India</p>
-    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+  <footer style="display:block;padding:2rem 1.5rem">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;margin-bottom:1.25rem">
+      <div>
+        <a class="logo" href="${BASE_URL}">${esc(BRAND_NAME)}</a>
+        <p style="margin-top:.375rem;font-size:.75rem;color:#888">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
+      </div>
+      <div>
+        <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Company</p>
+        <div style="display:flex;flex-direction:column;gap:.375rem">
+          <a href="${BASE_URL}/about" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
+          <a href="${BASE_URL}/contact" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Follow Us</p>
+        <div style="display:flex;gap:.875rem;align-items:center">
+          <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="${YOUTUBE_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="${FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #444;padding-top:.875rem">
+      <p style="color:#888;font-size:.75rem">&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+    </div>
   </footer>
 </body>
 </html>`;
@@ -380,10 +401,33 @@ function renderHomepageContent(): string {
     </div>
   </section>
 
-  <footer style="background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#888">
-    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#FFC629;text-decoration:none">${esc(BRAND_NAME)}</a>
-    <p>Direct Premium Importer &amp; Trend Wholesaler Across India</p>
-    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+  <footer style="background:#1E1E1E;border-top:1px solid #333;padding:2.5rem 1.5rem">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
+        <div>
+          <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#FFC629;text-decoration:none">${esc(BRAND_NAME)}</a>
+          <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
+        </div>
+        <div>
+          <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Company</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <a href="${BASE_URL}/about" style="color:#ffffff60;text-decoration:none;font-size:.875rem">About Us</a>
+            <a href="${BASE_URL}/contact" style="color:#ffffff60;text-decoration:none;font-size:.875rem">Contact Us</a>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Follow Us</p>
+          <div style="display:flex;gap:1rem;align-items:center">
+            <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            <a href="${YOUTUBE_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="${FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ffffff15;padding-top:1rem">
+        <p style="font-size:.75rem;color:#ffffff30;text-align:center">&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+      </div>
+    </div>
   </footer>
 </div>`;
 }

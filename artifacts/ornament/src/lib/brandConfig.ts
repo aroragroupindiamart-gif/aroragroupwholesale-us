@@ -1,4 +1,4 @@
-export { BRAND_NAME, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS } from './brandConstants';
+export { BRAND_NAME, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS, ADDRESS, PHONE, GOOGLE_MAPS_URL, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL } from './brandConstants';
 export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
 
 export const NICHE_DISPLAY: Record<string, string> = {

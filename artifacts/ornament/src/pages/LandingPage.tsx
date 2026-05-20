@@ -3,6 +3,7 @@ import { useGetPage } from "@workspace/api-client-react";
 import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
+import SiteFooter from "@/components/SiteFooter";
 
 function getWaUrl(niche: string, city: string) {
   const nd = NICHE_DISPLAY[niche] ?? niche;
@@ -433,16 +434,7 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* ─── FOOTER ──────────────────────────────────────────── */}
-      <footer className="border-t border-amber-200 bg-[#1E1E1E] py-8 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-lg font-bold text-[#FFC629]">{BRAND_NAME}</Link>
-          <p className="text-xs text-white/60 text-center">
-            Direct Premium Importer &amp; Trend Wholesaler Across India
-          </p>
-          <p className="text-xs text-white/40">© 2025 {BRAND_NAME}. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
