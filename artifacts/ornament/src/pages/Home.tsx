@@ -63,7 +63,7 @@ export default function Home() {
       <section className="bg-gradient-to-br from-amber-50 via-[#FFF8F0] to-[#FFF8F0] py-16 sm:py-24 border-b border-amber-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] mb-4 bg-[#FFC629]/20 px-3 py-1 rounded-full border border-[#FFC629]/30">
-            Direct Premium Importer · Trend Scout · Pan-India
+            Direct Importer &amp; Wholesaler · Pan-India
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1E1E1E] leading-tight mb-6">
             {BRAND_NAME}:{" "}
