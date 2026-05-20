@@ -1,0 +1,88 @@
+Product Requirement Document (PRD)Project OverviewProject Name: Project Ornament (B2B Wholesale Jewelry pSEO Engine)Environment: Replit Deployment EnvironmentMarket Target: Indian B2B Jewelry Ecosystem (Boutiques, Retail Showrooms, Instagram Resellers, and E-commerce Merchants)Core Objective: Deploy a hyper-scalable Programmatic SEO (pSEO) network of ~13,000 highly targeted, ultra-fast landing pages to capture long-tail, high-intent B2B search traffic across India and channel it directly into real-time transactional WhatsApp loops.1. Objectives & Success Metrics1.1 Business GoalsTraffic Acquisition: Establish a massive organic footprint targeting Tier 1, Tier 2, and Tier 3 Indian commercial distribution hubs.Lead Capture Optimization: Funnel high-intent B2B buyers directly into transactional communication loops via WhatsApp Business API integration or direct click-to-chat features.Monetization Architecture: Build an infrastructure capable of driving immediate revenue via three pathways: direct internal supply chain fulfillment, paid directory sponsorships for primary manufacturers in legacy jewelry hubs (e.g., Jaipur, Surat, Mumbai), or verified premium lead-generation packages.1.2 Core Performance Indicators (KPIs)Indexation Rate: Greater than 90% of all generated programmatic URLs indexed by Google Search within 45 days of initial sitemap submission.Site Velocity: Core Web Vitals score of "Good" across all programmatic landing pages, maintaining a Largest Contentful Paint (LCP) under 1.8 seconds inside the Replit hosting container.Conversion Efficiency (CTR to WhatsApp): Minimum 8.5% click-through rate from landing page views to active WhatsApp chat initializations.2. Target Market, Niche, and Keyword Matrices2.1 Target Audience ArchetypesTier 2/Tier 3 Retailers: Local brick-and-mortar boutique owners searching for modern stock (Anti-Tarnish, Korean trends) without paying premium markups to multiple regional mid-tier distributors.Social Commerce Brands: Instagram and WhatsApp group jewelry resellers seeking agile drop-shippers or small-batch manufacturers with low Minimum Order Quantities (MOQs).E-commerce Scaling Merchants: Established store operators searching for direct importing pipelines for specific niche catalogs to stabilize gross margins.2.2 Core Product NichesKorean Jewellery: High-demand minimalist, pastel, cute, and modern aesthetic ornaments popular among Gen Z and young millennial demographics.Fashion Jewellery: Broad-spectrum imitation, regional, trend-focused, and casual wear ornaments.Anti Tarnish Jewellery: Premium waterproof, everyday wear stainless steel and brass-base items treated with long-lasting protective coatings.18k Gold Plated Jewellery: High-end demi-fine lookalikes utilizing thick electroplating or gold-filled techniques over base metals.Demi Fine Jewellery: Premium affordable luxury items positioning themselves between fine precious metals and standard costume accessories.Western Jewellery: Contemporary, non-traditional statement pieces, chokers, and geometric items designed for modern attire.2.3 Structural Intent VariablesEvery niche maps out to four distinct business operation roles:wholesalersuppliermanufacturerimporter3. Data Architecture & Schema SpecificationThe relational engine is constructed using SQLite for high performance, ease of backup, and minimal configuration overhead within a Replit container.3.1 Relational Database LayoutSQL-- Table: locations
+-- Purpose: Houses the rigid geographic dataset across India
+CREATE TABLE IF NOT EXISTS locations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    city_name TEXT NOT NULL,
+    state_name TEXT NOT NULL,
+    city_slug TEXT NOT NULL UNIQUE,
+    state_slug TEXT NOT NULL,
+    region TEXT NOT NULL CHECK(region IN ('North', 'South', 'West', 'East', 'Central', 'North-East'))
+);
+
+-- Table: keywords
+-- Purpose: Holds atomic components of the high-intent B2B search phrases
+CREATE TABLE IF NOT EXISTS keywords (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    raw_phrase TEXT NOT NULL UNIQUE,
+    niche_key TEXT NOT NULL,
+    intent_type TEXT NOT NULL CHECK(intent_type IN ('wholesaler', 'supplier', 'manufacturer', 'importer'))
+);
+
+-- Table: programmatic_pages
+-- Purpose: Operational routing engine. Holds pre-computed SEO titles, headings, and data relations.
+CREATE TABLE IF NOT EXISTS programmatic_pages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    page_type TEXT NOT NULL CHECK(page_type IN ('city', 'state')),
+    slug TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    h1_heading TEXT NOT NULL,
+    niche_key TEXT NOT NULL,
+    intent_type TEXT NOT NULL,
+    target_city TEXT,
+    target_state TEXT NOT NULL,
+    region TEXT NOT NULL
+);
+
+-- Optimization Indexes for Instant Dynamic Route Matching
+CREATE INDEX IF NOT EXISTS idx_pages_slug ON programmatic_pages(slug);
+CREATE INDEX IF NOT EXISTS idx_locations_state ON locations(state_name);
+3.2 Matrix Generation Scale LogicThe dynamic application footprint uses a structural logic mapping equation to control internal density and optimize crawl budgeting allocations.$$\text{Total Programmatic Pages} = (\text{Niches} \times \text{Intents} \times \text{Cities}) + (\text{Niches} \times \text{Intents} \times \text{States})$$Substituting the current operational database inputs:$$\text{City Pages} = 6 \times 4 \times 122 = 2,928$$$$\text{State Pages} = 6 \times 4 \times 36 = 864$$$$\text{Total System Pages} = 2,928 + 864 = 3,792 \text{ core targeting landing nodes.}$$4. Technical Architecture & Tech Stack+---------------------------------------------------------------+
+|                       User / Search Engine                     |
++---------------------------------------------------------------+
+                               |
+                               v
++---------------------------------------------------------------+
+|                      Next.js Frontend (App Router)             |
+|   - Dynamic Catch-all Routes: app/[slug]/page.tsx             |
+|   - Revalidation Engine / Incremental Static Regeneration     |
++---------------------------------------------------------------+
+                               |
+                               v
++---------------------------------------------------------------+
+|                 Better-SQLite3 Database Engine                 |
+|   - In-memory/File-backed Indexed Query Architecture          |
+|   - Hosted Locally within the Replit Operational Container    |
++---------------------------------------------------------------+
+4.1 Framework SelectionFramework: Next.js (Version 14/15 utilizing App Router architecture).Data Access: better-sqlite3 for synchronous, low-latency database queries executed directly inside server components during request execution loops.Styling Framework: Tailwind CSS configured with a highly refined, premium design system.Component Compilation Strategy: Incremental Static Regeneration (ISR) with an automated revalidation period of 86,400 seconds (24 hours). This reduces computing overhead on the Replit system while ensuring data integrity.4.2 Routing Engine ConstructionCatch-all Catchment: All traffic streams hit a single dynamic file system entry point: app/[slug]/page.tsx.Slug Structuring Specifications:City Endpoint Structure: [niche-slug]-[intent-slug]-in-[city-slug]Production Example: /korean-jewellery-wholesaler-in-ludhianaState Endpoint Structure: [niche-slug]-[intent-slug]-wholesale-suppliers-in-[state-slug]Production Example: /anti-tarnish-jewellery-manufacturer-wholesale-suppliers-in-maharashtra5. UI/UX & Functional Wireframe SpecificationsThe presentation layer avoids typical automated lookups. It replicates a high-end, exclusive global B2B sourcing network using clean layout choices: rich typography, a modern minimal interface, subtle pastel accent tones (#FFF8F0, #FFC629), and sharp grid layouts.5.1 Hero Header SectionDynamic Content Formulation:Main Headline (H1): Direct {Niche Name} Jewellery {Intent Type} in {City Name}, {State Name}Sub-Headline: Premium Export-Quality Jewelry Collections. Low MOQ for {City Name} Showrooms, Boutiques, and Online Brand Startups. Source Directly from Verified Hubs.Visual Anchor Components: A minimalist product showcase gallery spotlighting sample manufacturing designs against clean neutral backgrounds to communicate premium production standards immediately.5.2 Core Call-to-Action (CTA) ComponentFunctional Mechanics: B2B commercial interactions in the Indian market rely heavily on rapid mobile communication apps over traditional emails. The page interface places an unmistakable sticky floating element: [Get Wholesale Catalog & Bulk Price List on WhatsApp].Lead Tracking Integration: Every click routes via a structured URL string packing telemetry data parameters for instant analytics processing:[https://wa.me/91XXXXXXXXXX?text=Hi,%20I'm%20sourcing%20](https://wa.me/91XXXXXXXXXX?text=Hi,%20I'm%20sourcing%20){Niche}%20jewelry%20for%20my%20business%20in%20{City}.%20Please%20share%20the%20wholesale%20catalog.5.3 Contextual Logistics & B2B Data GridA dynamic structural data matrix must clear standard buyer friction points right away. It handles details such as shipping timelines and entry conditions automatically:Logistics ParamValue Metrics / Dynamic Rule Injection LogicMinimum Order Value (MOQ)Starting from ₹5,000 for verified new commercial accounts in {State Name}Shipping & TransportDirect door-to-door secure logistics tracking via BlueDart, Delhivery, or Speed PostDelivery ETAScheduled within 3–5 working business days to any commercial hub in {City Name}Customized BrandingCustom laser-etched branding and logo stamps on white corrugated boxes available upon request5.4 Anti-Duplication Content Spinner EngineTo prevent penalties from search engines handling repetitive text templates, the programmatic system generates content blocks by combining geographic data with market-specific alternative text fields:"Are you operating a growing retail fashion venture or an online boutique store inside {City Name}? Navigating unorganized wholesale markets like Mumbai's Crawford Market or Delhi's Sadar Bazar can be incredibly draining on your profit margins. By utilizing our direct platform pipeline, {City Name} business owners can secure high-grade {Niche Name} supplies straight from specialized production lines with full quality guarantees."6. Search Engine Optimization & Crawl Management6.1 Dynamic Sitemap Partitioning StrategySearch engines enforce a standard limit of 50,000 URLs per individual sitemap file. However, to optimize how crawl budgets are allocated and accelerate indexation speeds across new domains, this architecture chunks URLs into modular files via app/sitemaps/[id]/route.ts.                  +-------------------------+
+                  |    sitemap-index.xml    |
+                  +-------------------------+
+                               |
+          +--------------------+--------------------+
+          |                                         |
+          v                                         v
++--------------------+                    +--------------------+
+| sitemap-north.xml  |                    | sitemap-south.xml  |
+| (Delhi, Punjab, UP)|                    | (TN, Karnataka, AP)|
++--------------------+                    +--------------------+
+Regional Partitions: Sitemaps are categorized by geographical direction (e.g., sitemap-north.xml, sitemap-south.xml, sitemap-west.xml, sitemap-east-central.xml).Size Constraint: Each file is capped at a maximum of 1,000 links to ensure fast processing times when search engine bots crawl the site.6.2 Internal Linking Lattice NetworkEvery programmatic page must avoid isolated routing paths. The engine dynamically queries the SQLite table during page assembly to construct two distinct structural navigation layers at the base of the layout:Intra-State Network Grid: The lower layout quadrant dynamically loops over and links to five neighboring commercial cities located within the same state.Example (on the Ludhiana page): Displays deep links to Amritsar, Jalandhar, Patiala, Bathinda, and Mohali.Cross-Intent Anchor Pairs: Every city page cross-links directly with its equivalent state-level category directory page to ensure clean anchor text distribution.Example: A page targeting a city links directly to its main state hub directory: /korean-jewellery-supplier-wholesale-suppliers-in-punjab.7. Operational Workflow & Deployment Matrix7.1 Setup and Initialization Routine+---------------------------------------+
+|  1. Provision Replit Workspace Node   |
++---------------------------------------+
+                    |
+                    v
++---------------------------------------+
+|  2. Initialize Project Schema Database|
+|     (Execute schema.sql via SQLite3)  |
++---------------------------------------+
+                    |
+                    v
++---------------------------------------+
+|  3. Run Seeding Script Engine         |
+|     (node seed.js -> ~3,792 nodes)    |
++---------------------------------------+
+                    |
+                    v
++---------------------------------------+
+|  4. Run Framework Development Server  |
+|     (npm run dev -> Local Validation) |
++---------------------------------------+
+7.2 Safety Parameters & System BoundariesVerification Constraints: All text processing operations must convert geographic terms and punctuation accurately into clean URL slugs. The system automatically replaces space characters with single hyphens (-) and strips out non-alphanumeric symbols to maintain pristine URL paths.Content Integrity Rules: Data insertion functions use strict database validation constraints (INSERT OR IGNORE) to stop duplicate layout URLs from rendering. This protects the site from internal architecture errors and ensures clean, bug-free routing across the network.8. Development Action PlanTo move this project forward smoothly, execute the implementation process across these clear development steps:Database Assembly: Run the database schema statements directly in your Replit SQL workspace to establish your core database infrastructure.Execute Seeding Script: Run the automated processing script to map your selected jewelry categories to every targeted tier city and state market across India.Build Core Interface Layout: Assemble the primary dynamic route template file within your project setup, integrating responsive grid layouts and direct conversion-focused buttons.Deploy Sitemap Arrays: Connect the regional site layout indexing configuration lines inside the developer console platform to initiate immediate organic crawling across the network.
