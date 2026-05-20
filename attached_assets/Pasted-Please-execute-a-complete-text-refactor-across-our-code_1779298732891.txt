@@ -1,0 +1,36 @@
+Please execute a complete text refactor across our codebase, specifically updating our four-card trust grid component, our top alert banners, and our sidebar data specification values. We need to realign our brand positioning from a "domestic manufacturer" to a "Direct Premium Importer & Trend Scout" and update our minimum transaction rules.
+
+---
+
+## 1. TRANSACTIONAL RULE CHANGES (ALL TEMPLATES)
+- Change all mentions of minimum order limits from "MOV ₹5,000" to exactly: "Minimum Order Value: ₹3,000"
+- Explicitly emphasize throughout the copy: "No item-level MOQ (Minimum Order Quantity) limits — Mix and match any designs freely."
+
+---
+
+## 2. INFRASTRUCTURE BADGE GRID REWRITE (`app/[state]/[place]/[service]/page.tsx`)
+Completely overwrite the four feature cards with the following text:
+
+- **Card 1 Title:** "Direct Global Importing"
+  - **Card 1 Body:** "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian boutique owners."
+  - **Icon Concept:** Keep or update to a cargo box/globe asset if available.
+
+- **Card 2 Title:** "100% Tarnish-Free Guarantee"
+  - **Card 2 Body:** "Engineered for heavy daily wear. Our premium anti-tarnish lines feature highly resilient, completely waterproof protective layers that will not fade, turn green, or oxidize."
+  - **Icon Concept:** Keep or change to a water drop/shield asset.
+
+- **Card 3 Title:** "Pinterest & Reel Trending"
+  - **Card 3 Body:** "Curated for rapid retail sales velocity. We instantly scout and source hyper-viral social media jewelry aesthetics, helping your store capture hot consumer trends before they fade."
+  - **Icon Concept:** Star or trend-up chart asset.
+
+- **Card 4 Title:** "Flexible Small-Batch Sourcing"
+  - **Card 4 Body:** "Zero item-level MOQ restrictions. Easily scale your boutique inventory by mixing and matching any assortment of rings, anklets, or necklaces with an accessible Minimum Order Value (MOV) of just ₹3,000."
+  - **Icon Concept:** Shopping cart, gift box, or flexible puzzle piece asset.
+
+---
+
+## 3. SEO COPY & TEXT COMPONENT ALIGNMENT
+- Replace occurrences of the word "Manufacturer" in our spun H1 formulas and paragraphs to read: "Direct Importer & Trend Wholesaler" (e.g., "Arora Group Wholesale — Direct Anti Tarnish Jewellery Importer in Delhi").
+- Ensure all paragraph text matches our new position: importing premium, waterproof, daily wear, aesthetic accessories with a low ₹3,000 threshold.
+
+Update the components now and ensure the code compiles without breaking our Tailwind CSS layout structures.

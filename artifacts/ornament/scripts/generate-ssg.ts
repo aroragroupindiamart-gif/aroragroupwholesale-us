@@ -119,7 +119,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const waUrl = waLink(page.niche_key, page.intent_type, location);
   const canonicalUrl = `${BASE_URL}/${page.slug}`;
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
-  const metaDesc = `${BRAND_NAME} — Direct ${nd} ${ip} serving ${esc(location)}. Factory-to-retail wholesale supply with certified purity standards, insured logistics, and MOV ₹5,000.`;
+  const metaDesc = `${BRAND_NAME} — Direct ${nd} ${ip} serving ${esc(location)}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`;
 
   const relatedCityLinks = page.related_city_pages.map(r =>
     `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
@@ -181,7 +181,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     .info-row span:first-child{color:#666}
     .info-row span:last-child{font-weight:600}
   </style>
-  <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹5,000 per invoice."}}]}]})}</script>
+  <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹3,000 per invoice, with no item-level MOQ — mix and match any designs freely."}}]}]})}</script>
 </head>
 <body>
   <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}</div>
@@ -197,14 +197,14 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   </nav>
   <main>
     <div class="content-body">
-      <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Factory Supply</span>
+      <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Premium Importer</span>
       <h1>${esc(page.h1_heading)}</h1>
-      <p class="lead">${esc(BRAND_NAME)} is the direct manufacturer, importer, and master supply partner for <strong>${esc(nd)}</strong> serving retailers and traders in <strong>${esc(location)}</strong>. Skip the middlemen — source factory-direct with certified purity, insured freight, and scalable custom design manufacturing.</p>
+      <p class="lead">${esc(BRAND_NAME)} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for <strong>${esc(nd)}</strong> serving boutique owners and retailers in <strong>${esc(location)}</strong>. Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.</p>
       <div class="trust-badges">
-        <div class="trust-badge">🏭 Direct Factory Pricing (No Middlemen)</div>
-        <div class="trust-badge">✈️ Fully Insured Air Freight to ${esc(location)}</div>
-        <div class="trust-badge">🛡️ Certified Metallic &amp; Anti-Tarnish Purity Standards</div>
-        <div class="trust-badge">🎨 Scalable Custom Design Manufacturing</div>
+        <div class="trust-badge">🌐 Direct Global Importing (No Middlemen)</div>
+        <div class="trust-badge">💧 100% Tarnish-Free Guarantee</div>
+        <div class="trust-badge">📈 Pinterest &amp; Reel Trending</div>
+        <div class="trust-badge">🛒 Flexible Small-Batch Sourcing — MOV ₹3,000</div>
       </div>
       <div class="cta-box">
         <h2>Inquire About ${esc(nd)} — Direct from Our Factory to ${esc(location)}</h2>
@@ -213,20 +213,20 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       </div>
       <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Boutiques — Designs That Sell Out Fast</h2>
       <p><strong>${esc(BRAND_NAME)}</strong> is the direct manufacturer and importer supplying ${esc(location)}'s most forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry trends before they fade.</p>
-      <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design <strong>customisation, and co-branding options</strong> for established wholesale accounts across ${esc(page.target_state)} — all at factory-direct pricing with zero distributor markup.</p>
+      <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
-      <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates on a factory-direct B2B model with a minimum order value of ₹5,000. Orders are processed against GST-registered business invoices. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
+      <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
       <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
       <details><summary>Can ${esc(BRAND_NAME)} handle custom wholesale design processing?</summary><p>Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days.</p></details>
       <details><summary>How does ${esc(BRAND_NAME)} handle logistics and insurance to ${esc(location)}?</summary><p>All shipments to ${esc(location)} are dispatched via <strong>fully insured transit insurance</strong> air freight or tracked surface courier. Packages include transit insurance up to invoice value, dispatched via <strong>BlueDart, Delhivery, and Ecom Express</strong>. Standard delivery timelines are <strong>3–7 working days</strong> from dispatch. All orders include a <strong>GST-compliant B2B invoice</strong>.</p></details>
-      <details><summary>What is the minimum order value and how do I place an inquiry?</summary><p>The minimum order value (MOV) is ₹5,000 per invoice. WhatsApp us your business name, GST number, required category, and quantity. Our B2B executive will respond within 4 business hours with a catalogue and price list.</p></details>
+      <details><summary>What is the minimum order value and how do I place an inquiry?</summary><p>The Minimum Order Value (MOV) is just ₹3,000 per invoice — with zero item-level MOQ, freely mix and match rings, anklets, necklaces, or any category. WhatsApp us your business name, GST number, required category, and quantity. Our team will respond within 4 business hours with a catalogue and price list.</p></details>
       ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
       <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
     </div>
     <aside>
       <div class="cta-card">
         <h3>${esc(nd)} — ${esc(location)}</h3>
-        <p>Direct factory supply. MOV ₹5,000. GST invoice included.</p>
+        <p>Direct premium import supply. MOV ₹3,000. No item MOQ. GST invoice included.</p>
         <a href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Arora Group</a>
       </div>
       <div class="info-card">
@@ -235,13 +235,13 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <div class="info-row"><span>Role</span><span>${esc(page.intent_type)}</span></div>
         <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
         <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
-        <div class="info-row"><span>MOV</span><span>₹5,000</span></div>
+        <div class="info-row"><span>MOV</span><span>₹3,000</span></div>
       </div>
     </aside>
   </main>
   <footer>
     <a class="logo" href="${BASE_URL}">Arora Group Wholesale</a>
-    <p>Direct Factory-to-Retail Jewellery Supply Across India</p>
+    <p>Direct Premium Importer &amp; Trend Wholesaler Across India</p>
     <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
   </footer>
 </body>
@@ -280,7 +280,7 @@ function renderHomepageContent(): string {
   }).join('\n');
 
   return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
-  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — MOV ₹5,000</div>
+  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000</div>
   <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
     <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E;text-decoration:none"><span style="color:#FFC629">Arora</span> Group Wholesale</a>
     <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
@@ -300,14 +300,14 @@ function renderHomepageContent(): string {
         <span>&#x2713; <strong style="color:#1E1E1E">122</strong> cities</span>
         <span>&#x2713; <strong style="color:#1E1E1E">36</strong> states &amp; UTs</span>
         <span>&#x2713; <strong style="color:#1E1E1E">6</strong> product lines</span>
-        <span>&#x2713; MOV <strong style="color:#1E1E1E">₹5,000</strong></span>
+        <span>&#x2713; MOV <strong style="color:#1E1E1E">₹3,000</strong></span>
       </div>
     </div>
   </section>
 
   <section id="product-lines" style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
     <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">Our 6 Specialised Product Lines</h2>
-    <p style="text-align:center;color:#666;margin-bottom:2rem">Each line manufactured in-house — available for direct wholesale across India</p>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">Globally imported, trend-scouted collections — available for direct wholesale across India</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem">
       ${nicheCards}
     </div>
@@ -320,14 +320,14 @@ function renderHomepageContent(): string {
   <section style="background:#1E1E1E;color:#fff;padding:4rem 1.5rem;text-align:center">
     <div style="max-width:600px;margin:0 auto">
       <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Source Direct from <span style="color:#FFC629">${esc(BRAND_NAME)}</span>?</h2>
-      <p style="opacity:.7;margin-bottom:2rem">MOV ₹5,000 · GST Invoice · Insured Freight · Purity Certified</p>
+      <p style="opacity:.7;margin-bottom:2rem">Minimum Order Value: ₹3,000 · No Item MOQ · GST Invoice · Insured Freight · Purity Certified</p>
       <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:1rem 2rem;font-size:1.0625rem;text-decoration:none">${WA_ICON} WhatsApp Arora Group</a>
     </div>
   </section>
 
   <footer style="background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#888">
     <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#FFC629;text-decoration:none">${esc(BRAND_NAME)}</a>
-    <p>Direct Factory-to-Retail Jewellery Supply Across India</p>
+    <p>Direct Premium Importer &amp; Trend Wholesaler Across India</p>
     <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
   </footer>
 </div>`;

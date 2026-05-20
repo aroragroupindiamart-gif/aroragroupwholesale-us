@@ -1,6 +1,6 @@
 import { useParams, Link } from "wouter";
 import { useGetPage } from "@workspace/api-client-react";
-import { ArrowLeft, MapPin, Factory, Truck, ShieldCheck, Layers } from "lucide-react";
+import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL } from "@/lib/brandConfig";
 
@@ -35,7 +35,7 @@ const FAQS = (niche: string, city: string) => {
   return [
     {
       q: `What are the corporate purchasing terms for ${nd} from ${BRAND_NAME}?`,
-      a: `${BRAND_NAME} operates on a factory-direct B2B model. Orders are processed against GST-registered business invoices with a minimum order value of ₹5,000. Payment terms include advance, 50/50, or credit terms for established wholesale accounts. All bulk orders include a formal purchase order acknowledgement and quality inspection certificate.`,
+      a: `${BRAND_NAME} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.`,
     },
     {
       q: `What metal purity certifications does ${BRAND_NAME} provide for ${nd}?`,
@@ -51,7 +51,7 @@ const FAQS = (niche: string, city: string) => {
     },
     {
       q: `What is the minimum order value and how do I place a wholesale inquiry?`,
-      a: `The minimum order value (MOV) for ${BRAND_NAME} wholesale supply is ₹5,000 per invoice. To place an inquiry, WhatsApp us your business name, GST number, required ${nd} category, and approximate quantity. Our B2B executive will respond with a catalogue, price list, and sample availability within 4 business hours.`,
+      a: `The Minimum Order Value (MOV) for ${BRAND_NAME} wholesale supply is just ₹3,000 per invoice — with zero item-level MOQ, freely mix and match rings, anklets, necklaces, or any category. To place an inquiry, WhatsApp us your business name, GST number, required ${nd} category, and approximate quantity. Our team will respond within 4 business hours.`,
     },
   ];
 };
@@ -171,7 +171,7 @@ export default function LandingPage() {
             <div className="mb-6">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] bg-[#FFC629]/20 px-3 py-1 rounded-full mb-4">
                 <MapPin className="w-3 h-3" />
-                {page.region} India · Direct Factory Supply
+                {page.region} India · Direct Premium Importer
               </span>
               <h1
                 className="font-serif text-3xl sm:text-4xl font-bold text-[#1E1E1E] leading-tight mb-3"
@@ -180,9 +180,9 @@ export default function LandingPage() {
                 {page.h1_heading}
               </h1>
               <p className="text-[#1E1E1E]/70 text-base leading-relaxed">
-                {BRAND_NAME} is the direct manufacturer, importer, and master supply partner for{" "}
-                <strong>{nd}</strong> serving retailers and traders in <strong>{locationLabel}</strong>.
-                Skip the middlemen — source factory-direct with certified purity, insured freight, and scalable custom design manufacturing.
+                {BRAND_NAME} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for{" "}
+                <strong>{nd}</strong> serving boutique owners and retailers in <strong>{locationLabel}</strong>.
+                Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.
               </p>
             </div>
 
@@ -206,19 +206,22 @@ export default function LandingPage() {
               </a>
             </div>
 
-            {/* (c) 4 B2B Trust Badges */}
+            {/* (c) 4 B2B Trust Cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: Factory, label: "Direct Factory Pricing (No Middlemen)" },
-                { icon: Truck, label: `Fully Insured Air Freight to ${locationLabel}` },
-                { icon: ShieldCheck, label: "Certified Metallic & Anti-Tarnish Purity Standards" },
-                { icon: Layers, label: "Scalable Custom Design Manufacturing" },
-              ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-start gap-3 bg-white border border-amber-200 rounded-xl p-4 shadow-sm">
-                  <div className="w-9 h-9 rounded-full bg-[#FFC629]/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4.5 h-4.5 text-[#1E1E1E]" />
+                { icon: Globe, title: "Direct Global Importing", body: "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian boutique owners." },
+                { icon: Droplets, title: "100% Tarnish-Free Guarantee", body: "Engineered for heavy daily wear. Our premium anti-tarnish lines feature highly resilient, completely waterproof protective layers that will not fade, turn green, or oxidize." },
+                { icon: TrendingUp, title: "Pinterest & Reel Trending", body: "Curated for rapid retail sales velocity. We instantly scout and source hyper-viral social media jewelry aesthetics, helping your store capture hot consumer trends before they fade." },
+                { icon: ShoppingCart, title: "Flexible Small-Batch Sourcing", body: `Zero item-level MOQ restrictions. Mix and match any assortment of rings, anklets, or necklaces with an accessible MOV of just ₹3,000.` },
+              ].map(({ icon: Icon, title, body }) => (
+                <div key={title} className="flex flex-col gap-2 bg-white border border-amber-200 rounded-xl p-4 shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-[#FFC629]/20 flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-[#1E1E1E]" />
+                    </div>
+                    <span className="text-xs font-bold text-[#1E1E1E] leading-snug">{title}</span>
                   </div>
-                  <span className="text-xs font-semibold text-[#1E1E1E] leading-snug">{label}</span>
+                  <p className="text-xs text-[#1E1E1E]/60 leading-relaxed">{body}</p>
                 </div>
               ))}
             </div>
@@ -239,9 +242,9 @@ export default function LandingPage() {
                 <p>
                   We update our {nd} catalogue rapidly so your shelves stay stocked with fresh, highly shareable
                   items your customers are already searching for. <strong>{BRAND_NAME}</strong> offers{" "}
-                  <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable{" "}
-                  <strong>customisation, and co-branding options</strong> for established wholesale accounts across
-                  {" "}{page.target_state} — all at factory-direct pricing with zero distributor markup.
+                  <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match{" "}
+                  any designs freely. Scalable <strong>customisation and co-branding options</strong> available for
+                  established wholesale accounts across {page.target_state}.
                 </p>
               </div>
             </section>
@@ -345,7 +348,7 @@ export default function LandingPage() {
                 {nd} — {locationLabel}
               </h3>
               <p className="text-sm text-white/70 mb-4">
-                Direct factory supply. MOV ₹5,000. GST invoice included.
+                Direct premium import supply. MOV ₹3,000. No item MOQ. GST invoice included.
               </p>
               <a
                 href={waUrl}
@@ -381,7 +384,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#1E1E1E]/60">MOV</span>
-                  <span className="font-bold text-[#1E1E1E]">₹5,000</span>
+                  <span className="font-bold text-[#1E1E1E]">₹3,000</span>
                 </div>
               </div>
             </div>
@@ -395,7 +398,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link href="/" className="font-serif text-lg font-bold text-[#FFC629]">{BRAND_NAME}</Link>
           <p className="text-xs text-white/60 text-center">
-            Direct Factory-to-Retail Jewellery Supply Across India
+            Direct Premium Importer &amp; Trend Wholesaler Across India
           </p>
           <p className="text-xs text-white/40">© 2025 {BRAND_NAME}. All rights reserved.</p>
         </div>

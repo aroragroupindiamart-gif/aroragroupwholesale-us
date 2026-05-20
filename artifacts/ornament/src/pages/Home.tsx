@@ -44,7 +44,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">
       {/* ─── TOP BANNER ──────────────────────────────────────── */}
       <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs sm:text-sm font-semibold py-2.5 px-4">
-        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — MOV ₹5,000
+        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000
       </div>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -88,7 +88,7 @@ export default function Home() {
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">122</strong> cities</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">36</strong> states &amp; UTs</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">6</strong> product lines</span>
-            <span className="flex items-center gap-1.5">✓ MOV <strong className="text-[#1E1E1E]">₹5,000</strong></span>
+            <span className="flex items-center gap-1.5">✓ MOV <strong className="text-[#1E1E1E]">₹3,000</strong></span>
           </div>
         </div>
       </section>
@@ -188,10 +188,10 @@ export default function Home() {
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
           {[
-            { icon: "🏭", title: "Direct Factory Pricing", desc: "No middlemen. Every piece manufactured in-house with zero distributor markup for B2B buyers." },
-            { icon: "✈️", title: "Fully Insured Air Freight", desc: "All orders dispatched with transit insurance up to invoice value across every Indian state." },
-            { icon: "🛡️", title: "Certified Purity Standards", desc: "Batch-level metallic and anti-tarnish purity certificates issued with every wholesale order." },
-            { icon: "🎨", title: "Custom Design Manufacturing", desc: "OEM and custom design runs from 50 pieces per SKU. 15–25 day design-to-delivery lead time." },
+            { icon: "🌐", title: "Direct Global Importing", desc: "No trading middlemen or agent markups. We source directly from international jewelry hubs at true factory-floor pricing." },
+            { icon: "💧", title: "100% Tarnish-Free Guarantee", desc: "Engineered for heavy daily wear. Completely waterproof protective layers that will not fade, turn green, or oxidize." },
+            { icon: "📈", title: "Pinterest & Reel Trending", desc: "We scout and source hyper-viral social media jewelry aesthetics so your store captures hot consumer trends before they fade." },
+            { icon: "🛒", title: "Flexible Small-Batch Sourcing", desc: "Zero item-level MOQ. Mix and match any assortment of rings, anklets, or necklaces. MOV just ₹3,000." },
           ].map((item) => (
             <div key={item.title} className="bg-white border border-amber-200 rounded-xl p-6 shadow-sm">
               <div className="text-3xl mb-3">{item.icon}</div>
@@ -209,7 +209,7 @@ export default function Home() {
             Ready to Source Direct from <span className="text-[#FFC629]">{BRAND_NAME}</span>?
           </h2>
           <p className="text-white/60 mb-6">
-            MOV ₹5,000 · GST Invoice · Insured Freight · Purity Certified
+            Minimum Order Value: ₹3,000 · No Item MOQ · GST Invoice · Insured Freight · Purity Certified
           </p>
           <WhatsAppButton className="text-base px-10 py-4 text-lg" />
         </div>
@@ -220,7 +220,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="font-serif text-lg font-bold text-[#FFC629]">{BRAND_NAME}</span>
           <p className="text-xs text-white/50 text-center">
-            Direct Factory-to-Retail Jewellery Supply Across India
+            Direct Premium Importer &amp; Trend Wholesaler Across India
           </p>
           <p className="text-xs text-white/30">© 2025 {BRAND_NAME}. All rights reserved.</p>
         </div>
