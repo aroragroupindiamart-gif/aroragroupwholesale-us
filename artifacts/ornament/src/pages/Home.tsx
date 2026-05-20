@@ -93,6 +93,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── FOUNDER VIDEO ───────────────────────────────────── */}
+      <section className="py-16 bg-white border-t border-amber-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] mb-2">
+            Meet the Founder — See the Collection Live
+          </h2>
+          <p className="text-[#1E1E1E]/60 mb-6 text-sm max-w-xl mx-auto">
+            Watch {BRAND_NAME}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.
+          </p>
+          <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
+              title={`${BRAND_NAME} — Founder Product Showcase`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* ─── PRODUCT LINES ───────────────────────────────────── */}
       <section id="product-lines" className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] text-center mb-2">
@@ -143,28 +165,6 @@ export default function Home() {
               {intent.label}s
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* ─── FOUNDER VIDEO ───────────────────────────────────── */}
-      <section className="py-16 bg-white border-t border-amber-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] mb-2">
-            Meet the Founder — See the Collection Live
-          </h2>
-          <p className="text-[#1E1E1E]/60 mb-6 text-sm max-w-xl mx-auto">
-            Watch {BRAND_NAME}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.
-          </p>
-          <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
-              title={`${BRAND_NAME} — Founder Product Showcase`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
         </div>
       </section>
 

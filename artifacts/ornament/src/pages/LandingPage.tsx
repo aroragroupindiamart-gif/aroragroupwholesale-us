@@ -186,7 +186,27 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* (b) Sticky WhatsApp CTA */}
+            {/* (b) Founder Video */}
+            <section className="mb-8">
+              <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-2">
+                See the Collection — Watch the Founder Showcase
+              </h2>
+              <p className="text-sm text-[#1E1E1E]/60 mb-3">
+                {BRAND_NAME}'s founder walks through the full {nd} range available for wholesale to {locationLabel} boutiques.
+              </p>
+              <div className="relative w-full rounded-xl overflow-hidden shadow-md" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
+                  title={`${BRAND_NAME} — ${nd} Founder Showcase`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+            </section>
+
+            {/* (c) Sticky WhatsApp CTA */}
             <div className="bg-[#FFC629]/10 border border-[#FFC629] rounded-2xl p-6 mb-8">
               <h2 className="font-semibold text-[#1E1E1E] mb-1 text-lg">
                 Inquire About {nd} — Direct from Our Factory to {locationLabel}
@@ -206,7 +226,7 @@ export default function LandingPage() {
               </a>
             </div>
 
-            {/* (c) 4 B2B Trust Cards */}
+            {/* (d) 4 B2B Trust Cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { icon: Globe, title: "Direct Global Importing", body: "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian boutique owners." },
@@ -226,7 +246,7 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* (d) Manufacturing paragraph */}
+            {/* (e) Manufacturing paragraph */}
             <section className="mb-6">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-3">
                 Trend-Dominant {nd} for {locationLabel} Boutiques — Designs That Sell Out Fast
@@ -249,7 +269,7 @@ export default function LandingPage() {
               </div>
             </section>
 
-            {/* (e) Logistics paragraph */}
+            {/* (f) Logistics paragraph */}
             <section className="mb-8">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-3">
                 Insured B2B Logistics from {BRAND_NAME} to {locationLabel}
@@ -268,26 +288,6 @@ export default function LandingPage() {
                   <strong>{BRAND_NAME}</strong>. Returns and replacements are handled within 7 days for manufacturing defects on
                   all certified {nd} lines.
                 </p>
-              </div>
-            </section>
-
-            {/* (f) Founder Video */}
-            <section className="mb-8">
-              <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-2">
-                See the Collection — Watch the Founder Showcase
-              </h2>
-              <p className="text-sm text-[#1E1E1E]/60 mb-3">
-                {BRAND_NAME}'s founder walks through the full {nd} range available for wholesale to {locationLabel} boutiques.
-              </p>
-              <div className="relative w-full rounded-xl overflow-hidden shadow-md" style={{ paddingBottom: "56.25%" }}>
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
-                  title={`${BRAND_NAME} — ${nd} Founder Showcase`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  loading="lazy"
-                />
               </div>
             </section>
 
