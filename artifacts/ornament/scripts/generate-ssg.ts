@@ -92,7 +92,7 @@ function esc(s: string): string {
 
 function waLink(niche: string, _intent: string, location: string): string {
   const nd = NICHE_DESC[niche] ?? niche;
-  const msg = `Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending ${nd} for my store in ${location}.`;
+  const msg = `Hi Arora Group Wholesale, I am a business owner. Send me your latest catalog of trending ${nd} for my store in ${location}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -219,9 +219,9 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     <div class="content-body">
       <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Premium Importer</span>
       <h1>${esc(page.h1_heading)}</h1>
-      <p class="lead">${esc(BRAND_NAME)} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for <strong>${esc(nd)}</strong> serving boutique owners and retailers in <strong>${esc(location)}</strong>. Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.</p>
+      <p class="lead">${esc(BRAND_NAME)} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for <strong>${esc(nd)}</strong> serving business owners and retailers in <strong>${esc(location)}</strong>. Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.</p>
       <h2 class="section-h">See the Collection — Watch the Founder Showcase</h2>
-      <p style="font-size:.875rem;color:#666;margin-bottom:.875rem">${esc(BRAND_NAME)}'s founder walks through the full ${esc(nd)} range available for wholesale to ${esc(location)} boutiques.</p>
+      <p style="font-size:.875rem;color:#666;margin-bottom:.875rem">${esc(BRAND_NAME)}'s founder walks through the full ${esc(nd)} range available for wholesale to ${esc(location)} retailers.</p>
       <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);margin-bottom:2rem">
         <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — ${esc(nd)} Founder Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
       </div>
@@ -237,8 +237,8 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <p>WhatsApp us your business requirements — get MOV, purity certificate, and a custom catalogue within 4 hours.</p>
         <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp ${esc(BRAND_NAME)}</a>
       </div>
-      <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Boutiques — Designs That Sell Out Fast</h2>
-      <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer and trend scout supplying ${esc(location)}'s most forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry trends before they fade.</p>
+      <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Retailers — Designs That Sell Out Fast</h2>
+      <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer and trend scout supplying ${esc(location)}'s most forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping business owners cash in on fast-moving social media jewelry trends before they fade.</p>
       <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
@@ -306,7 +306,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 function renderHomepageContent(): string {
   const niches = getAllNiches();
   const states = getAllStates();
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending jewelry for my store.")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a business owner. Send me your latest catalog of trending jewelry for my store.")}`;
 
   const nicheCards = niches.map(n => {
     const href = `${BASE_URL}/${n.niche_key}-wholesaler-new-delhi`;
@@ -369,7 +369,7 @@ function renderHomepageContent(): string {
 
   <section style="max-width:900px;margin:0 auto;padding:3rem 1.5rem;text-align:center">
     <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:.5rem;color:#1E1E1E">Meet the Founder — See the Collection Live</h2>
-    <p style="color:#666;margin-bottom:1.5rem;font-size:.9375rem">Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.</p>
+    <p style="color:#666;margin-bottom:1.5rem;font-size:.9375rem">Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your business.</p>
     <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12)">
       <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — Founder Product Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
     </div>
@@ -383,7 +383,7 @@ function renderHomepageContent(): string {
           <span style="font-family:Georgia,serif;font-size:1.375rem;font-weight:700;color:#1E1E1E">5.0</span>
         </div>
         <p style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">10 Google Reviews &middot; Verified Retailers</p>
-        <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1E1E1E">What Boutique Owners Say</h2>
+        <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1E1E1E">What Business Owners Say</h2>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
         ${reviewsGridHtml}

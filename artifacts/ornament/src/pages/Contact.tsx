@@ -9,7 +9,7 @@ const WA_ICON = (
 );
 
 export default function Contact() {
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a boutique owner interested in your wholesale supply.")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a business owner interested in your wholesale supply.")}`;
 
   return (
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">

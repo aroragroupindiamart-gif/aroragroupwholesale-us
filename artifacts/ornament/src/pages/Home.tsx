@@ -101,7 +101,7 @@ export default function Home() {
             Meet the Founder — See the Collection Live
           </h2>
           <p className="text-[#1E1E1E]/60 mb-6 text-sm max-w-xl mx-auto">
-            Watch {BRAND_NAME}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.
+            Watch {BRAND_NAME}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your business.
           </p>
           <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
             <iframe
@@ -125,7 +125,7 @@ export default function Home() {
               <span className="font-serif text-2xl font-bold text-[#1E1E1E]">5.0</span>
             </div>
             <p className="text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-2">10 Google Reviews · Verified Retailers</p>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E1E1E]">What Boutique Owners Say</h2>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E1E1E]">What Business Owners Say</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {REVIEWS.map((r) => (

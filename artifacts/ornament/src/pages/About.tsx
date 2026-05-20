@@ -3,7 +3,7 @@ import { BRAND_NAME, WHATSAPP_NUMBER } from "@/lib/brandConfig";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function About() {
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a boutique owner interested in your wholesale supply.")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a business owner interested in your wholesale supply.")}`;
 
   return (
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">
@@ -43,7 +43,7 @@ export default function About() {
         <div className="bg-white border border-amber-200 rounded-2xl p-8 shadow-sm mb-8">
           <p className="text-lg text-[#1E1E1E]/80 leading-relaxed">
             Five years ago, from a tiny room in Delhi, Mayank began Arora Group Wholesale with one
-            stubborn belief: Indian boutique owners deserve the same trending jewelry their customers
+            stubborn belief: Indian business owners deserve the same trending jewelry their customers
             already love online — without the middlemen markups. He would wake before dawn, scouring
             global markets for designs going viral on Instagram and Pinterest. Today, we supply
             retailers across all 36 Indian states. The room got bigger. The team grew. But the same

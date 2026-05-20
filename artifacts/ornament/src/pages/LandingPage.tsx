@@ -7,7 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 function getWaUrl(niche: string, city: string) {
   const nd = NICHE_DISPLAY[niche] ?? niche;
-  const msg = `Hi Arora Group Wholesale, I am a boutique owner. Send me your latest catalog of trending ${nd} for my store in ${city}.`;
+  const msg = `Hi Arora Group Wholesale, I am a business owner. Send me your latest catalog of trending ${nd} for my store in ${city}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -191,7 +191,7 @@ export default function LandingPage() {
               </h1>
               <p className="text-[#1E1E1E]/70 text-base leading-relaxed">
                 {BRAND_NAME} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for{" "}
-                <strong>{nd}</strong> serving boutique owners and retailers in <strong>{locationLabel}</strong>.
+                <strong>{nd}</strong> serving business owners and retailers in <strong>{locationLabel}</strong>.
                 Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.
               </p>
             </div>
@@ -202,7 +202,7 @@ export default function LandingPage() {
                 See the Collection — Watch the Founder Showcase
               </h2>
               <p className="text-sm text-[#1E1E1E]/60 mb-3">
-                {BRAND_NAME}'s founder walks through the full {nd} range available for wholesale to {locationLabel} boutiques.
+                {BRAND_NAME}'s founder walks through the full {nd} range available for wholesale to {locationLabel} retailers.
               </p>
               <div className="relative w-full rounded-xl overflow-hidden shadow-md" style={{ paddingBottom: "56.25%" }}>
                 <iframe
@@ -259,7 +259,7 @@ export default function LandingPage() {
             {/* (d) 4 B2B Trust Cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: Globe, title: "Direct Global Importing", body: "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian boutique owners." },
+                { icon: Globe, title: "Direct Global Importing", body: "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian business owners." },
                 { icon: Droplets, title: "100% Tarnish-Free Guarantee", body: "Engineered for heavy daily wear. Our premium anti-tarnish lines feature highly resilient, completely waterproof protective layers that will not fade, turn green, or oxidize." },
                 { icon: TrendingUp, title: "Pinterest & Reel Trending", body: "Curated for rapid retail sales velocity. We instantly scout and source hyper-viral social media jewelry aesthetics, helping your store capture hot consumer trends before they fade." },
                 { icon: ShoppingCart, title: "Flexible Small-Batch Sourcing", body: `Zero item-level MOQ restrictions. Mix and match any assortment of rings, anklets, or necklaces with an accessible MOV of just ₹3,000.` },
@@ -279,14 +279,14 @@ export default function LandingPage() {
             {/* (e) Manufacturing paragraph */}
             <section className="mb-6">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-3">
-                Trend-Dominant {nd} for {locationLabel} Boutiques — Designs That Sell Out Fast
+                Trend-Dominant {nd} for {locationLabel} Retailers — Designs That Sell Out Fast
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
                 <p>
                   <strong>{BRAND_NAME}</strong> is the direct manufacturer and importer supplying {locationLabel}'s most
-                  forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and
+                  forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and
                   waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for
-                  maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry
+                  maximum retail turnover — helping business owners cash in on fast-moving social media jewelry
                   trends before they fade.
                 </p>
                 <p>
