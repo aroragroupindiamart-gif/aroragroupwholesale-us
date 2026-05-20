@@ -2,7 +2,7 @@ import { useParams, Link } from "wouter";
 import { useGetPage } from "@workspace/api-client-react";
 import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
 import NotFound from "@/pages/not-found";
-import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL } from "@/lib/brandConfig";
+import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL, FOUNDER_VIDEO_ID } from "@/lib/brandConfig";
 
 function getWaUrl(niche: string, city: string) {
   const nd = NICHE_DISPLAY[niche] ?? niche;
@@ -271,7 +271,27 @@ export default function LandingPage() {
               </div>
             </section>
 
-            {/* (f) FAQ Accordion */}
+            {/* (f) Founder Video */}
+            <section className="mb-8">
+              <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-2">
+                See the Collection — Watch the Founder Showcase
+              </h2>
+              <p className="text-sm text-[#1E1E1E]/60 mb-3">
+                {BRAND_NAME}'s founder walks through the full {nd} range available for wholesale to {locationLabel} boutiques.
+              </p>
+              <div className="relative w-full rounded-xl overflow-hidden shadow-md" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
+                  title={`${BRAND_NAME} — ${nd} Founder Showcase`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+            </section>
+
+            {/* (g) FAQ Accordion */}
             <section className="mb-8">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-4">
                 Wholesale FAQ — {nd} from {BRAND_NAME}

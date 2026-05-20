@@ -60,6 +60,7 @@ if (!existsSync(OUT_DIR)) {
 // ── Constants ──────────────────────────────────────────────────────────────
 
 const WHATSAPP_NUMBER = (process.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
+const FOUNDER_VIDEO_ID = '2J4ztUw796I';
 
 const NICHE_DESC: Record<string, string> = {
   'korean-jewellery': 'Korean Jewellery',
@@ -214,6 +215,11 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Boutiques — Designs That Sell Out Fast</h2>
       <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer and trend scout supplying ${esc(location)}'s most forward-thinking boutiques with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping boutique owners cash in on fast-moving social media jewelry trends before they fade.</p>
       <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
+      <h2 class="section-h">See the Collection — Watch the Founder Showcase</h2>
+      <p style="font-size:.875rem;color:#666;margin-bottom:.875rem">${esc(BRAND_NAME)}'s founder walks through the full ${esc(nd)} range available for wholesale to ${esc(location)} boutiques.</p>
+      <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);margin-bottom:2rem">
+        <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — ${esc(nd)} Founder Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
+      </div>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
       <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
@@ -315,6 +321,14 @@ function renderHomepageContent(): string {
     <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
     <p style="text-align:center;color:#666;margin-bottom:2rem">${esc(BRAND_NAME)} dispatches direct to retailers across all 36 Indian states and union territories</p>
     ${stateGrid}
+  </section>
+
+  <section style="max-width:900px;margin:0 auto;padding:3rem 1.5rem;text-align:center">
+    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:.5rem;color:#1E1E1E">Meet the Founder — See the Collection Live</h2>
+    <p style="color:#666;margin-bottom:1.5rem;font-size:.9375rem">Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range — the same collections available for direct wholesale to your boutique.</p>
+    <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12)">
+      <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} — Founder Product Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
+    </div>
   </section>
 
   <section style="background:#1E1E1E;color:#fff;padding:4rem 1.5rem;text-align:center">
