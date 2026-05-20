@@ -137,8 +137,8 @@ export default function LandingPage() {
       {/* ─── NAV ─────────────────────────────────────────────── */}
       <header className="border-b border-amber-200 bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/" data-testid="link-home-logo" className="font-serif text-xl font-bold text-[#1E1E1E] tracking-tight leading-tight">
-            <span className="text-[#FFC629]">Arora</span> Group Wholesale
+          <Link href="/" data-testid="link-home-logo">
+            <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-10 w-auto" />
           </Link>
           <a
             href={waUrl}

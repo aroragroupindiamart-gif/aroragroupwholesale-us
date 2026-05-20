@@ -31,8 +31,8 @@ export default function SiteFooter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           <div>
-            <Link href="/" className="font-serif text-lg font-bold text-[#FFC629] block mb-2">
-              {BRAND_NAME}
+            <Link href="/" className="inline-flex items-center mb-2">
+              <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-8 w-auto bg-white rounded px-1 py-0.5" />
             </Link>
             <p className="text-xs text-white/50 leading-relaxed">
               Direct Premium Importer &amp; Trend Wholesaler Across India

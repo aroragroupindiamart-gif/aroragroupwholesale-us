@@ -206,7 +206,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 <body>
   <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}</div>
   <header>
-    <a class="logo" href="${BASE_URL}"><span>Arora</span> Group Wholesale</a>
+    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto"></a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
   </header>
   <nav class="breadcrumb">
@@ -274,7 +274,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <footer style="display:block;padding:2rem 1.5rem">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;margin-bottom:1.25rem">
       <div>
-        <a class="logo" href="${BASE_URL}">${esc(BRAND_NAME)}</a>
+        <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:32px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
         <p style="margin-top:.375rem;font-size:.75rem;color:#888">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
       </div>
       <div>
@@ -344,7 +344,7 @@ function renderHomepageContent(): string {
   return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
   <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000</div>
   <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
-    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E;text-decoration:none"><span style="color:#FFC629">Arora</span> Group Wholesale</a>
+    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto"></a>
     <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
   </header>
 
@@ -415,7 +415,7 @@ function renderHomepageContent(): string {
     <div style="max-width:1200px;margin:0 auto">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
         <div>
-          <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#FFC629;text-decoration:none">${esc(BRAND_NAME)}</a>
+          <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:32px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
           <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
         </div>
         <div>
