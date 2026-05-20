@@ -63,7 +63,7 @@ export default function Home() {
       <section className="bg-gradient-to-br from-amber-50 via-[#FFF8F0] to-[#FFF8F0] py-16 sm:py-24 border-b border-amber-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] mb-4 bg-[#FFC629]/20 px-3 py-1 rounded-full border border-[#FFC629]/30">
-            Direct Manufacturer & Importer · B2B Wholesale · Pan-India
+            Direct Premium Importer · Trend Scout · Pan-India
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1E1E1E] leading-tight mb-6">
             {BRAND_NAME}:{" "}
@@ -71,7 +71,7 @@ export default function Home() {
             Jewelry Supply Across India
           </h1>
           <p className="text-lg text-[#1E1E1E]/70 max-w-2xl mx-auto mb-8">
-            We are the direct manufacturer and importer behind India's fastest-moving jewelry trends. From viral Instagram aesthetics to high-demand Pinterest styles, we supply retail brands and online sellers in every major city with premium, fast-selling collections. Skip the outdated stock — source the exact designs your customers are hunting for, backed by scalable custom manufacturing and certified quality.
+            We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <WhatsAppButton className="text-base px-8 py-3.5" />
