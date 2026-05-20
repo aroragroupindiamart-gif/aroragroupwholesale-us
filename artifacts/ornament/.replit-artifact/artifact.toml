@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Project Ornament"
+version = "1.0.0"
+id = "artifacts/ornament"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25033
+
+[services.development]
+run = "pnpm --filter @workspace/ornament run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ornament", "run", "build" ]
+publicDir = "artifacts/ornament/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25033"
+BASE_PATH = "/"

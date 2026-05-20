@@ -10,6 +10,10 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: pages
+    description: Programmatic SEO page data
+  - name: meta
+    description: Niche and state metadata
 paths:
   /healthz:
     get:
@@ -24,6 +28,79 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /pages:
+    get:
+      operationId: listPageSlugs
+      tags: [pages]
+      summary: List all page slugs
+      description: Returns all programmatic page slugs for sitemap generation
+      responses:
+        "200":
+          description: List of slugs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SlugEntry"
+
+  /pages/{slug}:
+    get:
+      operationId: getPage
+      tags: [pages]
+      summary: Get a programmatic page by slug
+      description: Returns full page data including related city and state links
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Page detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageDetail"
+        "404":
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /states:
+    get:
+      operationId: listStates
+      tags: [meta]
+      summary: List all states grouped by region
+      responses:
+        "200":
+          description: State list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StateInfo"
+
+  /niches:
+    get:
+      operationId: listNiches
+      tags: [meta]
+      summary: List all jewelry niches
+      responses:
+        "200":
+          description: Niche list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NicheInfo"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +111,84 @@ components:
       required:
         - status
 
+    SlugEntry:
+      type: object
+      required: [slug, page_type, region]
+      properties:
+        slug:
+          type: string
+        page_type:
+          type: string
+        region:
+          type: string
+
+    PageLink:
+      type: object
+      required: [slug, title, h1_heading]
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        h1_heading:
+          type: string
+
+    PageDetail:
+      type: object
+      required: [id, page_type, slug, title, h1_heading, niche_key, intent_type, target_state, region, related_city_pages, related_state_pages]
+      properties:
+        id:
+          type: integer
+        page_type:
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        h1_heading:
+          type: string
+        niche_key:
+          type: string
+        intent_type:
+          type: string
+        target_city:
+          type: ["string", "null"]
+        target_state:
+          type: string
+        region:
+          type: string
+        related_city_pages:
+          type: array
+          items:
+            $ref: "#/components/schemas/PageLink"
+        related_state_pages:
+          type: array
+          items:
+            $ref: "#/components/schemas/PageLink"
+
+    StateInfo:
+      type: object
+      required: [state_name, state_slug, region]
+      properties:
+        state_name:
+          type: string
+        state_slug:
+          type: string
+        region:
+          type: string
+
+    NicheInfo:
+      type: object
+      required: [niche_key, display_name]
+      properties:
+        niche_key:
+          type: string
+        display_name:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
