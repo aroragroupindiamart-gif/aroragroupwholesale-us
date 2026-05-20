@@ -1,0 +1,31 @@
+Please execute a complete copy refactor on our homepage (`app/page.tsx`) and the master landing page template (`app/[state]/[place]/[service]/page.tsx`) to shift our core marketing angle. 
+
+While logistics (MOQs, shipping) remain structurally visible, our main unique selling proposition (USP) must pivot completely to trend-dominance, viral designs, and rapid retail turnover. 
+
+---
+
+## 1. HOMEPAGE HERO REWRITE (`app/page.tsx`)
+- Update the Main Hero H1 Title to:
+  "Arora Group Wholesale: Viral, Trend-Driven Jewelry Supply Across India"
+- Update the Sub-Header description paragraph to read:
+  "We are the direct manufacturer and importer behind India’s fastest-moving jewelry trends. From viral Instagram aesthetics to high-demand Pinterest styles, we supply retail brands and online sellers in every major city with premium, fast-selling collections. Skip the outdated stock—source the exact designs your customers are hunting for, backed by scalable custom manufacturing and certified quality."
+
+---
+
+## 2. LANDING PAGE FUNNEL REWRITE (`app/[state]/[place]/[service]/page.tsx`)
+Update the core copy sections to emphasize fast sales velocity:
+
+- **Top Alert Banner:** Change to:
+  "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to [City Name]"
+
+- **Spun Body Content & Badges:** Rewrite the text blocks to explicitly use these phrases and concepts:
+  - Highlighting "Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly."
+  - Frame our product line as "engineered for maximum retail turnover, helping boutique owners cash in on fast-moving social media jewelry trends before they fade."
+  - Emphasize that Arora Group Wholesale updates catalogs rapidly to keep retail shelves stocked with fresh, highly shareable items.
+
+- **WhatsApp Call-to-Action Parameter Update:** Update the message pre-fill text to sound trend-focused:
+  `https://wa.me/919999999999?text=Hi%20Arora%20Group%20Wholesale,%20I%20am%20a%20boutique%20owner.%20Send%20me%20your%20latest%20catalog%20of%20trending%20[Service Name]%20for%20my%20store%20in%20[City Name].`
+
+---
+
+Execute these text updates across all content blocks, keeping the layout clean and minimalist, but making the messaging incredibly attractive to modern boutique merchants.

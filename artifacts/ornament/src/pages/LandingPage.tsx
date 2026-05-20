@@ -230,16 +230,16 @@ export default function LandingPage() {
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
                 <p>
-                  {BRAND_NAME} operates as a vertically integrated {nd} manufacturer and {id?.noun ?? page.intent_type}, producing
+                  <strong>{BRAND_NAME}</strong> operates as a vertically integrated {nd} manufacturer and {id?.noun ?? page.intent_type}, producing
                   every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material
                   procurement, electroplating, stone setting, quality inspection, and packaging under one roof —
-                  enabling us to deliver factory-direct pricing to B2B buyers in {locationLabel} without any
+                  enabling us to deliver <strong>factory-direct pricing</strong> to B2B buyers in {locationLabel} without any
                   distributor markup.
                 </p>
                 <p>
                   Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in {locationLabel},
-                  {BRAND_NAME} offers flexible minimum order quantities starting at ₹5,000, scalable design customisation,
-                  and co-branding options for established wholesale accounts. Our {nd} catalogue covers contemporary,
+                  <strong>{BRAND_NAME}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design{" "}
+                  <strong>customisation, and co-branding options</strong> for established wholesale accounts. Our {nd} catalogue covers contemporary,
                   fusion, and export-inspired designs updated each season to match retail demand trends across {page.target_state}.
                 </p>
               </div>
@@ -252,16 +252,16 @@ export default function LandingPage() {
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
                 <p>
-                  Every order dispatched to {locationLabel} is covered by full transit insurance up to invoice value.
-                  {BRAND_NAME} partners with BlueDart, Delhivery, and Ecom Express for tracked, fast-delivery logistics
-                  across {page.region} India. Standard delivery timelines to {locationLabel} are 3–7 working days from
+                  Every order dispatched to {locationLabel} is covered by <strong>fully insured transit insurance</strong> up to invoice value.
+                  <strong>{BRAND_NAME}</strong> partners with <strong>BlueDart, Delhivery, and Ecom Express</strong> for tracked, fast-delivery logistics
+                  across {page.region} India. Standard delivery timelines to {locationLabel} are <strong>3–7 working days</strong> from
                   dispatch confirmation. Enterprise accounts may qualify for dedicated freight schedules and priority
                   processing.
                 </p>
                 <p>
-                  All shipments include a packing manifest, batch-level purity certification, and GST-compliant B2B
-                  invoice. Buyers registered under GST can claim input tax credit on all wholesale purchases from
-                  {BRAND_NAME}. Returns and replacements are handled within 7 days for manufacturing defects on
+                  All shipments include a packing manifest, batch-level purity certification, and <strong>GST-compliant B2B
+                  invoice</strong>. Buyers registered under GST can claim input tax credit on all wholesale purchases from{" "}
+                  <strong>{BRAND_NAME}</strong>. Returns and replacements are handled within 7 days for manufacturing defects on
                   all certified {nd} lines.
                 </p>
               </div>
@@ -385,31 +385,6 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Intent switcher */}
-            <div className="bg-white border border-amber-200 rounded-xl p-5">
-              <h4 className="font-semibold text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-3">Supply Type</h4>
-              <div className="space-y-1.5">
-                {["wholesaler", "supplier", "manufacturer", "importer"].map((intent) => {
-                  const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
-                  const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
-                  const isActive = page.intent_type === intent;
-                  return (
-                    <Link
-                      key={intent}
-                      href={`/${targetSlug}`}
-                      data-testid={`link-intent-switch-${intent}`}
-                      className={`block w-full text-left text-sm px-3 py-2 rounded-lg transition-colors capitalize ${
-                        isActive
-                          ? "bg-[#FFC629]/20 text-[#1E1E1E] font-semibold border border-[#FFC629]"
-                          : "text-[#1E1E1E]/60 hover:bg-amber-50 hover:text-[#1E1E1E]"
-                      }`}
-                    >
-                      {intent}s
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </div>
       </main>

@@ -180,11 +180,6 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     .info-row{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.8125rem}
     .info-row span:first-child{color:#666}
     .info-row span:last-child{font-weight:600}
-    .intent-card{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem}
-    .intent-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
-    .intent-card a{display:block;padding:.5rem .75rem;border-radius:.5rem;font-size:.875rem;color:#555;margin-bottom:.25rem;text-transform:capitalize}
-    .intent-card a:hover{background:#fef3e2;color:#1E1E1E}
-    .intent-card a.active{background:rgba(255,198,41,.2);color:#1E1E1E;font-weight:600;border:1px solid #FFC629}
   </style>
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹5,000 per invoice."}}]}]})}</script>
 </head>
@@ -217,13 +212,13 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp ${esc(BRAND_NAME)}</a>
       </div>
       <h2 class="section-h">Factory-Direct ${esc(nd)} Manufacturing for ${esc(location)} Retailers</h2>
-      <p>${esc(BRAND_NAME)} operates as a vertically integrated ${esc(nd)} manufacturer and ${page.intent_type}, producing every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material procurement, electroplating, stone setting, quality inspection, and packaging under one roof — enabling us to deliver factory-direct pricing to B2B buyers in ${esc(location)} without any distributor markup.</p>
-      <p>Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in ${esc(location)}, ${esc(BRAND_NAME)} offers flexible minimum order quantities starting at ₹5,000, scalable design customisation, and co-branding options for established wholesale accounts.</p>
+      <p><strong>${esc(BRAND_NAME)}</strong> operates as a vertically integrated ${esc(nd)} manufacturer and ${page.intent_type}, producing every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material procurement, electroplating, stone setting, quality inspection, and packaging under one roof — enabling us to deliver <strong>factory-direct pricing</strong> to B2B buyers in ${esc(location)} without any distributor markup.</p>
+      <p>Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in ${esc(location)}, <strong>${esc(BRAND_NAME)}</strong> offers <strong>flexible minimum order quantities starting at ₹5,000</strong>, scalable design <strong>customisation, and co-branding options</strong> for established wholesale accounts.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates on a factory-direct B2B model with a minimum order value of ₹5,000. Orders are processed against GST-registered business invoices. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
       <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
       <details><summary>Can ${esc(BRAND_NAME)} handle custom wholesale design processing?</summary><p>Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days.</p></details>
-      <details><summary>How does ${esc(BRAND_NAME)} handle logistics and insurance to ${esc(location)}?</summary><p>All shipments to ${esc(location)} are dispatched via fully insured air freight or tracked surface courier. Packages include transit insurance up to invoice value. Standard delivery timelines are 3–7 working days from dispatch.</p></details>
+      <details><summary>How does ${esc(BRAND_NAME)} handle logistics and insurance to ${esc(location)}?</summary><p>All shipments to ${esc(location)} are dispatched via <strong>fully insured transit insurance</strong> air freight or tracked surface courier. Packages include transit insurance up to invoice value, dispatched via <strong>BlueDart, Delhivery, and Ecom Express</strong>. Standard delivery timelines are <strong>3–7 working days</strong> from dispatch. All orders include a <strong>GST-compliant B2B invoice</strong>.</p></details>
       <details><summary>What is the minimum order value and how do I place an inquiry?</summary><p>The minimum order value (MOV) is ₹5,000 per invoice. WhatsApp us your business name, GST number, required category, and quantity. Our B2B executive will respond within 4 business hours with a catalogue and price list.</p></details>
       ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
       <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
@@ -241,10 +236,6 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
         <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
         <div class="info-row"><span>MOV</span><span>₹5,000</span></div>
-      </div>
-      <div class="intent-card">
-        <h4>Supply Type</h4>
-        ${intentLinks}
       </div>
     </aside>
   </main>
