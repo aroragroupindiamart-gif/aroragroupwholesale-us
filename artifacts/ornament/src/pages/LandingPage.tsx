@@ -3,7 +3,7 @@ import { useGetPage } from "@workspace/api-client-react";
 import { ArrowLeft, MapPin, Phone, CheckCircle, Star, Shield, TrendingUp } from "lucide-react";
 import NotFound from "@/pages/not-found";
 
-const WHATSAPP_NUMBER = "919999999999";
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER ?? "919999999999";
 
 const NICHE_DESCRIPTIONS: Record<string, string> = {
   "gold-jewelry": "gold jewelry",

@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { useListNiches, useListStates } from "@workspace/api-client-react";
 import { Gem, Sparkles, Diamond, Star, Heart, Crown } from "lucide-react";
 
-const WHATSAPP_NUMBER = "919999999999";
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER ?? "919999999999";
 const WHATSAPP_MSG = "Hello, I'm interested in wholesale jewelry sourcing. Please guide me.";
 
 const NICHE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
