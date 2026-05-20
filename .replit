@@ -30,3 +30,8 @@ externalPort = 80
 [[ports]]
 localPort = 25033
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+VITE_WHATSAPP_NUMBER = "+918368484361"
