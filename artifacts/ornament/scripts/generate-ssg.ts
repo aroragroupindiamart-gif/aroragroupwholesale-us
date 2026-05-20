@@ -196,6 +196,10 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     .info-row{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.8125rem}
     .info-row span:first-child{color:#666}
     .info-row span:last-child{font-weight:600}
+    .intent-list{display:flex;flex-direction:column;gap:.25rem;margin-top:.375rem}
+    .intent-list a{display:block;padding:.4375rem .75rem;border-radius:.5rem;font-size:.8125rem;color:#555;text-transform:capitalize}
+    .intent-list a:hover{background:#fef3e2;color:#1E1E1E;text-decoration:none}
+    .intent-list a.active{background:rgba(255,198,41,.18);border:1px solid rgba(255,198,41,.45);font-weight:600;color:#1E1E1E;pointer-events:none;cursor:default}
   </style>
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹3,000 per invoice, with no item-level MOQ — mix and match any designs freely."}}]}]})}</script>
 </head>
@@ -258,6 +262,12 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
         <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
         <div class="info-row"><span>MOV</span><span>₹3,000</span></div>
+      </div>
+      <div class="info-card">
+        <h4>Supply Type</h4>
+        <div class="intent-list">
+          ${intentLinks}
+        </div>
       </div>
     </aside>
   </main>

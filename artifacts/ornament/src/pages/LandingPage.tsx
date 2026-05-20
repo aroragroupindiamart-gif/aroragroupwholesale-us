@@ -74,6 +74,15 @@ export default function LandingPage() {
     .filter(([k]) => k !== page.niche_key)
     .slice(0, 5);
 
+  const INTENT_KEYS = ['wholesaler', 'supplier', 'manufacturer', 'importer'] as const;
+  const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
+  const allIntents = INTENT_KEYS.map(key => ({
+    key,
+    plural: INTENT_DISPLAY[key]?.plural ?? `${key}s`,
+    intentSlug: `${page.niche_key}-${key}-${locationSlug}`,
+    isCurrent: key === page.intent_type,
+  }));
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -427,6 +436,24 @@ export default function LandingPage() {
                   <span className="text-[#1E1E1E]/60">MOV</span>
                   <span className="font-bold text-[#1E1E1E]">₹3,000</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Supply Type */}
+            <div className="bg-white border border-amber-200 rounded-xl p-5 text-sm">
+              <h4 className="font-semibold text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-3">Supply Type</h4>
+              <div className="space-y-1">
+                {allIntents.map(({ key, plural, intentSlug, isCurrent }) =>
+                  isCurrent ? (
+                    <div key={key} className="px-3 py-2 rounded-lg bg-[#FFC629]/20 border border-[#FFC629]/50 font-semibold text-[#1E1E1E] capitalize">
+                      {plural}
+                    </div>
+                  ) : (
+                    <Link key={key} href={`/${intentSlug}`} className="block px-3 py-2 rounded-lg text-[#1E1E1E]/60 hover:text-[#1E1E1E] hover:bg-amber-50 transition-colors capitalize">
+                      {plural}
+                    </Link>
+                  )
+                )}
               </div>
             </div>
 
