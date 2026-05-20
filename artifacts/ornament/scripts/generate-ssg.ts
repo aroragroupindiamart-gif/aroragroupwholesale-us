@@ -59,7 +59,7 @@ if (!existsSync(OUT_DIR)) {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
-const WHATSAPP_NUMBER = process.env.VITE_WHATSAPP_NUMBER ?? '919999999999';
+const WHATSAPP_NUMBER = (process.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
 
 const NICHE_DESC: Record<string, string> = {
   'korean-jewellery': 'Korean Jewellery',
