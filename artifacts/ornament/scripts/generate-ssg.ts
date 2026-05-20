@@ -370,7 +370,9 @@ function writeSitemapBucket(name: string, slugs: string[], today: string): strin
   }
   const filenames: string[] = [];
   chunks.forEach((chunk, idx) => {
-    const suffix = chunks.length > 1 ? `-${idx + 1}` : '';
+    // First chunk keeps the canonical name (sitemap-north.xml);
+    // overflow chunks get a numeric suffix (sitemap-north-2.xml, etc.)
+    const suffix = idx === 0 ? '' : `-${idx + 1}`;
     const filename = `sitemap-${name}${suffix}.xml`;
     const urls = chunk.map(slug => `
   <url>

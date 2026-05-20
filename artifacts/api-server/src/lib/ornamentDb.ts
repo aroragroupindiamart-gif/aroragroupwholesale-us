@@ -1,29 +1,29 @@
-import { DatabaseSync } from 'node:sqlite';
+import Database from 'better-sqlite3';
 import { readFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// ORNAMENT_DATA_DIR allows the SSG script to override the path when importing
+// ORNAMENT_DATA_DIR lets the SSG script override the path when importing
 // this module via tsx (where __dirname points to src/lib, not dist/).
 const DATA_DIR = process.env.ORNAMENT_DATA_DIR ?? path.join(__dirname, '..', 'data');
 const DB_PATH = path.join(DATA_DIR, 'ornament.db');
 const SCHEMA_PATH = path.join(DATA_DIR, 'schema.sql');
 
-function initDb(): DatabaseSync {
+function initDb(): Database.Database {
   if (!existsSync(DATA_DIR)) {
     mkdirSync(DATA_DIR, { recursive: true });
   }
-  const db = new DatabaseSync(DB_PATH);
-  db.exec("PRAGMA journal_mode = WAL");
-  db.exec("PRAGMA cache_size = -16000");
+  const db = new Database(DB_PATH);
+  db.pragma('journal_mode = WAL');
+  db.pragma('cache_size = -16000');
   const schema = readFileSync(SCHEMA_PATH, 'utf-8');
   db.exec(schema);
   return db;
 }
 
-let _db: DatabaseSync | null = null;
-function getDb(): DatabaseSync {
+let _db: Database.Database | null = null;
+function getDb(): Database.Database {
   if (!_db) {
     _db = initDb();
   }
@@ -118,20 +118,6 @@ const NICHE_DISPLAY: Record<string, string> = {
   'fashion-jewelry': 'Fashion Jewelry',
 };
 
-type RawPageRow = {
-  id: number;
-  page_type: string;
-  slug: string;
-  title: string;
-  h1_heading: string;
-  niche_key: string;
-  intent_type: string;
-  target_city: string | null;
-  target_state: string;
-  state_slug: string;
-  region: string;
-};
-
 export function getRelatedCityPages(
   nicheKey: string,
   intentType: string,
@@ -160,19 +146,17 @@ export function getRelatedStatePages(
 }
 
 export function getPageBySlug(slug: string): PageDetail | null {
-  const db = getDb();
-  const page = db.prepare(`SELECT * FROM programmatic_pages WHERE slug = ?`).get(slug) as RawPageRow | undefined;
-  if (!page) return null;
+  const row = getDb().prepare(`SELECT * FROM programmatic_pages WHERE slug = ?`).get(slug) as PageDetail | undefined;
+  if (!row) return null;
   return {
-    ...page,
-    related_city_pages: getRelatedCityPages(page.niche_key, page.intent_type, page.target_state, slug),
-    related_state_pages: getRelatedStatePages(page.niche_key, page.intent_type, slug),
+    ...row,
+    related_city_pages: getRelatedCityPages(row.niche_key, row.intent_type, row.target_state, slug),
+    related_state_pages: getRelatedStatePages(row.niche_key, row.intent_type, slug),
   };
 }
 
 export function getAllSlugs(): SlugEntry[] {
-  const db = getDb();
-  return db.prepare(`SELECT slug, page_type, region FROM programmatic_pages ORDER BY slug`).all() as SlugEntry[];
+  return getDb().prepare(`SELECT slug, page_type, region FROM programmatic_pages ORDER BY slug`).all() as SlugEntry[];
 }
 
 export function getAllStates(): StateInfo[] {

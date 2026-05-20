@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Project Ornament — Seed Script
- * Uses node:sqlite (built-in to Node.js 22+). No external deps needed.
+ * Uses better-sqlite3 for synchronous, high-performance DB access.
  * Run: node scripts/seed.js
  */
-import { DatabaseSync } from 'node:sqlite';
+import Database from 'better-sqlite3';
 import { readFileSync, mkdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -19,9 +19,9 @@ if (!existsSync(DATA_DIR)) {
 }
 
 console.log('Opening database at:', DB_PATH);
-const db = new DatabaseSync(DB_PATH);
-db.exec("PRAGMA journal_mode = WAL");
-db.exec("PRAGMA synchronous = NORMAL");
+const db = new Database(DB_PATH);
+db.pragma('journal_mode = WAL');
+db.pragma('synchronous = NORMAL');
 
 // Initialize schema
 const schema = readFileSync(SCHEMA_PATH, 'utf-8');
@@ -243,62 +243,61 @@ const insertPage = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
-// Wrap in a transaction for speed
-db.exec('BEGIN');
-
-// 1. Cities (locations table)
-for (const c of CITIES) {
-  insertLocation.run(c.city_name, c.state_name, c.city_slug, c.state_slug, c.region);
-}
-console.log(`Inserted ${CITIES.length} cities.`);
-
-// 2. Keywords
-for (const niche of NICHES) {
-  for (const intent of INTENTS) {
-    insertKeyword.run(
-      `${NICHE_DISPLAY[niche.niche_key]} ${INTENT_DISPLAY[intent]}`,
-      niche.niche_key,
-      intent
-    );
+const seedAll = db.transaction(() => {
+  // 1. Cities (locations table)
+  for (const c of CITIES) {
+    insertLocation.run(c.city_name, c.state_name, c.city_slug, c.state_slug, c.region);
   }
-}
-console.log(`Inserted ${NICHES.length * INTENTS.length} keywords.`);
+  console.log(`Inserted ${CITIES.length} cities.`);
 
-// 3. City pages: 6 × 4 × 122 = 2,928
-let cityCount = 0;
-for (const niche of NICHES) {
-  for (const intent of INTENTS) {
-    for (const city of CITIES) {
-      const nd = NICHE_DISPLAY[niche.niche_key];
-      const id = INTENT_DISPLAY[intent];
-      const slug = `${niche.niche_key}-${intent}-${city.city_slug}`;
-      const title = `${nd} ${id} in ${city.city_name} | B2B Wholesale`;
-      const h1 = `Trusted ${nd} ${id}s in ${city.city_name}, ${city.state_name}`;
-      insertPage.run('city', slug, title, h1, niche.niche_key, intent, city.city_name, city.state_name, city.state_slug, city.region);
-      cityCount++;
+  // 2. Keywords
+  for (const niche of NICHES) {
+    for (const intent of INTENTS) {
+      insertKeyword.run(
+        `${NICHE_DISPLAY[niche.niche_key]} ${INTENT_DISPLAY[intent]}`,
+        niche.niche_key,
+        intent
+      );
     }
   }
-}
-console.log(`Inserted ${cityCount} city pages.`);
+  console.log(`Inserted ${NICHES.length * INTENTS.length} keywords.`);
 
-// 4. State pages: 6 × 4 × 36 = 864
-let stateCount = 0;
-for (const niche of NICHES) {
-  for (const intent of INTENTS) {
-    for (const state of STATES) {
-      const nd = NICHE_DISPLAY[niche.niche_key];
-      const id = INTENT_DISPLAY[intent];
-      const slug = `${niche.niche_key}-${intent}-${state.state_slug}`;
-      const title = `${nd} ${id}s in ${state.state_name} | B2B Wholesale Directory`;
-      const h1 = `Find Verified ${nd} ${id}s Across ${state.state_name}`;
-      insertPage.run('state', slug, title, h1, niche.niche_key, intent, null, state.state_name, state.state_slug, state.region);
-      stateCount++;
+  // 3. City pages: 6 × 4 × 122 = 2,928
+  let cityCount = 0;
+  for (const niche of NICHES) {
+    for (const intent of INTENTS) {
+      for (const city of CITIES) {
+        const nd = NICHE_DISPLAY[niche.niche_key];
+        const id = INTENT_DISPLAY[intent];
+        const slug = `${niche.niche_key}-${intent}-${city.city_slug}`;
+        const title = `${nd} ${id} in ${city.city_name} | B2B Wholesale`;
+        const h1 = `Trusted ${nd} ${id}s in ${city.city_name}, ${city.state_name}`;
+        insertPage.run('city', slug, title, h1, niche.niche_key, intent, city.city_name, city.state_name, city.state_slug, city.region);
+        cityCount++;
+      }
     }
   }
-}
-console.log(`Inserted ${stateCount} state pages.`);
+  console.log(`Inserted ${cityCount} city pages.`);
 
-db.exec('COMMIT');
+  // 4. State pages: 6 × 4 × 36 = 864
+  let stateCount = 0;
+  for (const niche of NICHES) {
+    for (const intent of INTENTS) {
+      for (const state of STATES) {
+        const nd = NICHE_DISPLAY[niche.niche_key];
+        const id = INTENT_DISPLAY[intent];
+        const slug = `${niche.niche_key}-${intent}-${state.state_slug}`;
+        const title = `${nd} ${id}s in ${state.state_name} | B2B Wholesale Directory`;
+        const h1 = `Find Verified ${nd} ${id}s Across ${state.state_name}`;
+        insertPage.run('state', slug, title, h1, niche.niche_key, intent, null, state.state_name, state.state_slug, state.region);
+        stateCount++;
+      }
+    }
+  }
+  console.log(`Inserted ${stateCount} state pages.`);
+});
+
+seedAll();
 
 const pageRow = db.prepare('SELECT COUNT(*) as count FROM programmatic_pages').get();
 console.log(`\n✅ Seed complete. Total programmatic pages: ${pageRow.count}`);

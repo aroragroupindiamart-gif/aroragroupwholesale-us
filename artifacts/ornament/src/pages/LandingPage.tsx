@@ -77,9 +77,7 @@ function PageSkeleton() {
 export default function LandingPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data: page, isLoading, isError } = useGetPage(slug ?? "", {
-    query: { enabled: !!slug },
-  });
+  const { data: page, isLoading, isError } = useGetPage(slug ?? "");
 
   if (isLoading) return <PageSkeleton />;
   if (isError || !page) return <NotFound />;
@@ -162,7 +160,7 @@ export default function LandingPage() {
             {/* WhatsApp CTA (inline) */}
             <div className="bg-[#25D366]/8 border border-[#25D366]/30 rounded-2xl p-6 mb-8">
               <h2 className="font-semibold text-foreground mb-1 text-lg">
-                Connect with {formatPageTitle(page.niche_key, page.intent_type, page.target_city, page.target_state)}
+                Connect with {formatPageTitle(page.niche_key, page.intent_type, page.target_city ?? null, page.target_state)}
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
                 Send your requirements on WhatsApp — get catalogue, MOQ, and pricing within minutes.
