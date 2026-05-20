@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import { readFileSync, mkdirSync, existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { BRAND_NAME, NICHE_DISPLAY } from './brandConfig.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ORNAMENT_DATA_DIR lets the SSG script override the path when importing
@@ -109,14 +110,7 @@ const STATES: StateInfo[] = [
   { state_name: 'Tripura', state_slug: 'tripura', region: 'North-East' },
 ];
 
-const NICHE_DISPLAY: Record<string, string> = {
-  'korean-jewellery':          'Korean Jewellery',
-  'fashion-jewellery':         'Fashion Jewellery',
-  'anti-tarnish-jewellery':    'Anti Tarnish Jewellery',
-  '18k-gold-plated-jewellery': '18k Gold Plated Jewellery',
-  'demi-fine-jewellery':       'Demi Fine Jewellery',
-  'western-jewellery':         'Western Jewellery',
-};
+export { BRAND_NAME };
 
 export function getRelatedCityPages(
   nicheKey: string,
@@ -143,6 +137,33 @@ export function getRelatedStatePages(
     WHERE niche_key = ? AND intent_type = ? AND page_type = 'state' AND slug != ?
     LIMIT ?
   `).all(nicheKey, intentType, excludeSlug, limit) as PageLink[];
+}
+
+export function getSameCityOtherNiches(
+  intentType: string,
+  targetCity: string,
+  excludeSlug: string,
+  limit = 5,
+): PageLink[] {
+  return getDb().prepare(`
+    SELECT slug, title, h1_heading FROM programmatic_pages
+    WHERE intent_type = ? AND page_type = 'city' AND target_city = ? AND slug != ?
+    LIMIT ?
+  `).all(intentType, targetCity, excludeSlug, limit) as PageLink[];
+}
+
+export function getNearbyCities(
+  intentType: string,
+  nicheKey: string,
+  stateName: string,
+  excludeSlug: string,
+  limit = 5,
+): PageLink[] {
+  return getDb().prepare(`
+    SELECT slug, title, h1_heading FROM programmatic_pages
+    WHERE intent_type = ? AND niche_key = ? AND page_type = 'city' AND target_state = ? AND slug != ?
+    LIMIT ?
+  `).all(intentType, nicheKey, stateName, excludeSlug, limit) as PageLink[];
 }
 
 export function getPageBySlug(slug: string): PageDetail | null {

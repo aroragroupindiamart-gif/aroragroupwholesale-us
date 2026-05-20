@@ -28,7 +28,8 @@ const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
 // by Vite in dev mode. Vite copies public/ → dist/ at build time so they
 // are also accessible in the deployed app at /sitemap.xml.
 const SITEMAP_DIR = path.join(__dirname, '..', 'public');
-const BASE_URL = 'https://ornament.replit.app';
+const BASE_URL = 'https://www.aroragroupwholesale.com';
+const BRAND_NAME = 'Arora Group Wholesale';
 const SITEMAP_URL_CAP = 1000;
 
 // ── Set DB path env var BEFORE dynamic-importing ornamentDb ────────────────
@@ -61,12 +62,12 @@ if (!existsSync(OUT_DIR)) {
 const WHATSAPP_NUMBER = process.env.VITE_WHATSAPP_NUMBER ?? '919999999999';
 
 const NICHE_DESC: Record<string, string> = {
-  'gold-jewelry': 'gold jewelry',
-  'silver-jewelry': 'silver jewelry',
-  'diamond-jewelry': 'diamond jewelry',
-  'artificial-jewelry': 'artificial & imitation jewelry',
-  'bridal-jewelry': 'bridal & wedding jewelry',
-  'fashion-jewelry': 'fashion & costume jewelry',
+  'korean-jewellery': 'Korean Jewellery',
+  'fashion-jewellery': 'Fashion Jewellery',
+  'anti-tarnish-jewellery': 'Anti Tarnish Jewellery',
+  '18k-gold-plated-jewellery': '18k Gold Plated Jewellery',
+  'demi-fine-jewellery': 'Demi Fine Jewellery',
+  'western-jewellery': 'Western Jewellery',
 };
 
 const INTENT_PLURAL: Record<string, string> = {
@@ -88,9 +89,9 @@ function esc(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
-function waLink(niche: string, intent: string, location: string): string {
+function waLink(niche: string, _intent: string, location: string): string {
   const nd = NICHE_DESC[niche] ?? niche;
-  const msg = `Hello, I need a verified ${nd} ${intent} in ${location}. Please share your catalogue.`;
+  const msg = `Hi Arora Group, I'm a retailer inquiring about direct factory supply for ${nd} for my business in ${location}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -98,13 +99,14 @@ const WA_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentCo
 
 const SHARED_CSS = `
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',system-ui,sans-serif;background:#faf8f4;color:#1c1917;line-height:1.6}
-a{color:#8a6a1a;text-decoration:none}a:hover{text-decoration:underline}
-header{background:#fff;border-bottom:1px solid #e7e0d4;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.logo{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;color:#8a6a1a}
-.wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;font-weight:700;border-radius:.75rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none}
-footer{background:#fff;border-top:1px solid #e7e0d4;padding:2rem 1.5rem;margin-top:2rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#a8a29e}
-footer .logo{font-size:1.125rem}
+body{font-family:'Inter',system-ui,sans-serif;background:#FFF8F0;color:#1E1E1E;line-height:1.6}
+a{color:#1E1E1E;text-decoration:none}a:hover{text-decoration:underline}
+.top-banner{background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem}
+header{background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E}.logo span{color:#FFC629}
+.wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none}
+footer{background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;margin-top:2rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#888}
+footer .logo{font-size:1.125rem;color:#FFC629}
 `;
 
 // ── Page template (slug pages) ─────────────────────────────────────────────
@@ -117,7 +119,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const waUrl = waLink(page.niche_key, page.intent_type, location);
   const canonicalUrl = `${BASE_URL}/${page.slug}`;
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
-  const metaDesc = `Find verified ${nd} ${ip} in ${esc(location)}. B2B wholesale directory for Indian jewelry trade. Direct WhatsApp contact, bulk pricing, flexible MOQ.`;
+  const metaDesc = `${BRAND_NAME} — Direct ${nd} ${ip} serving ${esc(location)}. Factory-to-retail wholesale supply with certified purity standards, insured logistics, and MOV ₹5,000.`;
 
   const relatedCityLinks = page.related_city_pages.map(r =>
     `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
@@ -147,48 +149,50 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:type" content="website">
   <style>${SHARED_CSS}
-    nav.breadcrumb{background:#f5f0e8;border-bottom:1px solid #e7e0d4;padding:.5rem 1.5rem;font-size:.75rem;color:#78716c;display:flex;gap:.5rem;flex-wrap:wrap}
+    nav.breadcrumb{background:#fef3e2;border-bottom:1px solid #e8dcc8;padding:.5rem 1.5rem;font-size:.75rem;color:#666;display:flex;gap:.5rem;flex-wrap:wrap}
     main{max-width:1024px;margin:0 auto;padding:2.5rem 1.5rem;display:grid;grid-template-columns:1fr 280px;gap:2rem}
     @media(max-width:768px){main{grid-template-columns:1fr}}
-    .badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.75rem;font-weight:600;background:rgba(138,106,26,.1);color:#8a6a1a;padding:.25rem .75rem;border-radius:9999px}
-    h1{font-family:Georgia,serif;font-size:2rem;font-weight:700;margin:.75rem 0 .75rem;line-height:1.25}
-    .lead{color:#57534e;font-size:.9375rem;margin-bottom:1.5rem}
-    .trust-badges{display:flex;flex-wrap:wrap;gap:.625rem;margin-bottom:2rem}
-    .cta-box{background:rgba(37,211,102,.06);border:1px solid rgba(37,211,102,.3);border-radius:1rem;padding:1.5rem;margin-bottom:2rem}
-    .cta-box h2{font-size:1.0625rem;font-weight:600;margin-bottom:.375rem}
-    .cta-box p{font-size:.875rem;color:#78716c;margin-bottom:1rem}
-    .wa-cta{display:inline-flex;align-items:center;gap:.625rem;background:#25D366;color:#fff;font-weight:700;border-radius:.75rem;padding:.75rem 1.5rem;font-size:1rem;text-decoration:none}
-    h2.section-h{font-family:Georgia,serif;font-size:1.25rem;font-weight:700;margin-bottom:.75rem;margin-top:2rem}
-    .content-body p{color:#57534e;font-size:.9375rem;margin-bottom:.875rem}
-    .checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
-    .checklist li{display:flex;gap:.625rem;font-size:.875rem;color:#57534e}
-    .checklist li::before{content:"✓";color:#8a6a1a;font-weight:700;flex-shrink:0}
+    .badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.75rem;font-weight:600;background:rgba(255,198,41,.15);color:#1E1E1E;padding:.25rem .75rem;border-radius:9999px;border:1px solid rgba(255,198,41,.4)}
+    h1{font-family:Georgia,serif;font-size:2rem;font-weight:700;margin:.75rem 0 .75rem;line-height:1.25;color:#1E1E1E}
+    .lead{color:#444;font-size:.9375rem;margin-bottom:1.5rem}
+    .trust-badges{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem}
+    .trust-badge{display:flex;align-items:flex-start;gap:.625rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:.875rem;font-size:.75rem;font-weight:600;color:#1E1E1E}
+    .cta-box{background:rgba(255,198,41,.08);border:1px solid #FFC629;border-radius:1rem;padding:1.5rem;margin-bottom:2rem}
+    .cta-box h2{font-size:1.0625rem;font-weight:600;margin-bottom:.375rem;color:#1E1E1E}
+    .cta-box p{font-size:.875rem;color:#555;margin-bottom:1rem}
+    .wa-cta{display:inline-flex;align-items:center;gap:.625rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.75rem;padding:.75rem 1.5rem;font-size:1rem;text-decoration:none}
+    h2.section-h{font-family:Georgia,serif;font-size:1.25rem;font-weight:700;margin-bottom:.75rem;margin-top:2rem;color:#1E1E1E}
+    .content-body p{color:#444;font-size:.9375rem;margin-bottom:.875rem}
+    details{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;margin-bottom:.5rem;overflow:hidden}
+    summary{padding:1rem 1.25rem;font-weight:600;font-size:.875rem;cursor:pointer;list-style:none;color:#1E1E1E}
+    details p{padding:.75rem 1.25rem 1.25rem;font-size:.875rem;color:#555;border-top:1px solid #f0e8d8}
     .related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-bottom:1.5rem}
     @media(min-width:480px){.related-grid{grid-template-columns:repeat(4,1fr)}}
-    .related-grid a{font-size:.75rem;color:#78716c;border:1px solid #e7e0d4;border-radius:.5rem;padding:.5rem .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
-    .related-grid a:hover{color:#8a6a1a;background:#f5f0e8}
-    .section-label{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#a8a29e;margin-bottom:.75rem}
-    aside .cta-card{background:#8a6a1a;color:#fff;border-radius:1rem;padding:1.5rem;box-shadow:0 4px 16px rgba(138,106,26,.2);margin-bottom:1rem}
-    aside .cta-card h3{font-family:Georgia,serif;font-size:1.25rem;font-weight:700;margin-bottom:.5rem}
-    aside .cta-card p{font-size:.875rem;opacity:.9;margin-bottom:1rem}
-    aside .cta-card a{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fff;color:#8a6a1a;font-weight:700;padding:.75rem 1rem;border-radius:.75rem;font-size:.875rem;text-align:center;text-decoration:none}
-    .info-card{background:#fff;border:1px solid #e7e0d4;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem;font-size:.875rem}
-    .info-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#a8a29e;margin-bottom:.75rem}
-    .info-row{display:flex;justify-content:space-between;padding:.25rem 0}
-    .info-row span:first-child{color:#78716c}
-    .info-row span:last-child{font-weight:500}
-    .intent-card{background:#fff;border:1px solid #e7e0d4;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem}
-    .intent-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#a8a29e;margin-bottom:.75rem}
-    .intent-card a{display:block;padding:.5rem .75rem;border-radius:.5rem;font-size:.875rem;color:#78716c;margin-bottom:.25rem;text-transform:capitalize}
-    .intent-card a:hover{background:#f5f0e8;color:#8a6a1a}
-    .intent-card a.active{background:rgba(138,106,26,.1);color:#8a6a1a;font-weight:600}
+    .related-grid a{font-size:.75rem;color:#555;border:1px solid #e8dcc8;border-radius:.5rem;padding:.5rem .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+    .related-grid a:hover{color:#1E1E1E;background:#fef3e2}
+    .section-label{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+    aside .cta-card{background:#1E1E1E;color:#fff;border-radius:1rem;padding:1.5rem;margin-bottom:1rem}
+    aside .cta-card h3{font-family:Georgia,serif;font-size:1.125rem;font-weight:700;margin-bottom:.375rem;color:#FFC629}
+    aside .cta-card p{font-size:.875rem;opacity:.7;margin-bottom:1rem}
+    aside .cta-card a{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;padding:.75rem 1rem;border-radius:.75rem;font-size:.875rem;text-align:center;text-decoration:none}
+    .info-card{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem;font-size:.875rem}
+    .info-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+    .info-row{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.8125rem}
+    .info-row span:first-child{color:#666}
+    .info-row span:last-child{font-weight:600}
+    .intent-card{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem}
+    .intent-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+    .intent-card a{display:block;padding:.5rem .75rem;border-radius:.5rem;font-size:.875rem;color:#555;margin-bottom:.25rem;text-transform:capitalize}
+    .intent-card a:hover{background:#fef3e2;color:#1E1E1E}
+    .intent-card a.active{background:rgba(255,198,41,.2);color:#1E1E1E;font-weight:600;border:1px solid #FFC629}
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"${esc(page.h1_heading)}","description":"${esc(metaDesc)}","url":"${canonicalUrl}","areaServed":"${esc(location)}","address":{"@type":"PostalAddress","addressLocality":"${esc(location)}","addressCountry":"IN"}}</script>
+  <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹5,000 per invoice."}}]}]})}</script>
 </head>
 <body>
+  <div class="top-banner">Direct Factory-to-Retail Logistics from ${BRAND_NAME} to ${esc(location)} — Minimum Order Value ₹5,000</div>
   <header>
-    <a class="logo" href="${BASE_URL}">Ornament</a>
-    <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} Connect on WhatsApp</a>
+    <a class="logo" href="${BASE_URL}"><span>Arora</span> Group Wholesale</a>
+    <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
   </header>
   <nav class="breadcrumb">
     <a href="${BASE_URL}">Home</a><span>/</span>
@@ -198,59 +202,56 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   </nav>
   <main>
     <div class="content-body">
-      <span class="badge">&#x25CE; ${esc(page.region)} India</span>
+      <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Factory Supply</span>
       <h1>${esc(page.h1_heading)}</h1>
-      <p class="lead">Looking for a reliable <strong>${esc(nd)} ${page.intent_type}</strong> in <strong>${esc(location)}</strong>? Connect directly with verified B2B partners who offer bulk pricing, quality assurance, and fast dispatch.</p>
+      <p class="lead">${esc(BRAND_NAME)} is the direct manufacturer, importer, and master supply partner for <strong>${esc(nd)}</strong> serving retailers and traders in <strong>${esc(location)}</strong>. Skip the middlemen — source factory-direct with certified purity, insured freight, and scalable custom design manufacturing.</p>
       <div class="trust-badges">
-        <span class="badge">&#x2713; Verified B2B</span>
-        <span class="badge">&#x2713; Quality Assured</span>
-        <span class="badge">&#x2713; Bulk Pricing</span>
-        <span class="badge">&#x2713; Wholesale Rates</span>
+        <div class="trust-badge">🏭 Direct Factory Pricing (No Middlemen)</div>
+        <div class="trust-badge">✈️ Fully Insured Air Freight to ${esc(location)}</div>
+        <div class="trust-badge">🛡️ Certified Metallic &amp; Anti-Tarnish Purity Standards</div>
+        <div class="trust-badge">🎨 Scalable Custom Design Manufacturing</div>
       </div>
       <div class="cta-box">
-        <h2>Connect with ${esc(nd)} ${ip} in ${esc(location)}</h2>
-        <p>Send your requirements on WhatsApp — get catalogue, MOQ, and pricing within minutes.</p>
-        <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} Connect on WhatsApp</a>
+        <h2>Inquire About ${esc(nd)} — Direct from Our Factory to ${esc(location)}</h2>
+        <p>WhatsApp us your business requirements — get MOV, purity certificate, and a custom catalogue within 4 hours.</p>
+        <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp ${esc(BRAND_NAME)}</a>
       </div>
-      <h2 class="section-h">Why Source ${nd.charAt(0).toUpperCase() + nd.slice(1)} from ${esc(location)}?</h2>
-      <p>${esc(location)} is a well-established hub for B2B ${esc(nd)} ${ip} in the ${esc(page.region)} India region. Retailers, boutiques, and traders across the country source ${esc(nd)} from ${esc(location)} for competitive pricing, diverse designs, and reliable supply chains.</p>
-      <p>Whether placing a one-time bulk order or establishing a long-term wholesale relationship, our verified ${esc(nd)} ${ip} in ${esc(location)} offer flexible MOQs, customisation options, and both branded and unbranded collections.</p>
-      <h2 class="section-h">What to Expect from ${ip.charAt(0).toUpperCase() + ip.slice(1)} in ${esc(location)}</h2>
-      <ul class="checklist">
-        <li>Direct factory or importer pricing — no middlemen</li>
-        <li>Wide range of designs: traditional, contemporary, and fusion styles</li>
-        <li>Flexible minimum order quantities (MOQ) for all business sizes</li>
-        <li>Pan-India shipping and B2B invoice support for GST-registered buyers</li>
-        <li>WhatsApp-first communication for fast quotations and sample requests</li>
-      </ul>
-      ${page.related_city_pages.length > 0 ? `<p class="section-label">Also Available in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
-      ${page.related_state_pages.length > 0 ? `<p class="section-label">Browse by State</p><div class="related-grid">${relatedStateLinks}</div>` : ''}
-      <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#78716c;margin-top:1rem">&larr; Back to Home</a>
+      <h2 class="section-h">Factory-Direct ${esc(nd)} Manufacturing for ${esc(location)} Retailers</h2>
+      <p>${esc(BRAND_NAME)} operates as a vertically integrated ${esc(nd)} manufacturer and ${page.intent_type}, producing every piece in-house with strict quality benchmarks. Our manufacturing unit handles raw material procurement, electroplating, stone setting, quality inspection, and packaging under one roof — enabling us to deliver factory-direct pricing to B2B buyers in ${esc(location)} without any distributor markup.</p>
+      <p>Whether you are a boutique retailer, a multi-outlet chain, or an e-commerce reseller in ${esc(location)}, ${esc(BRAND_NAME)} offers flexible minimum order quantities starting at ₹5,000, scalable design customisation, and co-branding options for established wholesale accounts.</p>
+      <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
+      <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates on a factory-direct B2B model with a minimum order value of ₹5,000. Orders are processed against GST-registered business invoices. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
+      <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
+      <details><summary>Can ${esc(BRAND_NAME)} handle custom wholesale design processing?</summary><p>Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days.</p></details>
+      <details><summary>How does ${esc(BRAND_NAME)} handle logistics and insurance to ${esc(location)}?</summary><p>All shipments to ${esc(location)} are dispatched via fully insured air freight or tracked surface courier. Packages include transit insurance up to invoice value. Standard delivery timelines are 3–7 working days from dispatch.</p></details>
+      <details><summary>What is the minimum order value and how do I place an inquiry?</summary><p>The minimum order value (MOV) is ₹5,000 per invoice. WhatsApp us your business name, GST number, required category, and quantity. Our B2B executive will respond within 4 business hours with a catalogue and price list.</p></details>
+      ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
+      <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
     </div>
     <aside>
       <div class="cta-card">
-        <h3>Source ${nd.charAt(0).toUpperCase() + nd.slice(1)} in ${esc(location)}</h3>
-        <p>Talk to verified ${ip} now. Free consultation.</p>
-        <a href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Now</a>
+        <h3>${esc(nd)} — ${esc(location)}</h3>
+        <p>Direct factory supply. MOV ₹5,000. GST invoice included.</p>
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Arora Group</a>
       </div>
       <div class="info-card">
-        <h4>Page Details</h4>
-        <div class="info-row"><span>Category</span><span>${esc(nd)}</span></div>
-        <div class="info-row"><span>Type</span><span>${esc(page.intent_type)}</span></div>
-        <div class="info-row"><span>Location</span><span>${esc(location)}</span></div>
+        <h4>Supply Details</h4>
+        <div class="info-row"><span>Product Line</span><span>${esc(nd)}</span></div>
+        <div class="info-row"><span>Role</span><span>${esc(page.intent_type)}</span></div>
+        <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
         <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
-        <div class="info-row"><span>Region</span><span>${esc(page.region)}</span></div>
+        <div class="info-row"><span>MOV</span><span>₹5,000</span></div>
       </div>
       <div class="intent-card">
-        <h4>Looking For</h4>
+        <h4>Supply Type</h4>
         ${intentLinks}
       </div>
     </aside>
   </main>
   <footer>
-    <a class="logo" href="${BASE_URL}">Ornament</a>
-    <p>India's B2B Jewelry Wholesale Directory — Connecting Buyers &amp; Sellers</p>
-    <p>&copy; 2024 Ornament. All rights reserved.</p>
+    <a class="logo" href="${BASE_URL}">Arora Group Wholesale</a>
+    <p>Direct Factory-to-Retail Jewellery Supply Across India</p>
+    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
   </footer>
 </body>
 </html>`;
@@ -261,14 +262,14 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 function renderHomepageContent(): string {
   const niches = getAllNiches();
   const states = getAllStates();
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I'm interested in wholesale jewelry sourcing. Please guide me.")}`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.")}`;
 
   const nicheCards = niches.map(n => {
     const href = `${BASE_URL}/${n.niche_key}-wholesaler-new-delhi`;
-    return `<a href="${href}" style="display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;background:#fff;border:1px solid #e7e0d4;border-radius:.75rem;text-decoration:none;color:inherit">
-      <span style="font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#8a6a1a">${esc(n.display_name)}</span>
-      <span style="font-size:.8125rem;color:#78716c">Wholesalers · Suppliers · Manufacturers</span>
-      <span style="font-size:.75rem;color:#8a6a1a;margin-top:auto">Browse &rarr;</span>
+    return `<a href="${href}" style="display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;text-decoration:none;color:inherit">
+      <span style="font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#1E1E1E">${esc(n.display_name)}</span>
+      <span style="font-size:.8125rem;color:#666">Wholesalers · Suppliers · Manufacturers</span>
+      <span style="font-size:.75rem;color:#FFC629;margin-top:auto;font-weight:700">Browse &rarr;</span>
     </a>`;
   }).join('\n');
 
@@ -279,62 +280,64 @@ function renderHomepageContent(): string {
 
   const stateGrid = statesByRegion.map(g => {
     const links = g.states.map(s =>
-      `<a href="${BASE_URL}/gold-jewelry-wholesaler-${s.state_slug}" style="font-size:.8125rem;color:#57534e;padding:.375rem .625rem;background:#fff;border:1px solid #e7e0d4;border-radius:.5rem;text-decoration:none">${esc(s.state_name)}</a>`
+      `<a href="${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}" style="font-size:.8125rem;color:#444;padding:.375rem .625rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none">${esc(s.state_name)}</a>`
     ).join('\n      ');
     return `<div style="margin-bottom:1.5rem">
-      <h3 style="font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#a8a29e;margin-bottom:.75rem">${esc(g.region)} India</h3>
-      <div style="display:flex;flex-wrap:wrap;gap:.5rem">${links}</div>
+      <h3 style="font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.125rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)} India</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">${links}</div>
     </div>`;
   }).join('\n');
 
-  return `<div style="min-height:100vh;background:#faf8f4;font-family:system-ui,sans-serif">
-  <header style="background:#fff;border-bottom:1px solid #e7e0d4;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
-    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.5rem;font-weight:700;color:#8a6a1a;text-decoration:none">Ornament</a>
-    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;font-weight:700;border-radius:.75rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} Chat on WhatsApp</a>
+  return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
+  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">Direct Factory-to-Retail Jewellery Logistics Across India — Minimum Order Value ₹5,000</div>
+  <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
+    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E;text-decoration:none"><span style="color:#FFC629">Arora</span> Group Wholesale</a>
+    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
   </header>
 
-  <section style="background:linear-gradient(to bottom right,#fffbeb,#faf8f4);padding:4rem 1.5rem;text-align:center;border-bottom:1px solid #e7e0d4">
+  <section style="background:linear-gradient(to bottom right,#fef3e2,#FFF8F0);padding:4rem 1.5rem;text-align:center;border-bottom:1px solid #e8dcc8">
     <div style="max-width:800px;margin:0 auto">
-      <span style="display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#8a6a1a;background:rgba(138,106,26,.1);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">B2B Wholesale Directory — India</span>
-      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1c1917;line-height:1.25;margin-bottom:1.5rem">Find Trusted Jewelry <span style="color:#8a6a1a">Wholesalers &amp; Suppliers</span> Across India</h1>
-      <p style="font-size:1.0625rem;color:#57534e;max-width:600px;margin:0 auto 2rem">Connecting retailers and traders with verified B2B jewelry manufacturers, wholesalers, importers and suppliers in every major Indian city and state.</p>
+      <span style="display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#1E1E1E;background:rgba(255,198,41,.2);border:1px solid rgba(255,198,41,.4);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">Direct Manufacturer &amp; Importer · B2B Wholesale · Pan-India</span>
+      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1E1E1E;line-height:1.25;margin-bottom:1.5rem">${esc(BRAND_NAME)}: <span style="color:#FFC629">Factory-Direct</span> Jewellery Supply Across India</h1>
+      <p style="font-size:1.0625rem;color:#444;max-width:640px;margin:0 auto 2rem">We are the direct manufacturer, importer, and master supply partner for 6 specialised jewellery lines — serving retailers and traders in every major Indian city with certified purity, insured logistics, and scalable custom manufacturing.</p>
       <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2rem">
-        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;font-weight:700;border-radius:.75rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">${WA_ICON} Chat on WhatsApp</a>
-        <a href="#browse" style="display:inline-flex;align-items:center;background:#fff;color:#1c1917;font-weight:600;border:1px solid #e7e0d4;border-radius:.75rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Browse by Category</a>
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
+        <a href="#product-lines" style="display:inline-flex;align-items:center;background:#fff;color:#1E1E1E;font-weight:600;border:1px solid #e8dcc8;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Our Product Lines</a>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;font-size:.875rem;color:#78716c">
-        <span>&#x2713; <strong style="color:#1c1917">3,792</strong> pages</span>
-        <span>&#x2713; <strong style="color:#1c1917">122</strong> cities</span>
-        <span>&#x2713; <strong style="color:#1c1917">36</strong> states &amp; UTs</span>
-        <span>&#x2713; <strong style="color:#1c1917">6</strong> jewelry niches</span>
+      <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;font-size:.875rem;color:#666">
+        <span>&#x2713; <strong style="color:#1E1E1E">3,792</strong> pages</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">122</strong> cities</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">36</strong> states &amp; UTs</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">6</strong> product lines</span>
+        <span>&#x2713; MOV <strong style="color:#1E1E1E">₹5,000</strong></span>
       </div>
     </div>
   </section>
 
-  <section id="browse" style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
-    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem">Browse by Jewelry Category</h2>
-    <p style="text-align:center;color:#78716c;margin-bottom:2rem">Select a niche to find wholesale partners across India</p>
+  <section id="product-lines" style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
+    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">Our 6 Specialised Product Lines</h2>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">Each line manufactured in-house — available for direct wholesale across India</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem">
       ${nicheCards}
     </div>
 
-    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem">Browse by State</h2>
-    <p style="text-align:center;color:#78716c;margin-bottom:2rem">Find verified wholesale jewelry partners in your state</p>
+    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">${esc(BRAND_NAME)} dispatches direct to retailers across all 36 Indian states and union territories</p>
     ${stateGrid}
   </section>
 
-  <section style="background:#8a6a1a;color:#fff;padding:4rem 1.5rem;text-align:center">
+  <section style="background:#1E1E1E;color:#fff;padding:4rem 1.5rem;text-align:center">
     <div style="max-width:600px;margin:0 auto">
-      <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Source Jewelry at Wholesale Prices?</h2>
-      <p style="opacity:.9;margin-bottom:2rem">Connect with our verified B2B jewelry suppliers on WhatsApp. Get catalogues, MOQ details, and pricing within minutes.</p>
-      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#25D366;color:#fff;font-weight:700;border-radius:.75rem;padding:1rem 2rem;font-size:1.0625rem;text-decoration:none">${WA_ICON} Connect Now — It's Free</a>
+      <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Source Direct from <span style="color:#FFC629">${esc(BRAND_NAME)}</span>?</h2>
+      <p style="opacity:.7;margin-bottom:2rem">MOV ₹5,000 · GST Invoice · Insured Freight · Purity Certified</p>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:1rem 2rem;font-size:1.0625rem;text-decoration:none">${WA_ICON} WhatsApp Arora Group</a>
     </div>
   </section>
 
-  <footer style="background:#fff;border-top:1px solid #e7e0d4;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#a8a29e">
-    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#8a6a1a;text-decoration:none">Ornament</a>
-    <p>India's B2B Jewelry Wholesale Directory — Connecting Buyers &amp; Sellers</p>
-    <p>&copy; 2024 Ornament. All rights reserved.</p>
+  <footer style="background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#888">
+    <a href="${BASE_URL}" style="font-family:Georgia,serif;font-size:1.125rem;font-weight:700;color:#FFC629;text-decoration:none">${esc(BRAND_NAME)}</a>
+    <p>Direct Factory-to-Retail Jewellery Supply Across India</p>
+    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
   </footer>
 </div>`;
 }
