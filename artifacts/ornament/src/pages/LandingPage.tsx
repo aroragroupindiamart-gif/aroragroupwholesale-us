@@ -66,14 +66,18 @@ export default function LandingPage() {
   const locationLabel = (page?.target_city ?? page?.target_state) ?? '';
   const nd = NICHE_DISPLAY[page?.niche_key ?? ''] ?? page?.niche_key ?? '';
   const id = page ? INTENT_DISPLAY[page.intent_type] : undefined;
+  const intentNounCap = id ? (id.noun.charAt(0).toUpperCase() + id.noun.slice(1)) : (page?.intent_type ?? '');
+  const pageTitle = page
+    ? `${BRAND_NAME} | Direct ${nd} ${intentNounCap} in ${locationLabel}`
+    : '';
   const metaDescription = page
-    ? `${BRAND_NAME} — Direct ${nd} ${id?.plural ?? (page.intent_type + 's')} serving ${locationLabel}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`
+    ? `Source viral, Pinterest-trending ${nd} direct from ${BRAND_NAME} in ${locationLabel}. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!`
     : '';
 
   // useEffect MUST be before any early returns (Rules of Hooks)
   useEffect(() => {
     if (!page) return;
-    document.title = page.title;
+    document.title = pageTitle;
 
     let descTag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!descTag) {
@@ -218,13 +222,26 @@ export default function LandingPage() {
                 {page.h1_heading}
               </h1>
               <p className="text-[#1E1E1E]/70 text-base leading-relaxed">
-                {BRAND_NAME} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for{" "}
-                <strong>{nd}</strong> serving business owners and retailers in <strong>{locationLabel}</strong>.
-                Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.
+                {BRAND_NAME} is the premier source for{" "}
+                <strong>{nd} {intentNounCap}s in {locationLabel}</strong>
+                {" "}— India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs.
+                Skip outdated stock — source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.
               </p>
             </div>
 
-            {/* (b) Founder Video */}
+            {/* (b) Content image — keyword-rich alt for NLP signals */}
+            <div className="mb-6">
+              <img
+                src="/opengraph.jpg"
+                alt={`${nd} ${intentNounCap} in ${locationLabel} by ${BRAND_NAME}`}
+                className="w-full rounded-xl shadow-sm"
+                loading="lazy"
+                width={1200}
+                height={630}
+              />
+            </div>
+
+            {/* (c) Founder Video */}
             <section className="mb-8">
               <h2 className="font-serif text-xl font-bold text-[#1E1E1E] mb-2">
                 See the Collection — Watch the Founder Showcase
@@ -381,7 +398,7 @@ export default function LandingPage() {
                       href={`/${targetSlug}`}
                       className="text-xs font-medium bg-white border border-amber-200 hover:border-[#FFC629] hover:bg-[#FFC629]/10 text-[#1E1E1E] px-3 py-1.5 rounded-full transition-colors"
                     >
-                      {name}
+                      {name} {intentNounCap} in {locationLabel}
                     </Link>
                   );
                 })}

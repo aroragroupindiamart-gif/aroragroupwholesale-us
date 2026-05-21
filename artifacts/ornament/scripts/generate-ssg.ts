@@ -78,6 +78,13 @@ const INTENT_PLURAL: Record<string, string> = {
   importer: 'importers',
 };
 
+const INTENT_NOUN: Record<string, string> = {
+  wholesaler: 'Wholesaler',
+  supplier: 'Supplier',
+  manufacturer: 'Manufacturer',
+  importer: 'Importer',
+};
+
 const REGION_ORDER = ['North', 'South', 'West', 'East', 'Central', 'North-East'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -147,8 +154,12 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const waUrl = waLink(page.niche_key, page.intent_type, location);
   const canonicalUrl = `${BASE_URL}/${page.slug}`;
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
-  const metaDesc = `${BRAND_NAME} — Direct ${nd} ${ip} serving ${esc(location)}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`;
+  const in_noun = INTENT_NOUN[page.intent_type] ?? (page.intent_type.charAt(0).toUpperCase() + page.intent_type.slice(1));
+  const seoTitle = `${BRAND_NAME} | Direct ${nd} ${in_noun} in ${location}`;
+  const metaDesc = `Source viral, Pinterest-trending ${nd} direct from ${BRAND_NAME} in ${location}. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!`;
   const faqs = buildFaqs(nd, location);
+
+  const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
 
   const relatedCityLinks = page.related_city_pages.map(r =>
     `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
@@ -159,11 +170,17 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   ).join('\n          ');
 
   const intentLinks = ['wholesaler', 'supplier', 'manufacturer', 'importer'].map(intent => {
-    const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
     const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
     const active = intent === page.intent_type ? ' class="active"' : '';
     return `<a href="${BASE_URL}/${esc(targetSlug)}"${active}>${intent}s</a>`;
   }).join('\n          ');
+
+  const otherNicheLinks = Object.entries(NICHE_DESC)
+    .filter(([k]) => k !== page.niche_key)
+    .map(([k, name]) => {
+      const s = `${k}-${page.intent_type}-${locationSlug}`;
+      return `<a href="${BASE_URL}/${esc(s)}">${esc(name)} ${esc(in_noun)} in ${esc(location)}</a>`;
+    }).join('\n          ');
 
   const reviewStripHtml = '<div style="margin-bottom:1.75rem">'
     + '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.875rem">'
@@ -185,10 +202,10 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${esc(page.title)}</title>
+  <title>${esc(seoTitle)}</title>
   <meta name="description" content="${esc(metaDesc)}">
   <link rel="canonical" href="${canonicalUrl}">
-  <meta property="og:title" content="${esc(page.title)}">
+  <meta property="og:title" content="${esc(seoTitle)}">
   <meta property="og:description" content="${esc(metaDesc)}">
   <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:type" content="website">
@@ -196,7 +213,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${esc(page.title)}">
+  <meta name="twitter:title" content="${esc(seoTitle)}">
   <meta name="twitter:description" content="${esc(metaDesc)}">
   <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
   <style>${SHARED_CSS}
@@ -292,7 +309,8 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     <div class="content-body">
       <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Premium Importer</span>
       <h1>${esc(page.h1_heading)}</h1>
-      <p class="lead">${esc(BRAND_NAME)} is the <strong>Direct Importer &amp; Trend Wholesaler</strong> for <strong>${esc(nd)}</strong> serving business owners and retailers in <strong>${esc(location)}</strong>. Skip outdated stock — source globally-imported, Pinterest-trending designs with certified purity, insured freight, and a low MOV of ₹3,000 with no item-level restrictions.</p>
+      <p class="lead">${esc(BRAND_NAME)} is the premier source for <strong>${esc(nd)} ${esc(in_noun)}s in ${esc(location)}</strong> — India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs. Source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.</p>
+      <img loading="lazy" src="/opengraph.jpg" alt="${esc(nd)} ${esc(in_noun)} in ${esc(location)} by ${esc(BRAND_NAME)}" style="width:100%;border-radius:.75rem;margin-bottom:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.08)">
       <h2 class="section-h">See the Collection — Watch the Founder Showcase</h2>
       <p style="font-size:.875rem;color:#666;margin-bottom:.875rem">${esc(BRAND_NAME)}'s founder walks through the full ${esc(nd)} range available for wholesale to ${esc(location)} retailers.</p>
       <div style="position:relative;padding-bottom:56.25%;border-radius:.75rem;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);margin-bottom:2rem">
@@ -315,6 +333,8 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       ${faqs.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n      ')}
+      <p class="section-label" style="margin-top:1.5rem">Other ${esc(BRAND_NAME)} Product Lines in ${esc(location)}</p>
+      <div class="related-grid">${otherNicheLinks}</div>
       ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
       <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
     </div>

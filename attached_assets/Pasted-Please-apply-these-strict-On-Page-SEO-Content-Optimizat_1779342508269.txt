@@ -1,0 +1,27 @@
+Please apply these strict On-Page SEO Content Optimization rules to the dynamic page generation template (`app/[state]/[place]/[service]/page.tsx`). Ensure every generated page matches these exact keyword density and metadata standards:
+
+---
+
+## 1. META TITLE & DESCRIPTION INJECTION (The SERP CTR Hook)
+Dynamically generate the page metadata using this exact formula to maximize click-through rates from Google search results:
+- **Meta Title:** "Arora Group Wholesale | Direct [Service Name] in [City Name]"
+  - *Example:* "Arora Group Wholesale | Direct Fashion Jewellery Wholesaler in Gurgaon"
+- **Meta Description:** "Source viral, Pinterest-trending [Product Line] direct from Arora Group Wholesale in [City Name]. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!"
+
+---
+
+## 2. KEYWORD PLACEMENT HIERARCHY (On-Page NLP Optimization)
+To ensure Google's Natural Language Processing (NLP) algorithms index the page for your exact target keywords, place the variables strictly in these HTML block areas:
+- **The First 100 Words:** The target keyword string (e.g., "anti tarnish jewellery supplier") must appear naturally in bold (`**...**`) within the first two sentences of the introductory paragraph alongside the location names.
+- **H2 Image Alt Text:** Ensure that at least one decorative vector or image asset in the content body uses the exact string `[Service Name] in [City Name] by Arora Group Wholesale` inside its `alt=""` parameter.
+
+---
+
+## 3. INTERNAL LINKING STRUCTURE (Crawl Depth Minimization)
+To pass SEO authority ("link juice") smoothly across your 2,928 pages, optimize the cross-linking footer matrix:
+- Ensure the 5 alternative jewelry lines in that city and 5 neighboring cities use absolute, clean URLs without trailing slashes.
+- The anchor text for these internal links must explicitly state the targeted keyword variant (e.g., Anchor Text: "Korean Jewellery Wholesaler in Noida") rather than generic terms like "Click here" or "View more".
+
+---
+
+Execute these content-level On-Page optimization steps across the page compiler component immediately.
