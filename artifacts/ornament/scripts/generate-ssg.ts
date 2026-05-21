@@ -110,6 +110,33 @@ footer{background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;margin-t
 footer .logo{font-size:1.125rem;color:#FFC629}
 `;
 
+// ── FAQ builder (mirrors LandingPage.tsx FAQS() — must stay in sync) ───────
+
+function buildFaqs(nd: string, location: string): Array<{ q: string; a: string }> {
+  return [
+    {
+      q: `What are the corporate purchasing terms for ${nd} from ${BRAND_NAME}?`,
+      a: `${BRAND_NAME} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.`,
+    },
+    {
+      q: `What metal purity certifications does ${BRAND_NAME} provide for ${nd}?`,
+      a: `Every ${nd} piece from our factory carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch and available for retailer audit at any time.`,
+    },
+    {
+      q: `Can ${BRAND_NAME} handle custom wholesale design processing for ${location} retailers?`,
+      a: `Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days depending on complexity. Samples are dispatched within 5 working days upon approval of design confirmation.`,
+    },
+    {
+      q: `How does ${BRAND_NAME} handle logistics and insurance for deliveries to ${location}?`,
+      a: `All shipments to ${location} are dispatched via fully insured air freight or tracked surface courier. Packages include transit insurance up to invoice value. ${BRAND_NAME} partners with BlueDart, Delhivery, and Ecom Express for last-mile delivery. Standard delivery timelines are 3–7 working days from dispatch.`,
+    },
+    {
+      q: `What is the minimum order value and how do I place a wholesale inquiry?`,
+      a: `The Minimum Order Value (MOV) for ${BRAND_NAME} wholesale supply is just ₹3,000 per invoice — with zero item-level MOQ, freely mix and match rings, anklets, necklaces, or any category. To place an inquiry, WhatsApp us your business name, GST number, required ${nd} category, and approximate quantity. Our team will respond within 4 business hours.`,
+    },
+  ];
+}
+
 // ── Page template (slug pages) ─────────────────────────────────────────────
 
 function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
@@ -121,6 +148,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const canonicalUrl = `${BASE_URL}/${page.slug}`;
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
   const metaDesc = `${BRAND_NAME} — Direct ${nd} ${ip} serving ${esc(location)}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`;
+  const faqs = buildFaqs(nd, location);
 
   const relatedCityLinks = page.related_city_pages.map(r =>
     `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
@@ -208,7 +236,45 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     .intent-list a:hover{background:#fef3e2;color:#1E1E1E;text-decoration:none}
     .intent-list a.active{background:rgba(255,198,41,.18);border:1px solid rgba(255,198,41,.45);font-weight:600;color:#1E1E1E;pointer-events:none;cursor:default}
   </style>
-  <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@graph":[{"@type":"WholesaleStore","name":BRAND_NAME,"description":metaDesc,"url":canonicalUrl,"telephone":"+"+WHATSAPP_NUMBER,"areaServed":location,"address":{"@type":"PostalAddress","addressLocality":location,"addressCountry":"IN"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE_URL},{"@type":"ListItem","position":2,"name":page.target_state,"item":BASE_URL+"/"+statePage}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the minimum order value?","acceptedAnswer":{"@type":"Answer","text":"The minimum order value (MOV) for "+BRAND_NAME+" wholesale supply is ₹3,000 per invoice, with no item-level MOQ — mix and match any designs freely."}}]}]})}</script>
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WholesaleStore",
+        "@id": `${canonicalUrl}#store`,
+        name: BRAND_NAME,
+        description: metaDesc,
+        url: canonicalUrl,
+        telephone: `+${WHATSAPP_NUMBER}`,
+        areaServed: location,
+        priceRange: "₹₹",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: location,
+          addressRegion: page.target_state,
+          addressCountry: "IN",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}` },
+          ...(page.target_city
+            ? [{ "@type": "ListItem", position: 3, name: page.target_city, item: canonicalUrl }]
+            : []),
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faqs.map(({ q, a }) => ({
+          "@type": "Question",
+          name: q,
+          acceptedAnswer: { "@type": "Answer", text: a },
+        })),
+      },
+    ],
+  })}</script>
 </head>
 <body>
   <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}</div>
@@ -248,11 +314,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer and trend scout supplying ${esc(location)}'s most forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping business owners cash in on fast-moving social media jewelry trends before they fade.</p>
       <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
-      <details><summary>What are the corporate purchasing terms?</summary><p>${esc(BRAND_NAME)} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.</p></details>
-      <details><summary>What metal purity certifications are provided?</summary><p>Every ${esc(nd)} piece carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch.</p></details>
-      <details><summary>Can ${esc(BRAND_NAME)} handle custom wholesale design processing?</summary><p>Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days.</p></details>
-      <details><summary>How does ${esc(BRAND_NAME)} handle logistics and insurance to ${esc(location)}?</summary><p>All shipments to ${esc(location)} are dispatched via <strong>fully insured transit insurance</strong> air freight or tracked surface courier. Packages include transit insurance up to invoice value, dispatched via <strong>BlueDart, Delhivery, and Ecom Express</strong>. Standard delivery timelines are <strong>3–7 working days</strong> from dispatch. All orders include a <strong>GST-compliant B2B invoice</strong>.</p></details>
-      <details><summary>What is the minimum order value and how do I place an inquiry?</summary><p>The Minimum Order Value (MOV) is just ₹3,000 per invoice — with zero item-level MOQ, freely mix and match rings, anklets, necklaces, or any category. WhatsApp us your business name, GST number, required category, and quantity. Our team will respond within 4 business hours with a catalogue and price list.</p></details>
+      ${faqs.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n      ')}
       ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
       <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
     </div>

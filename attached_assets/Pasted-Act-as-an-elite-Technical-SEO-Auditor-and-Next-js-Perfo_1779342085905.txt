@@ -1,0 +1,45 @@
+Act as an elite Technical SEO Auditor and Next.js Performance Engineer. Run a comprehensive check across our entire codebase to ensure 100% SEO compliance for our programmatic network. Implement the following critical On-Page and Technical SEO standards across all dynamic routes (`app/[state]/[place]/[service]/page.tsx`, layouts, and sitemaps).
+
+---
+
+## 1. CANONICAL URL INTEGRITY (Prevent Index Bloat)
+- **Check:** Every single page must have a self-referencing canonical URL tag in its HTML `<head>` block to avoid duplicate content penalties from tracking variables or trailing slashes.
+- **Action:** Implement a dynamic metadata generator that reads the current `[state]`, `[place]`, and `[service]` parameters and injects:
+  `<link rel="canonical" href="https://www.aroragroupwholesale.com/${state}/${place}/${service}" />`
+
+---
+
+## 2. ROBOTS.TS & SITEMAP CACHE HEADERS (Crawl Optimization)
+- **Check:** Search engine spiders (Googlebot) must be able to crawl our 2,928 pages efficiently without running out of crawl budget.
+- **Action:** Ensure `app/robots.ts` cleanly routes to `https://www.aroragroupwholesale.com/sitemap.xml`.
+- **Action:** Verify that `app/sitemap/[state]/route.ts` serves pages with a strict header:
+  `'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400'`
+  This ensures our sitemaps are lightning-fast static XML outputs and don't re-render on every bot hit.
+
+---
+
+## 3. IMAGE SEO (Next.js Optimization)
+- **Check:** Are all icons and images optimized for Core Web Vitals (Largest Contentful Paint)?
+- **Action:** Verify that no raw `<img>` tags are used for core design visual blocks. Force the use of the native Next.js `<Image />` component with pre-defined dimensions or `fill` attributes to completely eliminate layout shifts (CLS).
+- **Action:** Ensure every decorative icon or product category image has a descriptive, keyword-rich `alt` attribute (e.g., alt="Trending anti-tarnish rings wholesale from Arora Group").
+
+---
+
+## 4. SEMANTIC HTML & HEADING HIERARCHY
+- **Check:** Is the page logically structured for search engine web crawlers?
+- **Action:** Enforce strict semantic compliance:
+  - Exactly **one** `<h1>` per page (The main viral title).
+  - Use `<h2>` elements for major content divisions ("100% Tarnish-Free Guarantee", "Wholesale FAQ").
+  - Use `<h3>` or `<h4>` elements strictly inside card containers or nested accordion items.
+  - Never skip heading levels (e.g., jumping from an H1 directly to an H3).
+
+---
+
+## 5. RE-VERIFY JSON-LD SCHEMA STRUCTURING
+- **Check:** Are the structured data snippets correctly communicating our brand values?
+- **Action:** Review the `FAQPage` schema object. Ensure it pulls the exact text dynamically from our deterministic spintax generator, matching the visible `<details>` accordions on the page byte-for-byte.
+- **Action:** Review the `WholesaleStore` schema. Ensure it lists `Arora Group Wholesale` as the primary entity and passes the specific `[City Name]` into the schema's `areaServed` property.
+
+---
+
+Audit the entire code structure against these parameters. If any technical gaps are found in our layouts, page headers, or sitemap generation logic, patch them immediately to guarantee absolute ranking compliance.

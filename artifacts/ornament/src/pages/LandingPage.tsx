@@ -62,19 +62,19 @@ export default function LandingPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: page, isLoading, isError } = useGetPage(slug ?? "");
 
-  if (isLoading) return <PageSkeleton />;
-  if (isError || !page) return <NotFound />;
+  // Derive meta values before early returns so hook call order is always stable
+  const locationLabel = (page?.target_city ?? page?.target_state) ?? '';
+  const nd = NICHE_DISPLAY[page?.niche_key ?? ''] ?? page?.niche_key ?? '';
+  const id = page ? INTENT_DISPLAY[page.intent_type] : undefined;
+  const metaDescription = page
+    ? `${BRAND_NAME} — Direct ${nd} ${id?.plural ?? (page.intent_type + 's')} serving ${locationLabel}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`
+    : '';
 
-  const locationLabel = page.target_city ?? page.target_state;
-  const nd = NICHE_DISPLAY[page.niche_key] ?? page.niche_key;
-  const id = INTENT_DISPLAY[page.intent_type];
-  const waUrl = getWaUrl(page.niche_key, locationLabel);
-  const faqs = FAQS(page.niche_key, locationLabel);
-
-  const metaDescription = `${BRAND_NAME} — Direct ${nd} ${id?.plural ?? page.intent_type + 's'} serving ${locationLabel}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`;
-
+  // useEffect MUST be before any early returns (Rules of Hooks)
   useEffect(() => {
+    if (!page) return;
     document.title = page.title;
+
     let descTag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!descTag) {
       descTag = document.createElement('meta');
@@ -82,7 +82,21 @@ export default function LandingPage() {
       document.head.appendChild(descTag);
     }
     descTag.content = metaDescription;
-  }, [page.title, metaDescription]);
+
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = `${SITE_URL}/${page.slug}`;
+  }, [page, metaDescription]);
+
+  if (isLoading) return <PageSkeleton />;
+  if (isError || !page) return <NotFound />;
+
+  const waUrl = getWaUrl(page.niche_key, locationLabel);
+  const faqs = FAQS(page.niche_key, locationLabel);
 
   const otherNiches = Object.entries(NICHE_DISPLAY)
     .filter(([k]) => k !== page.niche_key)
