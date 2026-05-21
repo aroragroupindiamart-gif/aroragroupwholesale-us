@@ -39,3 +39,4 @@ externalPort = 3000
 
 [userenv.shared]
 VITE_WHATSAPP_NUMBER = "+918368484361"
+NETLIFY_SITE_ID = "613d7df7-05fb-4e7d-bb36-65c70007143e"
