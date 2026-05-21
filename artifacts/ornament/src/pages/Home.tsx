@@ -1,7 +1,9 @@
+import { useState, useRef } from "react";
 import { Link } from "wouter";
 import { useListNiches, useListStates } from "@workspace/api-client-react";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
 import SiteFooter from "@/components/SiteFooter";
+import { useCitySearch } from "@/hooks/use-city-search";
 
 const WHATSAPP_MSG = `Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
 
@@ -35,6 +37,12 @@ function WhatsAppButton({ className = "" }: { className?: string }) {
 export default function Home() {
   const { data: niches, isLoading: nichesLoading } = useListNiches();
   const { data: states, isLoading: statesLoading } = useListStates();
+
+  const [cityQuery, setCityQuery] = useState("");
+  const [selectedCity, setSelectedCity] = useState({ name: "New Delhi", slug: "new-delhi" });
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { results: cityResults, isLoading: citiesLoading } = useCitySearch(cityQuery);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const statesByRegion = REGION_ORDER.map((region) => ({
     region,
@@ -145,9 +153,58 @@ export default function Home() {
         <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] text-center mb-2">
           Our 6 Specialised Product Lines
         </h2>
-        <p className="text-[#1E1E1E]/60 text-center mb-10">
+        <p className="text-[#1E1E1E]/60 text-center mb-8">
           Each line manufactured in-house with certified purity standards — available for direct wholesale across India
         </p>
+
+        {/* ── City search widget ── */}
+        <div className="max-w-sm mx-auto mb-10 relative">
+          <label htmlFor="city-search" className="block text-sm font-medium text-[#1E1E1E]/70 text-center mb-2">
+            Find suppliers in your city
+          </label>
+          <div className="relative">
+            <input
+              id="city-search"
+              ref={inputRef}
+              type="text"
+              autoComplete="off"
+              value={cityQuery}
+              placeholder={selectedCity.name}
+              onChange={(e) => { setCityQuery(e.target.value); setShowSuggestions(true); }}
+              onFocus={() => { if (cityQuery) setShowSuggestions(true); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              className="w-full border border-amber-300 rounded-xl px-4 py-2.5 pr-10 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#FFC629] placeholder-[#1E1E1E]/40"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1E1E1E]/30 pointer-events-none text-base">
+              {citiesLoading ? "⏳" : "🔍"}
+            </span>
+            {showSuggestions && cityResults.length > 0 && (
+              <ul className="absolute z-50 top-full mt-1 w-full bg-white border border-amber-200 rounded-xl shadow-lg overflow-hidden">
+                {cityResults.map((c) => (
+                  <li key={c.city_slug}>
+                    <button
+                      type="button"
+                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-amber-50 text-[#1E1E1E] transition-colors"
+                      onMouseDown={() => {
+                        setSelectedCity({ name: c.city_name, slug: c.city_slug });
+                        setCityQuery("");
+                        setShowSuggestions(false);
+                        inputRef.current?.blur();
+                      }}
+                    >
+                      {c.city_name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <p className="text-xs text-center text-[#1E1E1E]/40 mt-2">
+            Showing results for{" "}
+            <strong className="text-[#1E1E1E]/60">{selectedCity.name}</strong>
+          </p>
+        </div>
+
         {nichesLoading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {Array.from({ length: 6 }).map((_, i) => (
@@ -158,7 +215,7 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {(niches ?? []).map((niche) => {
               const icon = NICHE_ICONS[niche.niche_key] ?? "💍";
-              const exampleSlug = `${niche.niche_key}-wholesaler-jaipur`;
+              const exampleSlug = `${niche.niche_key}-wholesaler-${selectedCity.slug}`;
               return (
                 <Link
                   key={niche.niche_key}
@@ -183,7 +240,7 @@ export default function Home() {
           {INTENT_LABELS.map((intent) => (
             <Link
               key={intent.key}
-              href={`/korean-jewellery-${intent.key}-jaipur`}
+              href={`/korean-jewellery-${intent.key}-${selectedCity.slug}`}
               data-testid={`link-intent-${intent.key}`}
               className="px-4 py-1.5 rounded-full border border-amber-200 bg-white text-sm text-[#1E1E1E]/60 hover:border-[#FFC629] hover:text-[#1E1E1E] transition-colors"
             >

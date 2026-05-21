@@ -4,6 +4,7 @@ import {
   getAllSlugs,
   getAllStates,
   getAllNiches,
+  searchCities,
 } from '../lib/ornamentDb.js';
 
 const router = Router();
@@ -49,6 +50,21 @@ router.get('/niches', (_req, res) => {
     res.json(niches);
   } catch (err) {
     res.status(500).json({ error: 'Failed to load niches' });
+  }
+});
+
+// GET /api/cities?q=search_term — search cities by name (up to 8 results)
+router.get('/cities', (req, res) => {
+  try {
+    const q = String(req.query.q ?? '').trim();
+    if (q.length < 1) {
+      res.json([]);
+      return;
+    }
+    const cities = searchCities(q);
+    res.json(cities);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to search cities' });
   }
 });
 

@@ -187,3 +187,23 @@ export function getAllStates(): StateInfo[] {
 export function getAllNiches(): NicheInfo[] {
   return Object.entries(NICHE_DISPLAY).map(([niche_key, display_name]) => ({ niche_key, display_name }));
 }
+
+export interface CityResult {
+  city_name: string;
+  city_slug: string;
+}
+
+export function searchCities(query: string, limit = 8): CityResult[] {
+  const like = `%${query}%`;
+  return getDb().prepare(`
+    SELECT target_city AS city_name,
+           substr(slug, length(niche_key) + length(intent_type) + 3) AS city_slug
+    FROM programmatic_pages
+    WHERE page_type = 'city'
+      AND niche_key  = 'korean-jewellery'
+      AND intent_type = 'wholesaler'
+      AND target_city LIKE ?
+    ORDER BY target_city
+    LIMIT ?
+  `).all(like, limit) as CityResult[];
+}
