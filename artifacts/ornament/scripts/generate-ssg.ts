@@ -164,6 +164,13 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <meta property="og:description" content="${esc(metaDesc)}">
   <meta property="og:url" content="${canonicalUrl}">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="${BASE_URL}/opengraph.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(page.title)}">
+  <meta name="twitter:description" content="${esc(metaDesc)}">
+  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
   <style>${SHARED_CSS}
     nav.breadcrumb{background:#fef3e2;border-bottom:1px solid #e8dcc8;padding:.5rem 1.5rem;font-size:.75rem;color:#666;display:flex;gap:.5rem;flex-wrap:wrap}
     main{max-width:1024px;margin:0 auto;padding:2.5rem 1.5rem;display:grid;grid-template-columns:1fr 280px;gap:2rem}

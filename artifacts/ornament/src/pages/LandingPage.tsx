@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { useGetPage } from "@workspace/api-client-react";
 import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
@@ -69,6 +70,19 @@ export default function LandingPage() {
   const id = INTENT_DISPLAY[page.intent_type];
   const waUrl = getWaUrl(page.niche_key, locationLabel);
   const faqs = FAQS(page.niche_key, locationLabel);
+
+  const metaDescription = `${BRAND_NAME} — Direct ${nd} ${id?.plural ?? page.intent_type + 's'} serving ${locationLabel}. Premium imported, Pinterest-trending designs with certified purity, insured logistics, and low MOV ₹3,000 — no item-level MOQ.`;
+
+  useEffect(() => {
+    document.title = page.title;
+    let descTag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!descTag) {
+      descTag = document.createElement('meta');
+      descTag.name = 'description';
+      document.head.appendChild(descTag);
+    }
+    descTag.content = metaDescription;
+  }, [page.title, metaDescription]);
 
   const otherNiches = Object.entries(NICHE_DISPLAY)
     .filter(([k]) => k !== page.niche_key)
