@@ -1,0 +1,19 @@
+[build]
+  publish = "artifacts/ornament/dist/public"
+  command = "pnpm --filter @workspace/api-server run seed && pnpm --filter @workspace/ornament run build"
+
+[[headers]]
+  for = "/cities.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/sitemap*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
