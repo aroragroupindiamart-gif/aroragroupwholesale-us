@@ -1,4 +1,5 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useBrowserLocation } from "wouter/use-browser-location";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,14 @@ import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import LandingPage from "@/pages/LandingPage";
+
+function useNormalizedLocation() {
+  const [location, navigate] = useBrowserLocation();
+  const normalized = location !== "/" && location.endsWith("/")
+    ? location.slice(0, -1)
+    : location;
+  return [normalized, navigate] as ReturnType<typeof useBrowserLocation>;
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +42,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+        <WouterRouter hook={useNormalizedLocation} base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Router />
         </WouterRouter>
         <Toaster />

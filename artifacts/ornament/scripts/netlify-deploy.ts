@@ -143,7 +143,23 @@ if (failed.length) {
 
 console.log(`✅ Uploaded ${uploaded} files`);
 
-// ── publish to production ──────────────────────────────────────────────────
+// ── wait for processing then publish ──────────────────────────────────────
+
+console.log('⏳ Waiting for deploy to finish processing…');
+let deployState = '';
+for (let i = 0; i < 60; i++) {
+  await new Promise(r => setTimeout(r, 5000));
+  const status = await netlify('GET', `/deploys/${deploy.id}`) as { state: string };
+  deployState = status.state;
+  process.stdout.write(`\r   state: ${deployState}   `);
+  if (deployState === 'ready' || deployState === 'error') break;
+}
+process.stdout.write('\n');
+
+if (deployState !== 'ready') {
+  console.error(`❌ Deploy ended in state: ${deployState}`);
+  process.exit(1);
+}
 
 console.log('🚀 Publishing to production…');
 const published = await netlify('POST', `/sites/${SITE_ID}/deploys/${deploy.id}/restore`) as {
