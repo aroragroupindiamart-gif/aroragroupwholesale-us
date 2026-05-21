@@ -45,6 +45,7 @@ const {
   getRelatedStatePages,
   getAllNiches,
   getAllStates,
+  getAllCities,
 } = await import('../../api-server/src/lib/ornamentDb.js');
 
 // ── Sanity checks ──────────────────────────────────────────────────────────
@@ -653,5 +654,13 @@ ${allSitemapFiles.map(f => `  <sitemap>
 </sitemapindex>`;
 writeFileSync(path.join(SITEMAP_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
 console.log('✅ sitemap.xml written with', allSitemapFiles.length, 'regional sitemaps.');
+
+// ── Export cities.json for client-side search (no runtime API needed) ──────
+writeFileSync(
+  path.join(OUT_DIR, 'cities.json'),
+  JSON.stringify(getAllCities()),
+  'utf-8',
+);
+console.log('✅ cities.json written.');
 
 console.log('\n🎉 SSG complete.');

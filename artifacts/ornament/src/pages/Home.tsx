@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "wouter";
-import { useListNiches, useListStates } from "@workspace/api-client-react";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
+import { STATES } from "@/lib/staticData";
 import SiteFooter from "@/components/SiteFooter";
 import { useCitySearch } from "@/hooks/use-city-search";
 
@@ -34,20 +34,18 @@ function WhatsAppButton({ className = "" }: { className?: string }) {
   );
 }
 
-export default function Home() {
-  const { data: niches, isLoading: nichesLoading } = useListNiches();
-  const { data: states, isLoading: statesLoading } = useListStates();
+const NICHES = Object.entries(NICHE_DISPLAY).map(([niche_key, display_name]) => ({ niche_key, display_name }));
+const STATES_BY_REGION = REGION_ORDER.map((region) => ({
+  region,
+  states: STATES.filter((s) => s.region === region),
+})).filter((g) => g.states.length > 0);
 
+export default function Home() {
   const [cityQuery, setCityQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState({ name: "New Delhi", slug: "new-delhi" });
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { results: cityResults, isLoading: citiesLoading } = useCitySearch(cityQuery);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const statesByRegion = REGION_ORDER.map((region) => ({
-    region,
-    states: (states ?? []).filter((s) => s.region === region),
-  })).filter((g) => g.states.length > 0);
 
   return (
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">
@@ -205,15 +203,8 @@ export default function Home() {
           </p>
         </div>
 
-        {nichesLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-36 bg-amber-100 animate-pulse rounded-xl" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {(niches ?? []).map((niche) => {
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {NICHES.map((niche) => {
               const icon = NICHE_ICONS[niche.niche_key] ?? "💍";
               const exampleSlug = `${niche.niche_key}-wholesaler-${selectedCity.slug}`;
               return (
@@ -233,7 +224,6 @@ export default function Home() {
               );
             })}
           </div>
-        )}
 
         {/* Supply type sub-links */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
@@ -259,11 +249,8 @@ export default function Home() {
           <p className="text-[#1E1E1E]/60 text-center mb-10">
             {BRAND_NAME} dispatches direct to retailers across all 36 Indian states and union territories
           </p>
-          {statesLoading ? (
-            <div className="h-48 bg-amber-50 animate-pulse rounded-xl" />
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {statesByRegion.map(({ region, states: regionStates }) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {STATES_BY_REGION.map(({ region, states: regionStates }) => (
                 <div key={region} className="bg-[#FFF8F0] border border-amber-200 rounded-xl p-5">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC629] mb-3 bg-[#1E1E1E] inline-block px-2 py-0.5 rounded">
                     {region} India
@@ -284,7 +271,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          )}
         </div>
       </section>
 

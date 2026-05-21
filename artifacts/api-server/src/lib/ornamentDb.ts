@@ -207,3 +207,15 @@ export function searchCities(query: string, limit = 8): CityResult[] {
     LIMIT ?
   `).all(like, limit) as CityResult[];
 }
+
+export function getAllCities(): CityResult[] {
+  return getDb().prepare(`
+    SELECT target_city AS city_name,
+           substr(slug, length(niche_key) + length(intent_type) + 3) AS city_slug
+    FROM programmatic_pages
+    WHERE page_type = 'city'
+      AND niche_key  = 'korean-jewellery'
+      AND intent_type = 'wholesaler'
+    ORDER BY target_city
+  `).all() as CityResult[];
+}
