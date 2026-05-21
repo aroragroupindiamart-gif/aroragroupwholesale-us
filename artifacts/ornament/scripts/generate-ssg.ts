@@ -617,6 +617,11 @@ for (const entry of slugEntries) {
   mkdirSync(pageDir, { recursive: true });
   writeFileSync(path.join(pageDir, 'index.html'), html, 'utf-8');
 
+  // Write per-page JSON so the React SPA can load data without the API server
+  const pagesJsonDir = path.join(OUT_DIR, 'pages');
+  mkdirSync(pagesJsonDir, { recursive: true });
+  writeFileSync(path.join(pagesJsonDir, `${entry.slug}.json`), JSON.stringify(page), 'utf-8');
+
   const bucket = BUCKET_MAP[entry.region] ?? 'east-central';
   buckets[bucket].push(entry.slug);
 

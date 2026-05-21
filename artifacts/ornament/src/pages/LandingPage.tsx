@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams, Link } from "wouter";
-import { useGetPage } from "@workspace/api-client-react";
+import { useStaticPage } from "@/hooks/use-static-page";
 import { ArrowLeft, MapPin, Globe, Droplets, TrendingUp, ShoppingCart } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_DISPLAY, INTENT_DISPLAY, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
@@ -60,7 +60,7 @@ const FAQS = (niche: string, city: string) => {
 
 export default function LandingPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: page, isLoading, isError } = useGetPage(slug ?? "");
+  const { data: page, isLoading, isError } = useStaticPage(slug ?? "");
 
   // Derive meta values before early returns so hook call order is always stable
   const locationLabel = (page?.target_city ?? page?.target_state) ?? '';

@@ -21,7 +21,7 @@ const DIST_DIR   = path.join(__dirname, '..', 'dist', 'public');
 const API        = 'https://api.netlify.com/api/v1';
 const SITE_ID    = process.env.NETLIFY_SITE_ID!;
 const TOKEN      = process.env.NETLIFY_AUTH_TOKEN!;
-const CONCURRENCY = 6;
+const CONCURRENCY = 20;
 
 if (!TOKEN)   { console.error('❌ NETLIFY_AUTH_TOKEN not set'); process.exit(1); }
 if (!SITE_ID) { console.error('❌ NETLIFY_SITE_ID not set');    process.exit(1); }
