@@ -170,7 +170,7 @@ export default function LandingPage() {
       <header className="border-b border-amber-200 bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" data-testid="link-home-logo">
-            <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-10 w-auto" />
+            <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-12 w-auto" />
           </Link>
           <a
             href={waUrl}
