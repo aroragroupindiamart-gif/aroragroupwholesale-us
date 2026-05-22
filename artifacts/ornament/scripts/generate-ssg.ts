@@ -217,6 +217,9 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   <meta name="twitter:title" content="${esc(seoTitle)}">
   <meta name="twitter:description" content="${esc(metaDesc)}">
   <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="google-site-verification" content="v1c9Cv2vYIXuW9jdlRh1U4fjwr9emd1BYjdeq-1ioh0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2746J0JPD8"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2746J0JPD8');</script>
   <style>${SHARED_CSS}
     nav.breadcrumb{background:#fef3e2;border-bottom:1px solid #e8dcc8;padding:.5rem 1.5rem;font-size:.75rem;color:#666;display:flex;gap:.5rem;flex-wrap:wrap}
     main{max-width:1024px;margin:0 auto;padding:2.5rem 1.5rem;display:grid;grid-template-columns:1fr 280px;gap:2rem}
