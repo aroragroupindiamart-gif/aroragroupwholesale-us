@@ -153,7 +153,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const ip = INTENT_PLURAL[page.intent_type] ?? `${page.intent_type}s`;
   const location = page.target_city ?? page.target_state;
   const waUrl = waLink(page.niche_key, page.intent_type, location);
-  const canonicalUrl = `${BASE_URL}/${page.slug}`;
+  const canonicalUrl = `${BASE_URL}/${page.slug}/`;
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
   const in_noun = INTENT_NOUN[page.intent_type] ?? (page.intent_type.charAt(0).toUpperCase() + page.intent_type.slice(1));
   const seoTitle = `${BRAND_NAME} | Direct ${nd} ${in_noun} in ${location}`;
