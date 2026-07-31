@@ -13,7 +13,7 @@ const getEnv = (key: string): string | undefined => {
 export const BRAND_ID = getEnv('VITE_BRAND_ID') || 'aroragroupwholesale';
 export const BRAND_NAME = getEnv('VITE_BRAND_NAME') || 'Arora Group Wholesale';
 export const SITE_URL = (getEnv('VITE_SITE_URL') || 'https://www.aroragroupwholesale.com').replace(/\/$/, '');
-export const WHATSAPP_NUMBER = (getEnv('VITE_WHATSAPP_NUMBER') || '919999999999').replace(/\D/g, '');
+export const WHATSAPP_NUMBER = (getEnv('VITE_WHATSAPP_NUMBER') || '918368484361').replace(/\D/g, '');
 export const FOUNDER_VIDEO_ID = getEnv('VITE_FOUNDER_VIDEO_ID') || '2J4ztUw796I';
 
 export const TOP_BANNER = getEnv('VITE_TOP_BANNER') || "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000";

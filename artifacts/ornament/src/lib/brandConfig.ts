@@ -1,5 +1,5 @@
 export { BRAND_NAME, SITE_URL, FOUNDER_VIDEO_ID, REVIEWS, ADDRESS, PHONE, GOOGLE_MAPS_URL, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL, TOP_BANNER, HERO_BADGE, HERO_TITLE, HERO_DESCRIPTION, ABOUT_TITLE, ABOUT_STORY } from './brandConstants';
-export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '919999999999').replace(/\D/g, '');
+export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '918368484361').replace(/\D/g, '');
 
 export const NICHE_DISPLAY: Record<string, string> = {
   'korean-jewellery': 'Korean Jewellery',

@@ -37,7 +37,7 @@ if (existsSync(brandJsonPath)) {
     id: brandId,
     brandName: args.name,
     siteUrl: args.domain,
-    whatsappNumber: args.wa || '919999999999',
+    whatsappNumber: args.wa || '918368484361',
     phone: args.phone || '+91 99999 99999',
     address: args.address || 'India',
   };
