@@ -1,0 +1,33 @@
+{
+  "id": "example-domain2",
+  "brandName": "OrnaB2B Wholesale",
+  "siteUrl": "https://www.ornab2b.com",
+  "whatsappNumber": "919876543210",
+  "phone": "+91 98765 43210",
+  "address": "B2B Trade Hub, Commercial Complex, New Delhi – 110001",
+  "founderVideoId": "2J4ztUw796I",
+  "googleMapsUrl": "https://maps.google.com",
+  "instagramUrl": "https://www.instagram.com/ornab2b/",
+  "youtubeUrl": "https://www.youtube.com",
+  "facebookUrl": "https://www.facebook.com",
+  "reviews": [
+    {
+      "name": "Rajesh Sharma",
+      "role": "Boutique Owner · Jaipur",
+      "text": "Extremely reliable wholesale partner. High margin designs and swift dispatch right to our showroom.",
+      "rating": 5
+    },
+    {
+      "name": "Priya Verma",
+      "role": "Online Reseller · Mumbai",
+      "text": "Top notch anti-tarnish collection. My customers love the quality and long lasting finish.",
+      "rating": 5
+    },
+    {
+      "name": "Anil Gupta",
+      "role": "Jewellery Store Owner · Chandigarh",
+      "text": "Direct factory pricing with low MOV made it easy for us to test new trending inventory.",
+      "rating": 5
+    }
+  ]
+}

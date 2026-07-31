@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { FOUNDER_VIDEO_ID, REVIEWS, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL } from '../src/lib/brandConstants.js';
+import { getMetaDescription, getFaqs } from '../../../scripts/content-spinner.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
@@ -29,8 +30,9 @@ const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
 // by Vite in dev mode. Vite copies public/ → dist/ at build time so they
 // are also accessible in the deployed app at /sitemap.xml.
 const SITEMAP_DIR = path.join(__dirname, '..', 'public');
-const BASE_URL = 'https://www.aroragroupwholesale.com';
-const BRAND_NAME = 'Arora Group Wholesale';
+const BRAND_ID = process.env.VITE_BRAND_ID || 'aroragroupwholesale';
+const BASE_URL = (process.env.VITE_SITE_URL || 'https://www.aroragroupwholesale.com').replace(/\/$/, '');
+const BRAND_NAME = process.env.VITE_BRAND_NAME || 'Arora Group Wholesale';
 const SITEMAP_URL_CAP = 1000;
 
 // ── Set DB path env var BEFORE dynamic-importing ornamentDb ────────────────
@@ -118,31 +120,10 @@ footer{background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;margin-t
 footer .logo{font-size:1.125rem;color:#FFC629}
 `;
 
-// ── FAQ builder (mirrors LandingPage.tsx FAQS() — must stay in sync) ───────
+// ── FAQ builder ────────────────────────────────────────────────────────────
 
 function buildFaqs(nd: string, location: string): Array<{ q: string; a: string }> {
-  return [
-    {
-      q: `What are the corporate purchasing terms for ${nd} from ${BRAND_NAME}?`,
-      a: `${BRAND_NAME} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.`,
-    },
-    {
-      q: `What metal purity certifications does ${BRAND_NAME} provide for ${nd}?`,
-      a: `Every ${nd} piece from our factory carries certified metallic purity documentation. Anti-tarnish collections include a BIS-aligned coating verification, while gold-plated lines are tested for micron thickness. All certificates are issued per batch and available for retailer audit at any time.`,
-    },
-    {
-      q: `Can ${BRAND_NAME} handle custom wholesale design processing for ${location} retailers?`,
-      a: `Yes. Our design manufacturing wing accepts custom briefs, buyer-provided sketches, and OEM requests. Minimum custom order runs start at 50 pieces per SKU. Design-to-delivery lead time is 15–25 business days depending on complexity. Samples are dispatched within 5 working days upon approval of design confirmation.`,
-    },
-    {
-      q: `How does ${BRAND_NAME} handle logistics and insurance for deliveries to ${location}?`,
-      a: `All shipments to ${location} are dispatched via fully insured air freight or tracked surface courier. Packages include transit insurance up to invoice value. ${BRAND_NAME} partners with BlueDart, Delhivery, and Ecom Express for last-mile delivery. Standard delivery timelines are 3–7 working days from dispatch.`,
-    },
-    {
-      q: `What is the minimum order value and how do I place a wholesale inquiry?`,
-      a: `The Minimum Order Value (MOV) for ${BRAND_NAME} wholesale supply is just ₹3,000 per invoice — with zero item-level MOQ, freely mix and match rings, anklets, necklaces, or any category. To place an inquiry, WhatsApp us your business name, GST number, required ${nd} category, and approximate quantity. Our team will respond within 4 business hours.`,
-    },
-  ];
+  return getFaqs(BRAND_ID, nd, BRAND_NAME, location);
 }
 
 // ── Page template (slug pages) ─────────────────────────────────────────────
@@ -157,7 +138,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
   const in_noun = INTENT_NOUN[page.intent_type] ?? (page.intent_type.charAt(0).toUpperCase() + page.intent_type.slice(1));
   const seoTitle = `${BRAND_NAME} | Direct ${nd} ${in_noun} in ${location}`;
-  const metaDesc = `Source viral, Pinterest-trending ${nd} direct from ${BRAND_NAME} in ${location}. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!`;
+  const metaDesc = getMetaDescription(BRAND_ID, nd, BRAND_NAME, location);
   const faqs = buildFaqs(nd, location);
 
   const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);

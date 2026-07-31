@@ -1,12 +1,26 @@
-export const BRAND_NAME = 'Arora Group Wholesale';
-export const SITE_URL = 'https://www.aroragroupwholesale.com';
-export const FOUNDER_VIDEO_ID = '2J4ztUw796I';
+const getEnv = (key: string): string | undefined => {
+  try {
+    if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env[key]) {
+      return (import.meta as any).env[key];
+    }
+  } catch {}
+  if (typeof process !== 'undefined' && process.env && process.env[key]) {
+    return process.env[key];
+  }
+  return undefined;
+};
+
+export const BRAND_ID = getEnv('VITE_BRAND_ID') || 'aroragroupwholesale';
+export const BRAND_NAME = getEnv('VITE_BRAND_NAME') || 'Arora Group Wholesale';
+export const SITE_URL = (getEnv('VITE_SITE_URL') || 'https://www.aroragroupwholesale.com').replace(/\/$/, '');
+export const WHATSAPP_NUMBER = (getEnv('VITE_WHATSAPP_NUMBER') || '919999999999').replace(/\D/g, '');
+export const FOUNDER_VIDEO_ID = getEnv('VITE_FOUNDER_VIDEO_ID') || '2J4ztUw796I';
 
 export const REVIEWS = [
   {
     name: 'Divya Anand Kumar',
     role: 'Retailer · Delhi',
-    text: 'Genuinely very satisfied with the product quality and variety. Best partnership ever done — special thanks to Mayank bhaiya for solving every problem and restocking issue. Having great experience and will continue doing business.',
+    text: 'Genuinely very satisfied with the product quality and variety. Best partnership ever done — special thanks for solving every problem and restocking issue. Having great experience and will continue doing business.',
     rating: 5,
   },
   {
@@ -24,14 +38,14 @@ export const REVIEWS = [
   {
     name: 'Local Guide',
     role: 'Local Guide · 42 Reviews',
-    text: 'One of the best imitation jewellery wholesale shops in Delhi. Owner Mayank is very helpful in selecting items and assists step by step during delivery.',
+    text: 'One of the best imitation jewellery wholesale shops in Delhi. Owner is very helpful in selecting items and assists step by step during delivery.',
     rating: 5,
   },
 ] as const;
 
-export const ADDRESS = 'E-134, 1st Floor, Tagore Garden Extension, New Delhi – 110027';
-export const PHONE = '+91 83684 84361';
-export const GOOGLE_MAPS_URL = 'https://share.google/iixMlvHVU6EAIkYWo';
-export const INSTAGRAM_URL = 'https://www.instagram.com/arora_group_wholesale/';
-export const YOUTUBE_URL = 'https://www.youtube.com/watch?v=2J4ztUw796I&pp=ygUVYXJvcmEgZ3JvdXAgd2hvbGVzYWxl';
-export const FACEBOOK_URL = 'https://www.facebook.com/share/r/1EjSCvh19b/';
+export const ADDRESS = getEnv('VITE_ADDRESS') || 'E-134, 1st Floor, Tagore Garden Extension, New Delhi – 110027';
+export const PHONE = getEnv('VITE_PHONE') || '+91 83684 84361';
+export const GOOGLE_MAPS_URL = getEnv('VITE_GOOGLE_MAPS_URL') || 'https://share.google/iixMlvHVU6EAIkYWo';
+export const INSTAGRAM_URL = getEnv('VITE_INSTAGRAM_URL') || 'https://www.instagram.com/arora_group_wholesale/';
+export const YOUTUBE_URL = getEnv('VITE_YOUTUBE_URL') || 'https://www.youtube.com/watch?v=2J4ztUw796I';
+export const FACEBOOK_URL = getEnv('VITE_FACEBOOK_URL') || 'https://www.facebook.com/share/r/1EjSCvh19b/';
