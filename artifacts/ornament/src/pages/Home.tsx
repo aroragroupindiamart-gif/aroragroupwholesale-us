@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
 import { Link } from "wouter";
-import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS } from "@/lib/brandConfig";
+import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS, TOP_BANNER, HERO_BADGE, HERO_TITLE, HERO_DESCRIPTION } from "@/lib/brandConfig";
 import { STATES } from "@/lib/staticData";
 import SiteFooter from "@/components/SiteFooter";
 import { useCitySearch } from "@/hooks/use-city-search";
 
-const WHATSAPP_MSG = `Hi Arora Group, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
+const WHATSAPP_MSG = `Hi ${BRAND_NAME}, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
 
 const REGION_ORDER = ["North", "South", "West", "East", "Central", "North-East"];
 
@@ -51,14 +51,14 @@ export default function Home() {
     <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E]">
       {/* ─── TOP BANNER ──────────────────────────────────────── */}
       <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs sm:text-sm font-semibold py-2.5 px-4">
-        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000
+        {TOP_BANNER}
       </div>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
       <header className="border-b border-amber-200 bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" data-testid="link-home-logo">
-            <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-12 w-auto" />
+            <img src="/arora-group-logo.png" alt={BRAND_NAME} className="h-12 w-auto" />
           </Link>
           <WhatsAppButton className="text-sm px-4 py-2" />
         </div>
@@ -68,15 +68,13 @@ export default function Home() {
       <section className="bg-gradient-to-br from-amber-50 via-[#FFF8F0] to-[#FFF8F0] py-16 sm:py-24 border-b border-amber-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] mb-4 bg-[#FFC629]/20 px-3 py-1 rounded-full border border-[#FFC629]/30">
-            Direct Importer &amp; Wholesaler · Pan-India
+            {HERO_BADGE}
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1E1E1E] leading-tight mb-6">
-            {BRAND_NAME}:{" "}
-            <span className="text-[#FFC629]">Viral, Trend-Driven</span>{" "}
-            Jewelry Supply Across India
+            {HERO_TITLE}
           </h1>
           <p className="text-lg text-[#1E1E1E]/70 max-w-2xl mx-auto mb-8">
-            We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.
+            {HERO_DESCRIPTION}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <WhatsAppButton className="text-base px-8 py-3.5" />

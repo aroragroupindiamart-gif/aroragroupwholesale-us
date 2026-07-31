@@ -62,6 +62,12 @@ const env: Record<string, string> = {
   VITE_INSTAGRAM_URL: brandConfig.instagramUrl || '',
   VITE_YOUTUBE_URL: brandConfig.youtubeUrl || '',
   VITE_FACEBOOK_URL: brandConfig.facebookUrl || '',
+  VITE_TOP_BANNER: brandConfig.topBanner || '',
+  VITE_HERO_BADGE: brandConfig.heroBadge || '',
+  VITE_HERO_TITLE: brandConfig.heroTitle || '',
+  VITE_HERO_DESCRIPTION: brandConfig.heroDescription || '',
+  VITE_ABOUT_TITLE: brandConfig.aboutTitle || '',
+  VITE_ABOUT_STORY: brandConfig.aboutStory || '',
 };
 
 console.log('\n🚀 Generating pSEO Site for Cloudflare Pages Deployment...');

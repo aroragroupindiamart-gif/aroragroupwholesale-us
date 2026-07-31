@@ -16,6 +16,13 @@ export const SITE_URL = (getEnv('VITE_SITE_URL') || 'https://www.aroragroupwhole
 export const WHATSAPP_NUMBER = (getEnv('VITE_WHATSAPP_NUMBER') || '919999999999').replace(/\D/g, '');
 export const FOUNDER_VIDEO_ID = getEnv('VITE_FOUNDER_VIDEO_ID') || '2J4ztUw796I';
 
+export const TOP_BANNER = getEnv('VITE_TOP_BANNER') || "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000";
+export const HERO_BADGE = getEnv('VITE_HERO_BADGE') || "Direct Importer & Wholesaler · Pan-India";
+export const HERO_TITLE = getEnv('VITE_HERO_TITLE') || `${BRAND_NAME}: Viral, Trend-Driven Jewelry Supply Across India`;
+export const HERO_DESCRIPTION = getEnv('VITE_HERO_DESCRIPTION') || "We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city.";
+export const ABOUT_TITLE = getEnv('VITE_ABOUT_TITLE') || `About ${BRAND_NAME}`;
+export const ABOUT_STORY = getEnv('VITE_ABOUT_STORY') || `${BRAND_NAME} operates as a leading B2B trend importer and supplier based in Delhi. We bridge the gap between global trend factories and Indian jewelry sellers with fast restocking and certified purity.`;
+
 export const REVIEWS = [
   {
     name: 'Divya Anand Kumar',
