@@ -566,6 +566,7 @@ function writeSitemapBucket(name: string, slugs: string[], today: string): strin
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}
 </urlset>`;
     writeFileSync(path.join(SITEMAP_DIR, filename), xml, 'utf-8');
+    writeFileSync(path.join(OUT_DIR, filename), xml, 'utf-8');
     filenames.push(filename);
   });
   return filenames;
@@ -642,6 +643,7 @@ ${allSitemapFiles.map(f => `  <sitemap>
   </sitemap>`).join('\n')}
 </sitemapindex>`;
 writeFileSync(path.join(SITEMAP_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
+writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
 console.log('✅ sitemap.xml written with', allSitemapFiles.length, 'regional sitemaps.');
 
 // ── Export cities.json for client-side search (no runtime API needed) ──────
