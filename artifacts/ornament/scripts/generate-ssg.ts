@@ -572,9 +572,67 @@ function writeSitemapBucket(name: string, slugs: string[], today: string): strin
   return filenames;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────
+// ── US Dataset Generator Support ───────────────────────────────────────────
 
-const slugEntries = getAllSlugs();
+const isUSMode = BRAND_ID.includes('-us');
+
+const US_STATE_REGION: Record<string, string> = {
+  CA: 'west', WA: 'west', OR: 'west', NV: 'west', AZ: 'west', UT: 'west', ID: 'west', MT: 'west', WY: 'west', CO: 'west', NM: 'west', AK: 'west', HI: 'west',
+  TX: 'south', FL: 'south', GA: 'south', NC: 'south', SC: 'south', VA: 'south', TN: 'south', AL: 'south', LA: 'south', MS: 'south', AR: 'south', KY: 'south', WV: 'south', OK: 'south', MD: 'south', DE: 'south',
+  IL: 'midwest', OH: 'midwest', MI: 'midwest', IN: 'midwest', WI: 'midwest', MN: 'midwest', IA: 'midwest', MO: 'midwest', KS: 'midwest', NE: 'midwest', ND: 'midwest', SD: 'midwest',
+  NY: 'northeast', PA: 'northeast', NJ: 'northeast', MA: 'northeast', CT: 'northeast', RI: 'northeast', NH: 'northeast', VT: 'northeast', ME: 'northeast'
+};
+
+let slugEntries: Array<{ slug: string; page_type: string; region: string }>;
+let usPagesMap = new Map<string, any>();
+
+if (isUSMode) {
+  const usLocsPath = path.join(__dirname, '..', '..', 'data', 'us-locations.json');
+  const usLocs: Array<any> = JSON.parse(readFileSync(usLocsPath, 'utf-8'));
+  const filteredLocs = usLocs.filter(l => l.tier === 1 || l.tier === 2);
+  const nicheKeys = Object.keys(NICHE_DESC);
+
+  slugEntries = [];
+  for (const loc of filteredLocs) {
+    const reg = US_STATE_REGION[loc.state_code] ?? 'midwest';
+    for (const nicheKey of nicheKeys) {
+      const slug = `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`;
+      slugEntries.push({ slug, page_type: 'city', region: `us-${reg}` });
+
+      usPagesMap.set(slug, {
+        id: loc.id,
+        page_type: 'city',
+        slug,
+        title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_code}`,
+        h1_heading: `${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_name} (${loc.state_code})`,
+        niche_key: nicheKey,
+        intent_type: 'wholesaler',
+        target_city: `${loc.place_name}, ${loc.state_code}`,
+        target_state: loc.state_name,
+        state_slug: loc.state_name.toLowerCase().replace(/\s+/g, '-'),
+        region: `us-${reg}`,
+        related_city_pages: [],
+        related_state_pages: [],
+      });
+    }
+  }
+
+  // Populate related city pages for US entries
+  const allUsSlugs = Array.from(usPagesMap.values());
+  for (const p of allUsSlugs) {
+    p.related_city_pages = allUsSlugs
+      .filter(other => other.niche_key === p.niche_key && other.slug !== p.slug)
+      .slice(0, 8)
+      .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
+    p.related_state_pages = allUsSlugs
+      .filter(other => other.niche_key === p.niche_key && other.target_state === p.target_state && other.slug !== p.slug)
+      .slice(0, 4)
+      .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
+  }
+} else {
+  slugEntries = getAllSlugs();
+}
+
 console.log(`Generating HTML for ${slugEntries.length} pages…`);
 
 // Sitemap 4-bucket mapping
@@ -585,16 +643,22 @@ const BUCKET_MAP: Record<string, string> = {
   East: 'east-central',
   Central: 'east-central',
   'North-East': 'east-central',
+  'us-west': 'us-west',
+  'us-south': 'us-south',
+  'us-midwest': 'us-midwest',
+  'us-northeast': 'us-northeast',
 };
 
-const buckets: Record<string, string[]> = {
+const buckets: Record<string, string[]> = isUSMode ? {
+  'us-west': [], 'us-south': [], 'us-midwest': [], 'us-northeast': [],
+} : {
   north: [], south: [], west: [], 'east-central': [],
 };
 
 let generated = 0;
 
 for (const entry of slugEntries) {
-  const page = getPageBySlug(entry.slug);
+  const page = isUSMode ? usPagesMap.get(entry.slug) : getPageBySlug(entry.slug);
   if (!page) continue;
 
   const html = renderSlugPage(page);

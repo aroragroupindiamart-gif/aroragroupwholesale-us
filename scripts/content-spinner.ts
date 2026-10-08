@@ -48,6 +48,9 @@ const CTA_HEADLINES = [
 ];
 
 export function getMetaDescription(brandId: string, nicheDesc: string, brandName: string, location: string): string {
+  if (brandId.includes('-us')) {
+    return `Direct B2B importer of Korean, anti-tarnish & 18k gold-plated ${nicheDesc} for US retailers in ${location}. Low $100 MOV, express air shipping across USA. WhatsApp for catalog!`;
+  }
   const idx = seedIndex(brandId, META_DESC_TEMPLATES.length);
   return META_DESC_TEMPLATES[idx](nicheDesc, brandName, location);
 }
@@ -58,6 +61,31 @@ export function getCtaHeadline(brandId: string, nicheDesc: string, location: str
 }
 
 export function getFaqs(brandId: string, nicheDesc: string, brandName: string, location: string): FaqItem[] {
+  if (brandId.includes('-us')) {
+    return [
+      {
+        q: `How do US boutiques and retail stores in ${location} order wholesale ${nicheDesc} from ${brandName}?`,
+        a: `${brandName} offers direct B2B purchasing for US boutique owners, Shopify sellers, and retail stores in ${location}. Our Minimum Order Value is $100 USD with zero SKU-level minimums. Contact us via WhatsApp or email to receive our latest B2B catalog.`,
+      },
+      {
+        q: `What are the shipping times and delivery carriers for orders to ${location}?`,
+        a: `Orders to ${location} are dispatched via express door-to-door air freight using DHL Express or FedEx. Standard delivery lead time to any US address is 4–7 business days.`,
+      },
+      {
+        q: `Are ${nicheDesc} items tarnish-free and suitable for US retail customers?`,
+        a: `Yes, all ${nicheDesc} collections feature multi-layer PVD vacuum plating and anti-tarnish protective sealing, making them 100% waterproof, hypoallergenic, and retail-ready for the US market.`,
+      },
+      {
+        q: `Can I mix different jewelry categories to meet the $100 MOV requirement?`,
+        a: `Absolutely! You can freely mix earrings, necklaces, rings, bracelets, and anklets in a single $100 USD order without any single-design MOQ restrictions.`,
+      },
+      {
+        q: `What payment options are accepted for US wholesale accounts?`,
+        a: `We accept Credit/Debit Cards, Wire Transfers (ACH/SWIFT), PayPal, and major corporate payment channels for US retail buyers.`,
+      },
+    ];
+  }
+
   const v = seedIndex(brandId, 3);
 
   if (v === 1) {
