@@ -143,13 +143,15 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 
   const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
 
-  const relatedCityLinks = page.related_city_pages.map(r =>
-    `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
-  ).join('\n          ');
+  const relatedCityLinks = page.related_city_pages.map(r => {
+    const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
+    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+  }).join('\n          ');
 
-  const relatedStateLinks = page.related_state_pages.map(r =>
-    `<a href="${BASE_URL}/${esc(r.slug)}">${esc(r.title.split('|')[0].trim())}</a>`
-  ).join('\n          ');
+  const relatedStateLinks = page.related_state_pages.map(r => {
+    const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
+    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+  }).join('\n          ');
 
   const intentLinks = ['wholesaler', 'supplier', 'manufacturer', 'importer'].map(intent => {
     const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;

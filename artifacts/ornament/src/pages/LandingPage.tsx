@@ -417,7 +417,7 @@ export default function LandingPage() {
                         data-testid={`link-related-city-${link.slug}`}
                         className="text-xs text-[#1E1E1E]/70 hover:text-[#1E1E1E] hover:bg-[#FFC629]/10 px-3 py-2 rounded-lg border border-amber-200 transition-colors truncate"
                       >
-                        {link.title.split("|")[0].trim()}
+                        {link.h1_heading ? link.h1_heading.replace(/.* in /, '') : (link.title.split("|")[1] || link.title).trim()}
                       </Link>
                     ))}
                   </div>

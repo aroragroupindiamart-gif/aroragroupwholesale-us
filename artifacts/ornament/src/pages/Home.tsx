@@ -7,7 +7,6 @@ import { useCitySearch } from "@/hooks/use-city-search";
 
 const WHATSAPP_MSG = `Hi ${BRAND_NAME}, I'm a retailer interested in direct factory wholesale supply. Please send me your catalogue and pricing.`;
 
-const REGION_ORDER = ["North", "South", "West", "East", "Central", "North-East"];
 
 const INTENT_LABELS = [
   { key: "wholesaler", label: "Wholesaler" },
@@ -34,15 +33,40 @@ function WhatsAppButton({ className = "" }: { className?: string }) {
   );
 }
 
+const isUSBrand = (import.meta.env.VITE_BRAND_ID || '').includes('-us');
+
+const US_STATES = [
+  { state_name: 'California', state_slug: 'california', region: 'US West' },
+  { state_name: 'Texas', state_slug: 'texas', region: 'US South' },
+  { state_name: 'Florida', state_slug: 'florida', region: 'US South' },
+  { state_name: 'New York', state_slug: 'new-york', region: 'US Northeast' },
+  { state_name: 'Illinois', state_slug: 'illinois', region: 'US Midwest' },
+  { state_name: 'Georgia', state_slug: 'georgia', region: 'US South' },
+  { state_name: 'North Carolina', state_slug: 'north-carolina', region: 'US South' },
+  { state_name: 'Ohio', state_slug: 'ohio', region: 'US Midwest' },
+  { state_name: 'Washington', state_slug: 'washington', region: 'US West' },
+  { state_name: 'Pennsylvania', state_slug: 'pennsylvania', region: 'US Northeast' },
+  { state_name: 'Arizona', state_slug: 'arizona', region: 'US West' },
+  { state_name: 'Massachusetts', state_slug: 'massachusetts', region: 'US Northeast' },
+  { state_name: 'Virginia', state_slug: 'virginia', region: 'US South' },
+  { state_name: 'Michigan', state_slug: 'michigan', region: 'US Midwest' },
+  { state_name: 'Colorado', state_slug: 'colorado', region: 'US West' },
+];
+
+const DISPLAY_STATES = isUSBrand ? US_STATES : STATES;
+const REGION_ORDER = isUSBrand ? ["US West", "US South", "US Midwest", "US Northeast"] : ["North", "South", "West", "East", "Central", "North-East"];
+
 const NICHES = Object.entries(NICHE_DISPLAY).map(([niche_key, display_name]) => ({ niche_key, display_name }));
 const STATES_BY_REGION = REGION_ORDER.map((region) => ({
   region,
-  states: STATES.filter((s) => s.region === region),
+  states: DISPLAY_STATES.filter((s) => s.region === region),
 })).filter((g) => g.states.length > 0);
 
 export default function Home() {
   const [cityQuery, setCityQuery] = useState("");
-  const [selectedCity, setSelectedCity] = useState({ name: "New Delhi", slug: "new-delhi" });
+  const [selectedCity, setSelectedCity] = useState(
+    isUSBrand ? { name: "Los Angeles, CA", slug: "los-angeles-ca" } : { name: "New Delhi", slug: "new-delhi" }
+  );
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { results: cityResults, isLoading: citiesLoading } = useCitySearch(cityQuery);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -245,13 +269,13 @@ export default function Home() {
             State-Level Supply Coverage
           </h2>
           <p className="text-[#1E1E1E]/60 text-center mb-10">
-            {BRAND_NAME} dispatches direct to retailers across all 36 Indian states and union territories
+            {isUSBrand ? `${BRAND_NAME} dispatches direct to retailers across all 50 US States` : `${BRAND_NAME} dispatches direct to retailers across all 36 Indian states and union territories`}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {STATES_BY_REGION.map(({ region, states: regionStates }) => (
                 <div key={region} className="bg-[#FFF8F0] border border-amber-200 rounded-xl p-5">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC629] mb-3 bg-[#1E1E1E] inline-block px-2 py-0.5 rounded">
-                    {region} India
+                    {isUSBrand ? region : `${region} India`}
                   </h3>
                   <ul className="space-y-1 mt-2">
                     {regionStates.map((s) => (
