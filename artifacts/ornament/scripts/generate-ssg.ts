@@ -379,19 +379,32 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 
 function renderHomepageContent(): string {
   const niches = getAllNiches();
-  const states = getAllStates();
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale, I am a business owner. Send me your latest catalog of trending jewelry for my store.")}`;
+  const states = isUSMode ? [
+    { state_name: 'California', state_slug: 'california', region: 'US West' },
+    { state_name: 'Texas', state_slug: 'texas', region: 'US South' },
+    { state_name: 'Florida', state_slug: 'florida', region: 'US South' },
+    { state_name: 'New York', state_slug: 'new-york', region: 'US Northeast' },
+    { state_name: 'Illinois', state_slug: 'illinois', region: 'US Midwest' },
+    { state_name: 'Georgia', state_slug: 'georgia', region: 'US South' },
+    { state_name: 'North Carolina', state_slug: 'north-carolina', region: 'US South' },
+    { state_name: 'Ohio', state_slug: 'ohio', region: 'US Midwest' },
+    { state_name: 'Washington', state_slug: 'washington', region: 'US West' },
+    { state_name: 'Pennsylvania', state_slug: 'pennsylvania', region: 'US Northeast' }
+  ] : getAllStates();
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale USA, I am a US business owner. Send me your latest B2B catalog of trending jewelry for my store.")}`;
 
+  const defaultCitySlug = isUSMode ? 'los-angeles-ca' : 'new-delhi';
   const nicheCards = niches.map(n => {
-    const href = `${BASE_URL}/${n.niche_key}-wholesaler-new-delhi`;
+    const href = `${BASE_URL}/${n.niche_key}-wholesaler-${defaultCitySlug}`;
     return `<a href="${href}" style="display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;text-decoration:none;color:inherit">
       <span style="font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#1E1E1E">${esc(n.display_name)}</span>
-      <span style="font-size:.8125rem;color:#666">Wholesalers · Suppliers · Manufacturers</span>
+      <span style="font-size:.8125rem;color:#666">Wholesalers · Suppliers · Importers</span>
       <span style="font-size:.75rem;color:#FFC629;margin-top:auto;font-weight:700">Browse &rarr;</span>
     </a>`;
   }).join('\n');
 
-  const statesByRegion = REGION_ORDER.map(region => ({
+  const regionOrder = isUSMode ? ['US West', 'US South', 'US Midwest', 'US Northeast'] : REGION_ORDER;
+  const statesByRegion = regionOrder.map(region => ({
     region,
     states: states.filter(s => s.region === region),
   })).filter(g => g.states.length > 0);
@@ -401,7 +414,7 @@ function renderHomepageContent(): string {
       `<a href="${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}" style="font-size:.8125rem;color:#444;padding:.375rem .625rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none">${esc(s.state_name)}</a>`
     ).join('\n      ');
     return `<div style="margin-bottom:1.5rem">
-      <h3 style="font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.125rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)} India</h3>
+      <h3 style="font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.125rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)}</h3>
       <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">${links}</div>
     </div>`;
   }).join('\n');
@@ -415,8 +428,15 @@ function renderHomepageContent(): string {
     + '</div>'
   ).join('\n        ');
 
+  const bannerText = isUSMode ? "🇺🇸 Source the Season's Most Viral Jewelry Designs Direct for US Boutiques — Minimum Order Value: $100 USD" : "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000";
+  const badgeText = isUSMode ? "Direct Importer & Wholesaler · Shipping to All 50 US States" : "Direct Importer & Wholesaler · Pan-India";
+  const heroTitleText = isUSMode ? `${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across USA` : `${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across India`;
+  const heroDescText = isUSMode ? "Direct B2B wholesale importer supplying US fashion boutiques, e-commerce sellers, and retail stores across all 50 states with Pinterest-trending Korean, anti-tarnish, and 18k gold-plated jewelry. Express 4-7 day air delivery via DHL & FedEx." : "We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.";
+  const scopeText = isUSMode ? "Arora Group Wholesale USA dispatches direct to retailers across all 50 US States" : "Arora Group Wholesale dispatches direct to retailers across all 36 Indian states and union territories";
+  const movText = isUSMode ? "$100 USD" : "₹3,000";
+
   return `<div style="min-height:100vh;background:#FFF8F0;font-family:system-ui,sans-serif">
-  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000</div>
+  <div style="background:#1E1E1E;color:#FFC629;text-align:center;font-size:.8125rem;font-weight:600;padding:.625rem 1.5rem">${bannerText}</div>
   <header style="background:#fff;border-bottom:1px solid #e8dcc8;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50">
     <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
     <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.5rem 1rem;font-size:.875rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
@@ -424,19 +444,19 @@ function renderHomepageContent(): string {
 
   <section style="background:linear-gradient(to bottom right,#fef3e2,#FFF8F0);padding:4rem 1.5rem;text-align:center;border-bottom:1px solid #e8dcc8">
     <div style="max-width:800px;margin:0 auto">
-      <span style="display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#1E1E1E;background:rgba(255,198,41,.2);border:1px solid rgba(255,198,41,.4);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">Direct Importer &amp; Wholesaler · Pan-India</span>
-      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1E1E1E;line-height:1.25;margin-bottom:1.5rem">${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across India</h1>
-      <p style="font-size:1.0625rem;color:#444;max-width:640px;margin:0 auto 2rem">We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.</p>
+      <span style="display:inline-block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#1E1E1E;background:rgba(255,198,41,.2);border:1px solid rgba(255,198,41,.4);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">${badgeText}</span>
+      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;color:#1E1E1E;line-height:1.25;margin-bottom:1.5rem">${heroTitleText}</h1>
+      <p style="font-size:1.0625rem;color:#444;max-width:640px;margin:0 auto 2rem">${heroDescText}</p>
       <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:2rem">
         <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">${WA_ICON} WhatsApp Inquiry</a>
         <a href="#product-lines" style="display:inline-flex;align-items:center;background:#fff;color:#1E1E1E;font-weight:600;border:1px solid #e8dcc8;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Our Product Lines</a>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;font-size:.875rem;color:#666">
-        <span>&#x2713; <strong style="color:#1E1E1E">3,792</strong> pages</span>
-        <span>&#x2713; <strong style="color:#1E1E1E">122</strong> cities</span>
-        <span>&#x2713; <strong style="color:#1E1E1E">36</strong> states &amp; UTs</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">3,780</strong> pages</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '630' : '122'}</strong> cities</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '50' : '36'}</strong> states</span>
         <span>&#x2713; <strong style="color:#1E1E1E">6</strong> product lines</span>
-        <span>&#x2713; MOV <strong style="color:#1E1E1E">₹3,000</strong></span>
+        <span>&#x2713; MOV <strong style="color:#1E1E1E">${movText}</strong></span>
       </div>
     </div>
   </section>
@@ -456,7 +476,7 @@ function renderHomepageContent(): string {
           <span style="color:#FFC629;font-size:1.25rem;letter-spacing:.1em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
           <span style="font-family:Georgia,serif;font-size:1.375rem;font-weight:700;color:#1E1E1E">5.0</span>
         </div>
-        <p style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">10 Google Reviews &middot; Verified Retailers</p>
+        <p style="font-size:.75rem;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">Google Reviews &middot; Verified Retailers</p>
         <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1E1E1E">What Business Owners Say</h2>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
@@ -467,20 +487,20 @@ function renderHomepageContent(): string {
 
   <section id="product-lines" style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
     <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">Our 6 Specialised Product Lines</h2>
-    <p style="text-align:center;color:#666;margin-bottom:2rem">Globally imported, trend-scouted collections — available for direct wholesale across India</p>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">Globally imported, trend-scouted collections — available for direct wholesale</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem">
       ${nicheCards}
     </div>
 
     <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
-    <p style="text-align:center;color:#666;margin-bottom:2rem">${esc(BRAND_NAME)} dispatches direct to retailers across all 36 Indian states and union territories</p>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">${scopeText}</p>
     ${stateGrid}
   </section>
 
   <section style="background:#1E1E1E;color:#fff;padding:4rem 1.5rem;text-align:center">
     <div style="max-width:600px;margin:0 auto">
       <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Source Direct from <span style="color:#FFC629">${esc(BRAND_NAME)}</span>?</h2>
-      <p style="opacity:.7;margin-bottom:2rem">Minimum Order Value: ₹3,000 · No Item MOQ · GST Invoice · Insured Freight · Purity Certified</p>
+      <p style="opacity:.7;margin-bottom:2rem">Minimum Order Value: ${movText} · No Item MOQ · Express Air Freight · Purity Certified</p>
       <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:1rem 2rem;font-size:1.0625rem;text-decoration:none">${WA_ICON} WhatsApp Arora Group</a>
     </div>
   </section>
@@ -490,7 +510,7 @@ function renderHomepageContent(): string {
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
         <div>
           <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
-          <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
+          <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct B2B Importer &amp; Trend Wholesaler</p>
         </div>
         <div>
           <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Company</p>
