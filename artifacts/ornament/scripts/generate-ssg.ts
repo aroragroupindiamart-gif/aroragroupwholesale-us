@@ -589,7 +589,7 @@ let usPagesMap = new Map<string, any>();
 if (isUSMode) {
   const usLocsPath = path.join(__dirname, '..', '..', 'data', 'us-locations.json');
   const usLocs: Array<any> = JSON.parse(readFileSync(usLocsPath, 'utf-8'));
-  const filteredLocs = usLocs.filter(l => l.tier === 1 || l.tier === 2);
+  const filteredLocs = usLocs.sort((a, b) => (b.population || 0) - (a.population || 0)).slice(0, 630);
   const nicheKeys = Object.keys(NICHE_DESC);
 
   slugEntries = [];
