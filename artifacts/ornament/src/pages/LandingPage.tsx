@@ -32,9 +32,32 @@ function PageSkeleton() {
   );
 }
 
+const isUSBrand = (import.meta.env.VITE_BRAND_ID || '').includes('-us');
+
 const FAQS = (niche: string, city: string) => {
   const nd = NICHE_DISPLAY[niche] ?? niche;
-  return [
+  return isUSBrand ? [
+    {
+      q: `What are the corporate purchasing terms for ${nd} from ${BRAND_NAME}?`,
+      a: `${BRAND_NAME} operates as a direct B2B importer, exporter, and wholesale supplier. Orders are processed with a Minimum Order Value (MOV) of $100 USD — with zero item-level MOQ restrictions, so you can freely mix and match any designs across rings, necklaces, and earrings. Payment options include wire, cards, and secure international transfer.`,
+    },
+    {
+      q: `What metal purity and anti-tarnish certifications does ${BRAND_NAME} provide?`,
+      a: `Every ${nd} piece features certified surgical stainless steel or brass substrate coated with PVD 18K gold plating. Our anti-tarnish collections undergo corrosion and waterproofing durability tests so pieces never fade, oxidize, or turn skin green under daily wear.`,
+    },
+    {
+      q: `Can ${BRAND_NAME} handle custom wholesale designs and private labeling for US retailers?`,
+      a: `Yes. We provide OEM/ODM custom manufacturing and private label packaging for US boutiques and ecommerce brands. Minimum custom production runs start at 50 pieces per SKU with rapid 15–20 day turnarounds.`,
+    },
+    {
+      q: `How does ${BRAND_NAME} handle shipping and customs to ${city}?`,
+      a: `All wholesale shipments to ${city} are dispatched via express air freight with DHL and FedEx. Transit time is just 4–7 business days door-to-door with comprehensive tracking and customs clearance handled directly.`,
+    },
+    {
+      q: `What is the minimum order value and how do I place a wholesale inquiry?`,
+      a: `The Minimum Order Value (MOV) for ${BRAND_NAME} US wholesale is just $100 USD per order — with zero MOQ per style. To request our wholesale linesheet, click WhatsApp to connect with our US wholesale account specialist.`,
+    },
+  ] : [
     {
       q: `What are the corporate purchasing terms for ${nd} from ${BRAND_NAME}?`,
       a: `${BRAND_NAME} operates as a direct importer and trend wholesaler. Orders are processed against GST-registered business invoices with a Minimum Order Value (MOV) of ₹3,000 — with no item-level MOQ restrictions, so you can mix and match any designs freely. Payment terms include advance, 50/50, or credit terms for established wholesale accounts.`,
@@ -57,8 +80,6 @@ const FAQS = (niche: string, city: string) => {
     },
   ];
 };
-
-const isUSBrand = (import.meta.env.VITE_BRAND_ID || '').includes('-us');
 
 export default function LandingPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -316,10 +337,10 @@ export default function LandingPage() {
             {/* (d) 4 B2B Trust Cards */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
-                { icon: Globe, title: "Direct Global Importing", body: "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian business owners." },
+                { icon: Globe, title: isUSBrand ? "Direct Factory Wholesale" : "Direct Global Importing", body: isUSBrand ? "No trading middlemen or agent markups. Direct B2B wholesale supplier connecting US boutique retailers with factory-floor pricing." : "No trading middlemen or agent markups. We source directly from international jewelry hubs, securing premium inventory at true factory-floor pricing for Indian business owners." },
                 { icon: Droplets, title: "100% Tarnish-Free Guarantee", body: "Engineered for heavy daily wear. Our premium anti-tarnish lines feature highly resilient, completely waterproof protective layers that will not fade, turn green, or oxidize." },
                 { icon: TrendingUp, title: "Pinterest & Reel Trending", body: "Curated for rapid retail sales velocity. We instantly scout and source hyper-viral social media jewelry aesthetics, helping your store capture hot consumer trends before they fade." },
-                { icon: ShoppingCart, title: "Flexible Small-Batch Sourcing", body: `Zero item-level MOQ restrictions. Mix and match any assortment of rings, anklets, or necklaces with an accessible MOV of just ₹3,000.` },
+                { icon: ShoppingCart, title: "Flexible Small-Batch Sourcing", body: isUSBrand ? "Zero item-level MOQ restrictions. Mix and match any assortment of rings, earrings, or necklaces with an accessible MOV of just $100 USD." : `Zero item-level MOQ restrictions. Mix and match any assortment of rings, anklets, or necklaces with an accessible MOV of just ₹3,000.` },
               ].map(({ icon: Icon, title, body }) => (
                 <div key={title} className="flex flex-col gap-2 bg-white border border-amber-200 rounded-xl p-4 shadow-sm">
                   <div className="flex items-center gap-2">
@@ -340,7 +361,7 @@ export default function LandingPage() {
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
                 <p>
-                  <strong>{BRAND_NAME}</strong> is the direct manufacturer and importer supplying {locationLabel}'s most
+                  <strong>{BRAND_NAME}</strong> is the direct {isUSBrand ? "importer, exporter, and supplier" : "manufacturer and importer"} supplying {locationLabel}'s most
                   forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and
                   waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for
                   maximum retail turnover — helping business owners cash in on fast-moving social media jewelry
@@ -349,8 +370,8 @@ export default function LandingPage() {
                 <p>
                   We update our {nd} catalogue rapidly so your shelves stay stocked with fresh, highly shareable
                   items your customers are already searching for. <strong>{BRAND_NAME}</strong> offers{" "}
-                  <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match{" "}
-                  any designs freely. Scalable <strong>customisation and co-branding options</strong> available for
+                  <strong>Minimum Order Value of just {isUSBrand ? "$100 USD" : "₹3,000"} with no item-level MOQ</strong> — mix and match{" "}
+                  any designs freely. Scalable <strong>customisation and private labeling options</strong> available for
                   established wholesale accounts across {page.target_state}.
                 </p>
               </div>
@@ -362,19 +383,36 @@ export default function LandingPage() {
                 Insured B2B Logistics from {BRAND_NAME} to {locationLabel}
               </h2>
               <div className="text-[#1E1E1E]/70 space-y-3 text-sm leading-relaxed">
-                <p>
-                  Every order dispatched to {locationLabel} is covered by <strong>fully insured transit insurance</strong> up to invoice value.
-                  <strong>{BRAND_NAME}</strong> partners with <strong>BlueDart, Delhivery, and Ecom Express</strong> for tracked, fast-delivery logistics
-                  across {page.region} India. Standard delivery timelines to {locationLabel} are <strong>3–7 working days</strong> from
-                  dispatch confirmation. Enterprise accounts may qualify for dedicated freight schedules and priority
-                  processing.
-                </p>
-                <p>
-                  All shipments include a packing manifest, batch-level purity certification, and <strong>GST-compliant B2B
-                  invoice</strong>. Buyers registered under GST can claim input tax credit on all wholesale purchases from{" "}
-                  <strong>{BRAND_NAME}</strong>. Returns and replacements are handled within 7 days for manufacturing defects on
-                  all certified {nd} lines.
-                </p>
+                {isUSBrand ? (
+                  <>
+                    <p>
+                      Every order dispatched to {locationLabel} is covered by <strong>fully insured door-to-door transit insurance</strong> up to invoice value.
+                      <strong>{BRAND_NAME}</strong> partners with <strong>DHL and FedEx Express</strong> for tracked, priority air delivery
+                      across the United States. Standard delivery timelines to {locationLabel} are <strong>4–7 business days</strong> from
+                      dispatch confirmation.
+                    </p>
+                    <p>
+                      All shipments include an itemized packing manifest, batch-level purity certification, and <strong>commercial B2B
+                      invoice</strong>. Customs clearance and import documentation are handled seamlessly by our logistics team. Returns and replacements are handled within 7 days for manufacturing defects on all certified {nd} lines.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Every order dispatched to {locationLabel} is covered by <strong>fully insured transit insurance</strong> up to invoice value.
+                      <strong>{BRAND_NAME}</strong> partners with <strong>BlueDart, Delhivery, and Ecom Express</strong> for tracked, fast-delivery logistics
+                      across {page.region} India. Standard delivery timelines to {locationLabel} are <strong>3–7 working days</strong> from
+                      dispatch confirmation. Enterprise accounts may qualify for dedicated freight schedules and priority
+                      processing.
+                    </p>
+                    <p>
+                      All shipments include a packing manifest, batch-level purity certification, and <strong>GST-compliant B2B
+                      invoice</strong>. Buyers registered under GST can claim input tax credit on all wholesale purchases from{" "}
+                      <strong>{BRAND_NAME}</strong>. Returns and replacements are handled within 7 days for manufacturing defects on
+                      all certified {nd} lines.
+                    </p>
+                  </>
+                )}
               </div>
             </section>
 
@@ -515,7 +553,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#1E1E1E]/60">MOV</span>
-                  <span className="font-bold text-[#1E1E1E]">₹3,000</span>
+                  <span className="font-bold text-[#1E1E1E]">{isUSBrand ? "$100 USD" : "₹3,000"}</span>
                 </div>
               </div>
             </div>

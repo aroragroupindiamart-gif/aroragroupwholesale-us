@@ -34,7 +34,8 @@ function SlugRouter({ params }: { params: { slug: string } }) {
     (s) =>
       s.state_code?.toLowerCase() === slug ||
       s.state_slug === slug ||
-      `korean-jewellery-wholesaler-${s.state_slug}` === slug
+      `korean-jewellery-wholesaler-${s.state_slug}` === slug ||
+      `korean-jewellery-wholesaler-${s.state_code?.toLowerCase()}` === slug
   );
   if (isState) {
     return <StateDirectory slug={slug} />;

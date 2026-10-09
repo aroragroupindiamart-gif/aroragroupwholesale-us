@@ -29,7 +29,8 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
     (s) =>
       s.state_code?.toLowerCase() === normalizedSlug ||
       s.state_slug === normalizedSlug ||
-      `korean-jewellery-wholesaler-${s.state_slug}` === normalizedSlug
+      `korean-jewellery-wholesaler-${s.state_slug}` === normalizedSlug ||
+      `korean-jewellery-wholesaler-${s.state_code?.toLowerCase()}` === normalizedSlug
   );
 
   const [cities, setCities] = useState<CityItem[]>([]);
@@ -59,7 +60,6 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
         }
       })
       .catch(() => {
-        // Fallback: fetch cities.json
         fetch("/cities.json")
           .then((r) => r.json())
           .then((allCities: any[]) => {
@@ -78,27 +78,27 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
   }, [state, stateName]);
 
   return (
-    <div className="min-h-screen bg-[#0A0F1D] text-slate-100 font-sans">
+    <div className="min-h-screen bg-[#FFF8F0] text-[#1E1E1E] font-sans">
       {/* Top Banner */}
-      <div className="bg-[#080D1A] border-b border-slate-800 text-[#FFC629] text-center text-xs font-semibold py-2 px-4">
+      <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs font-semibold py-2.5 px-4">
         Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to {stateName} · Low $100 MOV
       </div>
 
       {/* Header */}
-      <header className="bg-[#080D1A] border-b border-slate-800 sticky top-0 z-50">
+      <header className="bg-white border-b border-amber-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link href="/" className="inline-flex items-center">
-            <img src="/arora-group-logo.png" alt={BRAND_NAME} className="h-10 w-auto bg-white/10 rounded px-2 py-1" />
+            <img src="/arora-group-logo.png" alt={BRAND_NAME} className="h-12 w-auto" />
           </Link>
           <div className="flex items-center gap-6">
-            <a href="/#states" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
+            <a href="/#states" className="text-sm font-semibold text-[#1E1E1E]/70 hover:text-[#1E1E1E] transition-colors">
               All States
             </a>
             <a
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#FFC629] hover:bg-[#e6b325] text-slate-950 font-bold text-xs sm:text-sm px-3.5 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 bg-[#FFC629] hover:bg-[#e6b325] text-[#1E1E1E] font-bold text-xs sm:text-sm px-4 py-2 rounded-lg transition-colors shadow-sm"
             >
               {WA_ICON}
               WhatsApp Inquiry
@@ -108,55 +108,60 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
       </header>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-6">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
-          Local Jewellery Wholesalers in {stateName}
-        </h1>
-        <p className="text-sm sm:text-base text-slate-400 max-w-3xl leading-relaxed mb-6">
-          Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across {cityCount} cities in {stateName}. Fast 4–7 day express air delivery via DHL &amp; FedEx · Low $100 USD MOV · Zero item MOQ.
-        </p>
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-[#FFC629] hover:bg-[#e6b325] text-slate-950 font-bold text-sm px-5 py-2.5 rounded-lg transition-colors shadow-lg"
-        >
-          {WA_ICON}
-          WhatsApp Catalog &amp; MOV
-        </a>
+      <section className="bg-gradient-to-b from-[#FFF8F0] to-[#fef3e2] border-b border-amber-200 py-12 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] bg-[#FFC629]/20 border border-[#FFC629]/40 px-3 py-1 rounded-full mb-3">
+            Direct Importer, Exporter &amp; Supplier · USA B2B Wholesale
+          </span>
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E1E1E] tracking-tight mb-3">
+            Local Jewellery Wholesalers in {stateName}
+          </h1>
+          <p className="text-sm sm:text-base text-[#1E1E1E]/70 max-w-3xl leading-relaxed mb-6">
+            Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across {cityCount} cities in {stateName}. Fast 4–7 day express air delivery via DHL &amp; FedEx · Low $100 USD MOV · Zero item MOQ.
+          </p>
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#FFC629] hover:bg-[#e6b325] text-[#1E1E1E] font-bold text-sm px-6 py-3 rounded-xl transition-colors shadow-md"
+          >
+            {WA_ICON}
+            WhatsApp Catalog &amp; MOV
+          </a>
+        </div>
       </section>
 
-      {/* Cities Section — 5 Column Card Grid Matching hongdaplumbing.com */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* Cities Section — 5 Column Card Grid in Default Arora Theme */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-white mb-1">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E1E1E] mb-1">
             Cities in {stateName}
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-[#1E1E1E]/60">
             {cityCount} cities with direct wholesale jewellery supply
           </p>
         </div>
 
         {loading && cities.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} className="h-16 bg-slate-900/60 border border-slate-800 rounded-lg animate-pulse" />
+              <div key={i} className="h-16 bg-white border border-amber-200 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {cities.map((loc) => {
               const citySlug = `korean-jewellery-wholesaler-${loc.place_slug}-${(loc.state_code || stateCode).toLowerCase()}`;
               return (
                 <a
                   key={loc.place_slug}
                   href={`/${citySlug}`}
-                  className="flex flex-col justify-center p-3.5 bg-[#111827] border border-[#1F2937] hover:border-slate-500 hover:bg-[#1E293B] rounded-lg transition-all text-left group"
+                  className="flex flex-col justify-center p-3.5 bg-white border border-amber-200 hover:border-[#FFC629] hover:bg-amber-50/60 rounded-lg transition-all text-left shadow-sm group hover:-translate-y-0.5"
                 >
-                  <span className="text-[15px] font-semibold text-slate-100 group-hover:text-white truncate">
+                  <span className="text-[15px] font-bold text-[#1E1E1E] group-hover:text-amber-900 truncate">
                     {loc.place_name}
                   </span>
-                  <span className="text-xs text-slate-400 mt-1">
+                  <span className="text-xs text-[#1E1E1E]/60 mt-1">
                     Pop. {(loc.population || 0).toLocaleString('en-US')} · Tier {loc.tier || 1}
                   </span>
                 </a>
@@ -167,40 +172,40 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
       </section>
 
       {/* B2B Trust Highlights */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-800/80">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 border-t border-amber-200">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5">
-            <div className="text-2xl mb-2">🌐</div>
-            <h3 className="font-semibold text-white text-sm mb-1">Direct Importer &amp; Exporter</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">No middlemen or trading markups. Direct B2B supplier connecting {stateName} retailers with factory-floor pricing.</p>
+          <div className="bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+            <div className="text-3xl mb-2">🌐</div>
+            <h3 className="font-semibold text-[#1E1E1E] text-sm mb-1">Direct Importer &amp; Exporter</h3>
+            <p className="text-xs text-[#1E1E1E]/60 leading-relaxed">No middlemen or trading markups. Direct B2B supplier connecting {stateName} retailers with factory-floor pricing.</p>
           </div>
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5">
-            <div className="text-2xl mb-2">💧</div>
-            <h3 className="font-semibold text-white text-sm mb-1">100% Anti-Tarnish Guarantee</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">Engineered for heavy daily wear. Completely waterproof protective layers that never turn green or oxidize.</p>
+          <div className="bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+            <div className="text-3xl mb-2">💧</div>
+            <h3 className="font-semibold text-[#1E1E1E] text-sm mb-1">100% Anti-Tarnish Guarantee</h3>
+            <p className="text-xs text-[#1E1E1E]/60 leading-relaxed">Engineered for heavy daily wear. Completely waterproof protective layers that never turn green or oxidize.</p>
           </div>
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5">
-            <div className="text-2xl mb-2">📈</div>
-            <h3 className="font-semibold text-white text-sm mb-1">Pinterest &amp; Reel Trending</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">We curate hyper-viral social media jewelry aesthetics so your boutique captures trending consumer demand.</p>
+          <div className="bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+            <div className="text-3xl mb-2">📈</div>
+            <h3 className="font-semibold text-[#1E1E1E] text-sm mb-1">Pinterest &amp; Reel Trending</h3>
+            <p className="text-xs text-[#1E1E1E]/60 leading-relaxed">We curate hyper-viral social media jewelry aesthetics so your boutique captures trending consumer demand.</p>
           </div>
-          <div className="bg-[#111827] border border-[#1F2937] rounded-xl p-5">
-            <div className="text-2xl mb-2">🛒</div>
-            <h3 className="font-semibold text-white text-sm mb-1">Low $100 MOV · Zero Item MOQ</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">Mix and match any rings, necklaces, or bracelets freely. Express 4–7 day DHL &amp; FedEx air delivery to {stateName}.</p>
+          <div className="bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+            <div className="text-3xl mb-2">🛒</div>
+            <h3 className="font-semibold text-[#1E1E1E] text-sm mb-1">Low $100 MOV · Zero Item MOQ</h3>
+            <p className="text-xs text-[#1E1E1E]/60 leading-relaxed">Mix and match any rings, necklaces, or bracelets freely. Express 4–7 day DHL &amp; FedEx air delivery to {stateName}.</p>
           </div>
         </div>
       </section>
 
       {/* Founder Video Showcase */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">
+        <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] mb-2">
           Meet the Founder — See the Collection Live
         </h2>
-        <p className="text-slate-400 text-sm max-w-xl mx-auto mb-6">
+        <p className="text-[#1E1E1E]/60 text-sm max-w-xl mx-auto mb-6">
           Watch {BRAND_NAME}'s founder walk through the full trending jewellery range available for direct wholesale to {stateName} retailers.
         </p>
-        <div className="relative w-full rounded-xl overflow-hidden shadow-2xl border border-slate-800" style={{ paddingBottom: "56.25%" }}>
+        <div className="relative w-full rounded-xl overflow-hidden shadow-lg border border-amber-200" style={{ paddingBottom: "56.25%" }}>
           <iframe
             className="absolute inset-0 w-full h-full"
             src={`https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}`}
@@ -213,20 +218,22 @@ export default function StateDirectory({ slug }: StateDirectoryProps) {
       </section>
 
       {/* All States Quick Directory */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-800/80">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC629] mb-4">
-          All 50 US States Wholesale Coverage
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2">
-          {ALL_US_STATES.map((s) => (
-            <a
-              key={s.state_slug}
-              href={`/${s.state_code ? s.state_code.toLowerCase() : s.state_slug}`}
-              className="text-xs text-slate-400 hover:text-[#FFC629] transition-colors truncate"
-            >
-              {s.state_name} ({s.count})
-            </a>
-          ))}
+      <section className="bg-white border-t border-amber-200 py-12 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#1E1E1E] mb-4">
+            All 50 US States Wholesale Coverage
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2">
+            {ALL_US_STATES.map((s) => (
+              <a
+                key={s.state_slug}
+                href={`/${s.state_code ? s.state_code.toLowerCase() : s.state_slug}`}
+                className="text-xs text-[#1E1E1E]/70 hover:text-[#1E1E1E] hover:underline transition-colors truncate"
+              >
+                {s.state_name} ({s.count})
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

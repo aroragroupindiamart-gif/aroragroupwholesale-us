@@ -35,7 +35,9 @@ export default function SiteFooter() {
               <img src="/arora-group-logo.png" alt="Arora Group Wholesale" className="h-10 w-auto bg-white rounded px-1 py-0.5" />
             </Link>
             <p className="text-xs text-white/50 leading-relaxed">
-              Direct Premium Importer &amp; Trend Wholesaler Across India
+              {(import.meta.env.VITE_BRAND_ID || '').includes('-us')
+                ? "Direct B2B Importer, Exporter & Wholesale Supplier Across USA"
+                : "Direct Premium Importer & Trend Wholesaler Across India"}
             </p>
           </div>
 

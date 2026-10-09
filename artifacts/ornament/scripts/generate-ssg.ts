@@ -255,12 +255,12 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         url: canonicalUrl,
         telephone: `+${WHATSAPP_NUMBER}`,
         areaServed: location,
-        priceRange: "₹₹",
+        priceRange: isUSMode ? "$$" : "₹₹",
         address: {
           "@type": "PostalAddress",
           addressLocality: location,
           addressRegion: page.target_state,
-          addressCountry: "IN",
+          addressCountry: isUSMode ? "US" : "IN",
         },
       },
       {
@@ -369,7 +369,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;margin-bottom:1.25rem">
       <div>
         <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
-        <p style="margin-top:.375rem;font-size:.75rem;color:#888">Direct Premium Importer &amp; Trend Wholesaler Across India</p>
+        <p style="margin-top:.375rem;font-size:.75rem;color:#888">${isUSMode ? 'Direct B2B Importer, Exporter &amp; Wholesale Supplier Across USA' : 'Direct Premium Importer &amp; Trend Wholesaler Across India'}</p>
       </div>
       <div>
         <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Company</p>
@@ -452,23 +452,23 @@ function renderStateDirectoryHtml(
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #0A0F1D;
-      color: #F8FAFC;
+      background-color: #FFF8F0;
+      color: #1E1E1E;
       line-height: 1.5;
     }
     a { color: inherit; text-decoration: none; }
     .top-banner {
-      background: #080D1A;
-      border-bottom: 1px solid #1E293B;
+      background: #1E1E1E;
+      border-bottom: 1px solid #333;
       color: #FFC629;
       text-align: center;
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.5rem 1rem;
+      padding: 0.625rem 1rem;
     }
     header {
-      background-color: #080D1A;
-      border-bottom: 1px solid #1E293B;
+      background-color: #FFFFFF;
+      border-bottom: 1px solid #e8dcc8;
       padding: 0.875rem 1.5rem;
       display: flex;
       align-items: center;
@@ -478,38 +478,57 @@ function renderStateDirectoryHtml(
       z-index: 50;
     }
     .header-left { display: flex; align-items: center; gap: 1rem; }
-    .header-logo { height: 42px; width: auto; background: rgba(255,255,255,0.08); border-radius: 6px; padding: 2px 6px; }
+    .header-logo { height: 48px; width: auto; }
     .header-nav { display: flex; align-items: center; gap: 1.5rem; }
-    .header-nav a { color: #94A3B8; font-size: 0.875rem; font-weight: 500; transition: color 0.15s; }
-    .header-nav a:hover { color: #FFFFFF; }
+    .header-nav a { color: rgba(30,30,30,0.7); font-size: 0.875rem; font-weight: 600; transition: color 0.15s; }
+    .header-nav a:hover { color: #1E1E1E; }
     .header-cta {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       background-color: #FFC629;
-      color: #0A0F1D;
+      color: #1E1E1E;
       font-weight: 700;
       border-radius: 0.5rem;
       padding: 0.5rem 1rem;
       font-size: 0.875rem;
       text-decoration: none;
       transition: background 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     .header-cta:hover { background-color: #e6b325; }
     .hero {
+      background: linear-gradient(180deg, #FFF8F0 0%, #fef3e2 100%);
+      border-bottom: 1px solid #e8dcc8;
+      padding: 3rem 1.5rem 2.5rem;
+    }
+    .hero-inner {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 1.5rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1E1E1E;
+      background: rgba(255,198,41,0.25);
+      border: 1px solid rgba(255,198,41,0.5);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
     }
     .hero h1 {
+      font-family: Georgia, serif;
       font-size: 2.25rem;
-      font-weight: 800;
-      color: #FFFFFF;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.025em;
+      font-weight: 700;
+      color: #1E1E1E;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
     }
     .hero p {
-      color: #94A3B8;
+      color: rgba(30,30,30,0.75);
       font-size: 0.9375rem;
       max-width: 820px;
       margin-bottom: 1.5rem;
@@ -520,55 +539,60 @@ function renderStateDirectoryHtml(
       align-items: center;
       gap: 0.5rem;
       background-color: #FFC629;
-      color: #0A0F1D;
+      color: #1E1E1E;
       font-weight: 700;
-      border-radius: 0.5rem;
-      padding: 0.625rem 1.25rem;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
       font-size: 0.875rem;
-      box-shadow: 0 4px 12px rgba(255,198,41,0.2);
+      box-shadow: 0 4px 12px rgba(255,198,41,0.25);
+      text-decoration: none;
     }
+    .hero-cta:hover { background-color: #e6b325; }
     .section-cities {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 1.5rem 1.5rem 3rem;
+      padding: 3rem 1.5rem;
     }
     .section-title {
-      font-size: 1.5rem;
+      font-family: Georgia, serif;
+      font-size: 1.75rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #1E1E1E;
       margin-bottom: 0.25rem;
     }
     .section-subtitle {
       font-size: 0.875rem;
-      color: #94A3B8;
+      color: rgba(30,30,30,0.6);
       margin-bottom: 1.5rem;
     }
     .city-grid {
       display: grid;
       grid-template-columns: repeat(1, minmax(0, 1fr));
-      gap: 0.625rem;
+      gap: 0.75rem;
     }
     @media (min-width: 480px) { .city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (min-width: 768px) { .city-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (min-width: 1024px) { .city-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
     .city-card {
-      background-color: #111827;
-      border: 1px solid #1F2937;
+      background-color: #FFFFFF;
+      border: 1px solid #e8dcc8;
       border-radius: 0.5rem;
       padding: 0.875rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .city-card:hover {
-      background-color: #1E293B;
-      border-color: #475569;
+      background-color: #fffdf9;
+      border-color: #FFC629;
+      box-shadow: 0 4px 12px rgba(255,198,41,0.18);
       transform: translateY(-2px);
     }
     .city-name {
-      color: #F8FAFC;
-      font-weight: 600;
+      color: #1E1E1E;
+      font-weight: 700;
       font-size: 0.9375rem;
       line-height: 1.25;
       overflow: hidden;
@@ -576,7 +600,7 @@ function renderStateDirectoryHtml(
       white-space: nowrap;
     }
     .city-pop {
-      color: #94A3B8;
+      color: rgba(30,30,30,0.6);
       font-size: 0.75rem;
       margin-top: 0.25rem;
     }
@@ -584,7 +608,7 @@ function renderStateDirectoryHtml(
       max-width: 1240px;
       margin: 0 auto;
       padding: 3rem 1.5rem;
-      border-top: 1px solid #1E293B;
+      border-top: 1px solid #e8dcc8;
     }
     .trust-grid {
       display: grid;
@@ -592,37 +616,39 @@ function renderStateDirectoryHtml(
       gap: 1rem;
     }
     .trust-card {
-      background-color: #111827;
-      border: 1px solid #1F2937;
+      background-color: #FFFFFF;
+      border: 1px solid #e8dcc8;
       border-radius: 0.75rem;
       padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .trust-card h3 {
       font-size: 0.875rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #1E1E1E;
       margin-bottom: 0.375rem;
     }
     .trust-card p {
       font-size: 0.75rem;
-      color: #94A3B8;
+      color: rgba(30,30,30,0.65);
       line-height: 1.5;
     }
     .video-section {
       max-width: 800px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem;
+      padding: 3rem 1.5rem;
       text-align: center;
     }
     .video-section h2 {
-      font-size: 1.5rem;
+      font-family: Georgia, serif;
+      font-size: 1.75rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #1E1E1E;
       margin-bottom: 0.5rem;
     }
     .video-section p {
       font-size: 0.875rem;
-      color: #94A3B8;
+      color: rgba(30,30,30,0.65);
       margin-bottom: 1.5rem;
     }
     .video-wrap {
@@ -630,25 +656,28 @@ function renderStateDirectoryHtml(
       padding-bottom: 56.25%;
       border-radius: 0.75rem;
       overflow: hidden;
-      border: 1px solid #1E293B;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border: 1px solid #e8dcc8;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
     .video-wrap iframe {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
     }
     .all-states-section {
+      background: #FFFFFF;
+      border-top: 1px solid #e8dcc8;
+      padding: 3rem 1.5rem;
+    }
+    .all-states-inner {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-      border-top: 1px solid #1E293B;
     }
     .all-states-title {
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #FFC629;
+      color: #1E1E1E;
       margin-bottom: 1rem;
     }
     .states-grid {
@@ -658,19 +687,19 @@ function renderStateDirectoryHtml(
     }
     .state-quick-link {
       font-size: 0.75rem;
-      color: #94A3B8;
+      color: rgba(30,30,30,0.7);
       transition: color 0.15s;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .state-quick-link:hover { color: #FFC629; }
+    .state-quick-link:hover { color: #1E1E1E; text-decoration: underline; }
     footer {
-      background-color: #080D1A;
-      border-top: 1px solid #1E293B;
-      padding: 2rem 1.5rem;
+      background-color: #1E1E1E;
+      border-top: 1px solid #333;
+      padding: 2.5rem 1.5rem;
       font-size: 0.75rem;
-      color: #64748B;
+      color: #888;
       text-align: center;
     }
   </style>
@@ -710,9 +739,12 @@ function renderStateDirectoryHtml(
   </header>
 
   <section class="hero">
-    <h1>Local Jewellery Wholesalers in ${esc(stateName)}</h1>
-    <p>Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across ${cityCount} cities in ${esc(stateName)}. Fast 4&ndash;7 day express air delivery via DHL &amp; FedEx &middot; Low $100 USD MOV &middot; Zero item MOQ.</p>
-    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="hero-cta">${WA_ICON} WhatsApp Catalog &amp; MOV</a>
+    <div class="hero-inner">
+      <span class="hero-badge">Direct Importer, Exporter &amp; Supplier · USA B2B Wholesale</span>
+      <h1>Local Jewellery Wholesalers in ${esc(stateName)}</h1>
+      <p>Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across ${cityCount} cities in ${esc(stateName)}. Fast 4&ndash;7 day express air delivery via DHL &amp; FedEx &middot; Low $100 USD MOV &middot; Zero item MOQ.</p>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="hero-cta">${WA_ICON} WhatsApp Catalog &amp; MOV</a>
+    </div>
   </section>
 
   <section class="section-cities">
@@ -753,9 +785,11 @@ function renderStateDirectoryHtml(
   </section>
 
   <section class="all-states-section">
-    <div class="all-states-title">All 50 US States Wholesale Coverage</div>
-    <div class="states-grid">
-      ${otherStatesHtml}
+    <div class="all-states-inner">
+      <div class="all-states-title">All 50 US States Wholesale Coverage</div>
+      <div class="states-grid">
+        ${otherStatesHtml}
+      </div>
     </div>
   </section>
 

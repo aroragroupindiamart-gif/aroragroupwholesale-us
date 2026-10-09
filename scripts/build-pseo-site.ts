@@ -117,6 +117,7 @@ const headersContent = `/*
 
 const redirectsContent = `# Cloudflare Pages Clean Redirects
 /sitemap.xml /sitemap.xml 200
+/* /index.html 200
 `;
 
 writeFileSync(path.join(OUT_DIR, '_headers'), headersContent, 'utf-8');
