@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
-    "site:build": "tsx scripts/build-pseo-site.ts",
-    "site:build:us": "tsx scripts/build-us.ts",
-    "site:build:india": "tsx scripts/build-india.ts",
-    "site:deploy:us": "tsx scripts/build-us.ts --deploy",
-    "site:deploy:india": "tsx scripts/build-india.ts --deploy",
+    "site:build": "npx tsx scripts/build-pseo-site.ts",
+    "site:build:us": "npx tsx scripts/build-us.ts",
+    "site:build:india": "npx tsx scripts/build-india.ts",
+    "site:deploy:us": "npx tsx scripts/build-us.ts --deploy",
+    "site:deploy:india": "npx tsx scripts/build-india.ts --deploy",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },

@@ -27,7 +27,31 @@ if (!existsSync(brandJsonPath)) {
 
 const brandConfig = JSON.parse(readFileSync(brandJsonPath, 'utf-8'));
 
+function loadEnvFile(file: string): Record<string, string> {
+  if (!existsSync(file)) return {};
+  const res: Record<string, string> = {};
+  for (const line of readFileSync(file, 'utf-8').split('\n')) {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx > 0) {
+      const k = line.slice(0, colonIdx).trim().toLowerCase();
+      const v = line.slice(colonIdx + 1).trim();
+      if (k.includes('cloudflare account')) res['CLOUDFLARE_ACCOUNT_ID'] = v;
+      if (k.includes('cloudflare access') || k.includes('cloudflare token')) res['CLOUDFLARE_API_TOKEN'] = v;
+    }
+    const eqIdx = line.indexOf('=');
+    if (eqIdx > 0) {
+      const k = line.slice(0, eqIdx).trim();
+      const v = line.slice(eqIdx + 1).trim();
+      res[k] = v;
+    }
+  }
+  return res;
+}
+
+const localEnv = loadEnvFile(path.join(ROOT_DIR, '.env'));
+
 const env: Record<string, string> = {
+  ...localEnv,
   ...process.env,
   PORT: process.env.PORT || '3000',
   BASE_PATH: process.env.BASE_PATH || '/',
