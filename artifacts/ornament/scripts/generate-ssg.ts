@@ -962,8 +962,23 @@ function injectHomepagePrerender(): void {
     console.warn('⚠ dist/public/index.html not found — skipping homepage prerender');
     return;
   }
-  const html = readFileSync(viteIndexPath, 'utf-8');
+  let html = readFileSync(viteIndexPath, 'utf-8');
   const content = renderHomepageContent();
+
+  const seoTitle = isUSMode
+    ? `${BRAND_NAME} | Direct B2B Jewellery Importer, Exporter & Wholesale Supplier Across USA`
+    : `${BRAND_NAME} | Direct Jewellery Importer & Wholesaler Across India`;
+  const metaDesc = isUSMode
+    ? `${BRAND_NAME} — USA direct B2B wholesale importer & exporter of Korean, fashion, anti-tarnish & 18K gold-plated jewellery. Low $100 MOV, zero item MOQ. WhatsApp for catalog.`
+    : `${BRAND_NAME} — India's direct premium importer of Korean, fashion, anti-tarnish & gold-plated jewellery. MOV ₹3,000, zero item MOQ. WhatsApp for wholesale inquiry.`;
+
+  html = html.replace(/<title>.*?<\/title>/, `<title>${esc(seoTitle)}</title>`);
+  html = html.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${esc(metaDesc)}" />`);
+
   const injected = html.replace(
     /<div id="root"><\/div>/,
     `<div id="root">${content}</div>`,
@@ -1230,6 +1245,15 @@ ${allSitemapFiles.map(f => `  <sitemap>
 writeFileSync(path.join(SITEMAP_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
 writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
 console.log('✅ sitemap.xml written with', allSitemapFiles.length, 'regional sitemaps.');
+
+// ── Generate robots.txt ───────────────────────────────────────────────────
+const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: ${BASE_URL}/sitemap.xml
+`;
+writeFileSync(path.join(OUT_DIR, 'robots.txt'), robotsTxt, 'utf-8');
+console.log('✅ robots.txt written.');
 
 // ── Export cities.json for client-side search (no runtime API needed) ──────
 writeFileSync(

@@ -120,8 +120,15 @@ const redirectsContent = `# Cloudflare Pages Clean Redirects
 /* /index.html 200
 `;
 
+const robotsContent = `User-agent: *
+Allow: /
+
+Sitemap: ${brandConfig.siteUrl}/sitemap.xml
+`;
+
 writeFileSync(path.join(OUT_DIR, '_headers'), headersContent, 'utf-8');
 writeFileSync(path.join(OUT_DIR, '_redirects'), redirectsContent, 'utf-8');
+writeFileSync(path.join(OUT_DIR, 'robots.txt'), robotsContent, 'utf-8');
 
 // 3. Count generated pages
 function countFiles(dir: string, ext: string): number {
