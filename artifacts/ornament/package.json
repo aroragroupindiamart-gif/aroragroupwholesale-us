@@ -7,6 +7,8 @@
     "dev": "vite --config vite.config.ts --host 0.0.0.0",
     "build": "PORT=3000 BASE_PATH=/ vite build --config vite.config.ts && tsx scripts/generate-ssg.ts",
     "generate": "tsx scripts/generate-ssg.ts",
+    "generate:us": "tsx scripts/generate-ssg-us.ts",
+    "generate:india": "tsx scripts/generate-ssg-india.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "deploy": "tsx scripts/netlify-deploy.ts"

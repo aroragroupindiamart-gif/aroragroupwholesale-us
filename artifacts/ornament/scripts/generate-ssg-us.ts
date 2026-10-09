@@ -1,0 +1,1230 @@
+/**
+ * Project Ornament — US Static Site Generator + Sitemap Builder
+ *
+ * Dedicated generator for Arora Group Wholesale USA (https://aroragroupwholesale-us.pages.dev)
+ * 
+ * Features:
+ * - 2,249 US cities across all 50 states (13,494 city wholesaler pages)
+ * - 50 State directory hubs (/wv, /al, /ca, /tx, etc.) in Arora Group warm cream/amber theme
+ * - 1,200 State landing pages (50 states x 6 niches x 4 intents)
+ * - 17 partitioned regional sitemaps (≤ 1,000 URLs/file) + sitemap.xml index
+ * - Clean robots.txt directing crawlers to the US sitemap
+ * - US B2B wholesale terms: $100 USD MOV, zero item MOQ, express air freight (DHL/FedEx)
+ */
+
+import { fileURLToPath } from 'url';
+import path from 'path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { FOUNDER_VIDEO_ID, REVIEWS, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL } from '../src/lib/brandConstants.js';
+import { ALL_US_STATES } from '../src/lib/staticData.js';
+import { getMetaDescription, getFaqs } from '../../../scripts/content-spinner.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const OUT_DIR = path.join(__dirname, '..', 'dist', 'public');
+const SITEMAP_DIR = path.join(__dirname, '..', 'public');
+const BRAND_ID = process.env.VITE_BRAND_ID || 'aroragroupwholesale-us';
+const BASE_URL = (process.env.VITE_SITE_URL || 'https://aroragroupwholesale-us.pages.dev').replace(/\/$/, '');
+const BRAND_NAME = process.env.VITE_BRAND_NAME || 'Arora Group Wholesale USA';
+const SITEMAP_URL_CAP = 1000;
+
+if (!existsSync(OUT_DIR)) {
+  console.error('❌ dist/public not found — run vite build first');
+  process.exit(1);
+}
+
+const WHATSAPP_NUMBER = (process.env.VITE_WHATSAPP_NUMBER ?? '918368484361').replace(/\D/g, '');
+
+const NICHE_DESC: Record<string, string> = {
+  'korean-jewellery': 'Korean Jewellery',
+  'fashion-jewellery': 'Fashion Jewellery',
+  'anti-tarnish-jewellery': 'Anti Tarnish Jewellery',
+  '18k-gold-plated-jewellery': '18k Gold Plated Jewellery',
+  'demi-fine-jewellery': 'Demi Fine Jewellery',
+  'western-jewellery': 'Western Jewellery',
+};
+
+const INTENT_NOUN: Record<string, string> = {
+  wholesaler: 'Wholesaler',
+  supplier: 'Supplier',
+  manufacturer: 'Manufacturer',
+  importer: 'Importer',
+};
+
+const INTENT_PLURAL: Record<string, string> = {
+  wholesaler: 'Wholesalers',
+  supplier: 'Suppliers',
+  manufacturer: 'Manufacturers',
+  importer: 'Importers',
+};
+
+const WA_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;margin-right:6px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+function esc(s: string | null | undefined): string {
+  if (!s) return '';
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function waLink(nicheKey: string, intent: string, location: string): string {
+  const nd = NICHE_DESC[nicheKey] ?? nicheKey;
+  const inNoun = INTENT_NOUN[intent] ?? intent;
+  const msg = `Hi Arora Group Wholesale, I am a business owner in ${location}. Send me your latest B2B catalog of trending ${nd} for direct wholesale.`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
+const SHARED_CSS = `
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#FFF8F0;color:#1E1E1E;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.top-banner{background:#1E1E1E;color:#FFC629;text-align:center;font-size:.75rem;font-weight:600;padding:.625rem 1rem}
+header{background:#fff;border-bottom:1px solid #e8dcc8;padding:.875rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.wa-btn{display:inline-flex;align-items:center;background:#FFC629;color:#1E1E1E;font-weight:700;padding:.5rem 1rem;border-radius:.5rem;font-size:.875rem;transition:background .15s}
+.wa-btn:hover{background:#e6b325}
+footer{background:#1E1E1E;border-top:1px solid #333;padding:2rem 1.5rem;margin-top:2rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;font-size:.75rem;color:#888}
+footer .logo{font-size:1.125rem;color:#FFC629}
+`;
+
+function buildFaqs(nd: string, location: string): Array<{ q: string; a: string }> {
+  return getFaqs(BRAND_ID, nd, BRAND_NAME, location);
+}
+
+// ── City Page Render ────────────────────────────────────────────────────────
+
+function renderSlugPage(page: any): string {
+  if (!page) return '';
+  const nd = NICHE_DESC[page.niche_key] ?? page.niche_key;
+  const location = page.target_city ?? page.target_state;
+  const waUrl = waLink(page.niche_key, page.intent_type, location);
+  const canonicalUrl = `${BASE_URL}/${page.slug}/`;
+  const matchingUsState = ALL_US_STATES.find(s => s.state_name.toLowerCase() === (page.target_state || '').toLowerCase() || s.state_slug === page.state_slug);
+  const statePage = matchingUsState?.state_code
+    ? matchingUsState.state_code.toLowerCase()
+    : `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
+  const inNoun = INTENT_NOUN[page.intent_type] ?? (page.intent_type.charAt(0).toUpperCase() + page.intent_type.slice(1));
+  const seoTitle = `${BRAND_NAME} | Direct ${nd} ${inNoun} in ${location}`;
+  const metaDesc = getMetaDescription(BRAND_ID, nd, BRAND_NAME, location);
+  const faqs = buildFaqs(nd, location);
+
+  const locationSlug = page.slug.substring(page.niche_key.length + 1 + page.intent_type.length + 1);
+
+  const relatedCityLinks = (page.related_city_pages || []).map((r: any) => {
+    const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
+    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+  }).join('\n          ');
+
+  const relatedStateLinks = (page.related_state_pages || []).map((r: any) => {
+    const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
+    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+  }).join('\n          ');
+
+  const intentLinks = ['wholesaler', 'supplier', 'manufacturer', 'importer'].map(intent => {
+    const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
+    const active = intent === page.intent_type ? ' class="active"' : '';
+    return `<a href="${BASE_URL}/${esc(targetSlug)}"${active}>${intent}s</a>`;
+  }).join('\n          ');
+
+  const otherNicheLinks = Object.entries(NICHE_DESC)
+    .filter(([k]) => k !== page.niche_key)
+    .map(([k, name]) => {
+      const s = `${k}-${page.intent_type}-${locationSlug}`;
+      return `<a href="${BASE_URL}/${esc(s)}">${esc(name)} ${esc(inNoun)} in ${esc(location)}</a>`;
+    }).join('\n          ');
+
+  const reviewStripHtml = '<div style="margin-bottom:1.75rem">'
+    + '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.875rem">'
+    + '<span style="color:#FFC629;letter-spacing:.1em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+    + '<span style="font-size:.875rem;font-weight:700;color:#1E1E1E">5.0 on Google</span>'
+    + '<span style="font-size:.75rem;color:#999">&nbsp;&middot;&nbsp;10 reviews</span>'
+    + '</div>'
+    + Array.from(REVIEWS).slice(0, 3).map(r =>
+        '<div style="background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;gap:.75rem;align-items:flex-start">'
+        + '<span style="color:#FFC629;font-size:.75rem;flex-shrink:0;margin-top:.125rem;letter-spacing:.05em">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+        + '<div><p style="font-size:.8125rem;color:#555;font-style:italic;margin-bottom:.25rem">&ldquo;' + esc(r.text) + '&rdquo;</p>'
+        + '<p style="font-size:.75rem;font-weight:600;color:#1E1E1E">&mdash; ' + esc(r.name) + ' &middot; ' + esc(r.role) + '</p></div>'
+        + '</div>'
+      ).join('')
+    + '</div>';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(seoTitle)}</title>
+  <meta name="description" content="${esc(metaDesc)}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <meta property="og:title" content="${esc(seoTitle)}">
+  <meta property="og:description" content="${esc(metaDesc)}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="${BASE_URL}/opengraph.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(seoTitle)}">
+  <meta name="twitter:description" content="${esc(metaDesc)}">
+  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="google-site-verification" content="v1c9Cv2vYIXuW9jdlRh1U4fjwr9emd1BYjdeq-1ioh0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2746J0JPD8"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2746J0JPD8');</script>
+  <style>${SHARED_CSS}
+    nav.breadcrumb{background:#fef3e2;border-bottom:1px solid #e8dcc8;padding:.5rem 1.5rem;font-size:.75rem;color:#666;display:flex;gap:.5rem;flex-wrap:wrap}
+    main{max-width:1024px;margin:0 auto;padding:2.5rem 1.5rem;display:grid;grid-template-columns:1fr 280px;gap:2rem}
+    @media(max-width:768px){main{grid-template-columns:1fr}}
+    .badge{display:inline-flex;align-items:center;gap:.375rem;font-size:.75rem;font-weight:600;background:rgba(255,198,41,.15);color:#1E1E1E;padding:.25rem .75rem;border-radius:9999px;border:1px solid rgba(255,198,41,.4)}
+    h1{font-family:Georgia,serif;font-size:2rem;font-weight:700;margin:.75rem 0 .75rem;line-height:1.25;color:#1E1E1E}
+    .lead{color:#444;font-size:.9375rem;margin-bottom:1.5rem}
+    .trust-badges{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem}
+    .trust-badge{display:flex;align-items:flex-start;gap:.625rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:.875rem;font-size:.75rem;font-weight:600;color:#1E1E1E}
+    .cta-box{background:rgba(255,198,41,.08);border:1px solid #FFC629;border-radius:1rem;padding:1.5rem;margin-bottom:2rem}
+    .cta-box h2{font-size:1.0625rem;font-weight:600;margin-bottom:.375rem;color:#1E1E1E}
+    .cta-box p{font-size:.875rem;color:#555;margin-bottom:1rem}
+    .wa-cta{display:inline-flex;align-items:center;gap:.625rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.75rem;padding:.75rem 1.5rem;font-size:1rem;text-decoration:none}
+    h2.section-h{font-family:Georgia,serif;font-size:1.25rem;font-weight:700;margin-bottom:.75rem;margin-top:2rem;color:#1E1E1E}
+    .content-body p{color:#444;font-size:.9375rem;margin-bottom:.875rem}
+    details{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;margin-bottom:.5rem;overflow:hidden}
+    summary{padding:1rem 1.25rem;font-weight:600;font-size:.875rem;cursor:pointer;list-style:none;color:#1E1E1E}
+    details p{padding:.75rem 1.25rem 1.25rem;font-size:.875rem;color:#555;border-top:1px solid #f0e8d8}
+    .related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;margin-bottom:1.5rem}
+    @media(min-width:480px){.related-grid{grid-template-columns:repeat(4,1fr)}}
+    .related-grid a{font-size:.75rem;color:#555;border:1px solid #e8dcc8;border-radius:.5rem;padding:.5rem .75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+    .related-grid a:hover{color:#1E1E1E;background:#fef3e2}
+    .section-label{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+    aside .cta-card{background:#1E1E1E;color:#fff;border-radius:1rem;padding:1.5rem;margin-bottom:1rem}
+    aside .cta-card h3{font-family:Georgia,serif;font-size:1.125rem;font-weight:700;margin-bottom:.375rem;color:#FFC629}
+    aside .cta-card p{font-size:.875rem;opacity:.7;margin-bottom:1rem}
+    aside .cta-card a{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;padding:.75rem 1rem;border-radius:.75rem;font-size:.875rem;text-align:center;text-decoration:none}
+    .info-card{background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;margin-bottom:1rem;font-size:.875rem}
+    .info-card h4{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.75rem}
+    .info-row{display:flex;justify-content:space-between;padding:.25rem 0;font-size:.8125rem}
+    .info-row span:first-child{color:#666}
+    .info-row span:last-child{font-weight:600}
+    .intent-list{display:flex;flex-direction:column;gap:.25rem;margin-top:.375rem}
+    .intent-list a{display:block;padding:.4375rem .75rem;border-radius:.5rem;font-size:.8125rem;color:#555;text-transform:capitalize}
+    .intent-list a:hover{background:#fef3e2;color:#1E1E1E;text-decoration:none}
+    .intent-list a.active{background:rgba(255,198,41,.18);border:1px solid rgba(255,198,41,.45);font-weight:600;color:#1E1E1E;pointer-events:none;cursor:default}
+  </style>
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WholesaleStore",
+        "@id": `${canonicalUrl}#store`,
+        name: BRAND_NAME,
+        description: metaDesc,
+        url: canonicalUrl,
+        telephone: `+${WHATSAPP_NUMBER}`,
+        areaServed: location,
+        priceRange: "$$",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: location,
+          addressRegion: page.target_state,
+          addressCountry: "US",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}` },
+          ...(page.target_city
+            ? [{ "@type": "ListItem", position: 3, name: page.target_city, item: canonicalUrl }]
+            : []),
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faqs.map(({ q, a }) => ({
+          "@type": "Question",
+          name: q,
+          acceptedAnswer: { "@type": "Answer", text: a },
+        })),
+      },
+    ],
+  })}</script>
+</head>
+<body>
+  <div class="top-banner">Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(location)} · Low $100 MOV</div>
+  <header>
+    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
+    <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
+  </header>
+  <nav class="breadcrumb">
+    <a href="${BASE_URL}">Home</a><span>/</span>
+    <a href="${BASE_URL}/${esc(statePage)}">${esc(page.target_state)}</a>
+    ${page.target_city ? `<span>/</span><span>${esc(page.target_city)}</span>` : ''}
+    <span>/</span><span>${esc(nd)}</span>
+  </nav>
+  <main>
+    <div class="content-body">
+      <span class="badge">USA B2B Wholesale · Low $100 MOV</span>
+      <h1>${esc(page.h1_heading)}</h1>
+      <p class="lead">Direct B2B wholesale importer, exporter, and supplier of anti-tarnish, waterproof, and Korean jewellery for boutique and fashion retailers in ${esc(location)}.</p>
+
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <span>🌐</span>
+          <div>
+            <div>Direct Importer &amp; Exporter</div>
+            <div style="font-size:.6875rem;color:#888;font-weight:400">Factory-direct wholesale pricing</div>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <span>💧</span>
+          <div>
+            <div>Anti-Tarnish Guaranteed</div>
+            <div style="font-size:.6875rem;color:#888;font-weight:400">Waterproof daily wear</div>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <span>📈</span>
+          <div>
+            <div>Pinterest Trending</div>
+            <div style="font-size:.6875rem;color:#888;font-weight:400">Viral social designs</div>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <span>🛒</span>
+          <div>
+            <div>Low $100 MOV</div>
+            <div style="font-size:.6875rem;color:#888;font-weight:400">Zero item MOQ restrictions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <h2>Order Wholesale ${esc(nd)} in ${esc(location)}</h2>
+        <p>Get our latest wholesale catalog with factory prices, live inventory, and fast dispatch details for ${esc(location)} retailers.</p>
+        <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
+      </div>
+
+      ${FOUNDER_VIDEO_ID ? `
+      <div style="margin:2.5rem 0;background:#fff;border:1px solid #e8dcc8;border-radius:1rem;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.03)">
+        <h2 style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#1E1E1E;margin-bottom:.375rem">Meet the Founder — See the Collection Live</h2>
+        <p style="font-size:.875rem;color:#555;margin-bottom:1.25rem">Watch Arora Group's founder showcase our full range of trending, waterproof, and anti-tarnish jewellery available for wholesale to ${esc(location)}.</p>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:.75rem;background:#000">
+          <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="Arora Group Wholesale Collection Showcase" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      ` : ''}
+
+      ${reviewStripHtml}
+
+      <h2 class="section-h">Why ${esc(location)} Retailers Source ${esc(nd)} From Arora Group</h2>
+      <p>Arora Group Wholesale supplies fashion boutiques, online sellers, and retail stores in ${esc(location)} with premium, on-trend jewellery at factory-direct prices. Our collections feature advanced PVD coating for true anti-tarnish and waterproof performance.</p>
+      <p>With a low order minimum of $100 USD and zero item-level MOQ, you can test new styles with low risk and high profit margins.</p>
+
+      <h2 class="section-h">Frequently Asked Questions</h2>
+      ${faqs.map(f => `
+      <details>
+        <summary>${esc(f.q)}</summary>
+        <p>${esc(f.a)}</p>
+      </details>`).join('')}
+
+      ${relatedCityLinks ? `
+      <div style="margin-top:2.5rem">
+        <div class="section-label">${esc(nd)} Supply in Nearby Cities — ${esc(page.target_state)}</div>
+        <div class="related-grid">
+          ${relatedCityLinks}
+        </div>
+      </div>` : ''}
+
+      ${relatedStateLinks ? `
+      <div style="margin-top:1.5rem">
+        <div class="section-label">State-Wide Wholesale Supply</div>
+        <div class="related-grid">
+          ${relatedStateLinks}
+        </div>
+      </div>` : ''}
+
+      <div style="margin-top:1.5rem">
+        <div class="section-label">Other Wholesale Categories in ${esc(location)}</div>
+        <div class="related-grid">
+          ${otherNicheLinks}
+        </div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="cta-card">
+        <h3>${esc(nd)} — ${esc(location)}</h3>
+        <p>Direct wholesale catalog, pricing sheet, and dispatch details on WhatsApp.</p>
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Arora Group</a>
+      </div>
+      <div class="info-card">
+        <h4>Supply Details</h4>
+        <div class="info-row"><span>Product Line</span><span>${esc(nd)}</span></div>
+        <div class="info-row"><span>Role</span><span>${esc(page.intent_type)}</span></div>
+        <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
+        <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
+        <div class="info-row"><span>MOV</span><span>$100 USD</span></div>
+      </div>
+      <div class="info-card">
+        <h4>Supply Type</h4>
+        <div class="intent-list">
+          ${intentLinks}
+        </div>
+      </div>
+    </aside>
+  </main>
+  <footer style="display:block;padding:2rem 1.5rem">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;margin-bottom:1.25rem">
+      <div>
+        <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
+        <p style="margin-top:.375rem;font-size:.75rem;color:#888">Direct B2B Importer, Exporter &amp; Wholesale Supplier Across USA</p>
+      </div>
+      <div>
+        <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Company</p>
+        <div style="display:flex;flex-direction:column;gap:.375rem">
+          <a href="${BASE_URL}/about" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
+          <a href="${BASE_URL}/contact" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Follow Us</p>
+        <div style="display:flex;gap:.875rem;align-items:center">
+          <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="${YOUTUBE_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="${FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" style="color:#aaa" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #444;padding-top:.875rem">
+      <p style="color:#888;font-size:.75rem">&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>`;
+}
+
+// ── State Directory Render ──────────────────────────────────────────────────
+
+function renderStateDirectoryHtml(
+  st: { state_name: string; state_slug: string; state_code?: string; region: string; count?: number },
+  citiesInState: Array<any>,
+  canonicalSlug: string
+): string {
+  const stateName = st.state_name;
+  const stateCode = st.state_code || '';
+  const cityCount = citiesInState.length;
+  const canonicalUrl = `${BASE_URL}/${canonicalSlug}/`;
+  const seoTitle = `Wholesale Jewellery in ${stateName} | ${BRAND_NAME}`;
+  const metaDesc = `Direct B2B wholesale importer, exporter & supplier of anti-tarnish, waterproof & Korean jewellery across ${stateName}. Browse all ${cityCount} cities with express air delivery & $100 MOV.`;
+  const waMsg = `Hi Arora Group Wholesale, I am a business owner in ${stateName}. Send me your latest B2B catalog of trending jewellery for my store.`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+
+  const sortedCities = [...citiesInState].sort((a, b) => (b.population || 0) - (a.population || 0));
+
+  const cityCardsHtml = sortedCities.map(loc => {
+    const citySlug = `korean-jewellery-wholesaler-${loc.place_slug}-${(loc.state_code || stateCode).toLowerCase()}`;
+    const popFormatted = (loc.population || 0).toLocaleString('en-US');
+    return `<a href="${BASE_URL}/${citySlug}" class="city-card">
+      <span class="city-name">${esc(loc.place_name)}</span>
+      <span class="city-pop">Pop. ${popFormatted} &middot; Tier ${loc.tier || 1}</span>
+    </a>`;
+  }).join('\n      ');
+
+  const otherStatesHtml = ALL_US_STATES.map(other => {
+    const otherHref = `${BASE_URL}/${other.state_code ? other.state_code.toLowerCase() : other.state_slug}`;
+    return `<a href="${otherHref}" class="state-quick-link">${esc(other.state_name)} (${other.count || 0})</a>`;
+  }).join('\n      ');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(seoTitle)}</title>
+  <meta name="description" content="${esc(metaDesc)}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <meta property="og:title" content="${esc(seoTitle)}">
+  <meta property="og:description" content="${esc(metaDesc)}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(seoTitle)}">
+  <meta name="twitter:description" content="${esc(metaDesc)}">
+  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="google-site-verification" content="v1c9Cv2vYIXuW9jdlRh1U4fjwr9emd1BYjdeq-1ioh0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2746J0JPD8"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2746J0JPD8');</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #FFF8F0;
+      color: #1E1E1E;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-banner {
+      background: #1E1E1E;
+      border-bottom: 1px solid #333;
+      color: #FFC629;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.625rem 1rem;
+    }
+    header {
+      background-color: #FFFFFF;
+      border-bottom: 1px solid #e8dcc8;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header-logo { height: 48px; width: auto; }
+    .header-nav { display: flex; align-items: center; gap: 1.5rem; }
+    .header-nav a { color: rgba(30,30,30,0.7); font-size: 0.875rem; font-weight: 600; transition: color 0.15s; }
+    .header-nav a:hover { color: #1E1E1E; }
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #FFC629;
+      color: #1E1E1E;
+      font-weight: 700;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: background 0.15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .header-cta:hover { background-color: #e6b325; }
+    .hero {
+      background: linear-gradient(180deg, #FFF8F0 0%, #fef3e2 100%);
+      border-bottom: 1px solid #e8dcc8;
+      padding: 3rem 1.5rem 2.5rem;
+    }
+    .hero-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1E1E1E;
+      background: rgba(255,198,41,0.25);
+      border: 1px solid rgba(255,198,41,0.5);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+    }
+    .hero h1 {
+      font-family: Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #1E1E1E;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      color: rgba(30,30,30,0.75);
+      font-size: 0.9375rem;
+      max-width: 820px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #FFC629;
+      color: #1E1E1E;
+      font-weight: 700;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 12px rgba(255,198,41,0.25);
+      text-decoration: none;
+    }
+    .hero-cta:hover { background-color: #e6b325; }
+    .section-cities {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1E1E1E;
+      margin-bottom: 0.25rem;
+    }
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: rgba(30,30,30,0.6);
+      margin-bottom: 1.5rem;
+    }
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+    @media (min-width: 480px) { .city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 768px) { .city-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (min-width: 1024px) { .city-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    .city-card {
+      background-color: #FFFFFF;
+      border: 1px solid #e8dcc8;
+      border-radius: 0.5rem;
+      padding: 0.875rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .city-card:hover {
+      background-color: #fffdf9;
+      border-color: #FFC629;
+      box-shadow: 0 4px 12px rgba(255,198,41,0.18);
+      transform: translateY(-2px);
+    }
+    .city-name {
+      color: #1E1E1E;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .city-pop {
+      color: rgba(30,30,30,0.6);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+    .trust-section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      border-top: 1px solid #e8dcc8;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .trust-card {
+      background-color: #FFFFFF;
+      border: 1px solid #e8dcc8;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .trust-card h3 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1E1E1E;
+      margin-bottom: 0.375rem;
+    }
+    .trust-card p {
+      font-size: 0.75rem;
+      color: rgba(30,30,30,0.65);
+      line-height: 1.5;
+    }
+    .video-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    .video-section h2 {
+      font-family: Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1E1E1E;
+      margin-bottom: 0.5rem;
+    }
+    .video-section p {
+      font-size: 0.875rem;
+      color: rgba(30,30,30,0.65);
+      margin-bottom: 1.5rem;
+    }
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid #e8dcc8;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+    }
+    .all-states-section {
+      background: #FFFFFF;
+      border-top: 1px solid #e8dcc8;
+      padding: 3rem 1.5rem;
+    }
+    .all-states-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .all-states-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1E1E1E;
+      margin-bottom: 1rem;
+    }
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+    }
+    .state-quick-link {
+      font-size: 0.75rem;
+      color: rgba(30,30,30,0.7);
+      transition: color 0.15s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .state-quick-link:hover { color: #1E1E1E; text-decoration: underline; }
+    footer {
+      background-color: #1E1E1E;
+      border-top: 1px solid #333;
+      padding: 2.5rem 1.5rem;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WholesaleStore",
+        "@id": `${canonicalUrl}#store`,
+        name: BRAND_NAME,
+        description: metaDesc,
+        url: canonicalUrl,
+        telephone: `+${WHATSAPP_NUMBER}`,
+        areaServed: stateName,
+        priceRange: "$$",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: stateName, item: canonicalUrl },
+        ],
+      },
+    ],
+  })}</script>
+</head>
+<body>
+  <div class="top-banner">Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(stateName)} · Low $100 MOV</div>
+  <header>
+    <div class="header-left">
+      <a href="${BASE_URL}"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" class="header-logo"></a>
+    </div>
+    <div class="header-nav">
+      <a href="${BASE_URL}/#states">All States</a>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="header-cta">${WA_ICON} WhatsApp Inquiry</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge">Direct Importer, Exporter &amp; Supplier · USA B2B Wholesale</span>
+      <h1>Local Jewellery Wholesalers in ${esc(stateName)}</h1>
+      <p>Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across ${cityCount} cities in ${esc(stateName)}. Fast 4&ndash;7 day express air delivery via DHL &amp; FedEx &middot; Low $100 USD MOV &middot; Zero item MOQ.</p>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="hero-cta">${WA_ICON} WhatsApp Catalog &amp; MOV</a>
+    </div>
+  </section>
+
+  <section class="section-cities">
+    <h2 class="section-title">Cities in ${esc(stateName)}</h2>
+    <p class="section-subtitle">${cityCount} cities with direct wholesale jewellery supply</p>
+    <div class="city-grid">
+      ${cityCardsHtml}
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-grid">
+      <div class="trust-card">
+        <h3>🌐 Direct Importer &amp; Exporter</h3>
+        <p>No middlemen markups. Direct B2B wholesale supplier connecting ${esc(stateName)} fashion retailers with factory-floor pricing.</p>
+      </div>
+      <div class="trust-card">
+        <h3>💧 100% Anti-Tarnish Guarantee</h3>
+        <p>Engineered for heavy daily wear. Completely waterproof protective layers that never fade, turn green, or oxidize.</p>
+      </div>
+      <div class="trust-card">
+        <h3>📈 Pinterest &amp; Reel Trending</h3>
+        <p>We scout hyper-viral social media jewelry aesthetics so your boutique captures hot consumer trends before they fade.</p>
+      </div>
+      <div class="trust-card">
+        <h3>🛒 Low $100 MOV &middot; Zero MOQ</h3>
+        <p>Mix and match any rings, necklaces, or bracelets freely. Fast 4&ndash;7 day express air freight direct to ${esc(stateName)}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-section">
+    <h2>Meet the Founder — See the Collection Live</h2>
+    <p>Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range available for direct wholesale to ${esc(stateName)} retailers.</p>
+    <div class="video-wrap">
+      <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} Founder Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section class="all-states-section">
+    <div class="all-states-inner">
+      <div class="all-states-title">All 50 US States Wholesale Coverage</div>
+      <div class="states-grid">
+        ${otherStatesHtml}
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved. Direct B2B Wholesale Importer &amp; Exporter.</p>
+  </footer>
+</body>
+</html>`;
+}
+
+// ── Homepage Render ────────────────────────────────────────────────────────
+
+function renderHomepageContent(): string {
+  const niches = Object.entries(NICHE_DESC).map(([niche_key, display_name]) => ({ niche_key, display_name }));
+  const states = ALL_US_STATES;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale USA, I am a US business owner. Send me your latest B2B catalog of trending jewelry for my store.")}`;
+
+  const defaultCitySlug = 'los-angeles-ca';
+  const nicheCards = niches.map(n => {
+    const href = `${BASE_URL}/${n.niche_key}-wholesaler-${defaultCitySlug}`;
+    return `<a href="${href}" style="display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;text-decoration:none;color:inherit">
+      <span style="font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#1E1E1E">${esc(n.display_name)}</span>
+      <span style="font-size:.8125rem;color:#666">Wholesalers · Suppliers · Importers</span>
+      <span style="font-size:.75rem;color:#FFC629;margin-top:auto;font-weight:700">Browse &rarr;</span>
+    </a>`;
+  }).join('\n');
+
+  const regionOrder = ['US West', 'US South', 'US Midwest', 'US Northeast'];
+  const statesByRegion = regionOrder.map(region => ({
+    region,
+    states: states.filter(s => s.region === region),
+  })).filter(g => g.states.length > 0);
+
+  const stateGrid = statesByRegion.map(group => `
+    <div style="margin-bottom:2rem">
+      <h3 style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:.75rem">${esc(group.region)}</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem">
+        ${group.states.map(s => {
+          const stateHref = `${BASE_URL}/${s.state_code ? s.state_code.toLowerCase() : s.state_slug}`;
+          return `<a href="${stateHref}" style="display:flex;justify-content:space-between;align-items:center;padding:.625rem 1rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;font-size:.875rem;color:#1E1E1E;text-decoration:none">
+            <span>${esc(s.state_name)}</span>
+            <span style="font-size:.75rem;color:#999">${s.count} cities &rarr;</span>
+          </a>`;
+        }).join('\n        ')}
+      </div>
+    </div>
+  `).join('\n');
+
+  const reviewsGridHtml = Array.from(REVIEWS).map(r => `
+    <div style="background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;padding:1.25rem;display:flex;flex-direction:column;gap:.5rem">
+      <div style="color:#FFC629;font-size:.875rem;letter-spacing:.05em">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="font-size:.875rem;color:#444;font-style:italic;line-height:1.5;flex-grow:1">&ldquo;${esc(r.text)}&rdquo;</p>
+      <div style="border-top:1px solid #f0e8d8;padding-top:.5rem;margin-top:.25rem">
+        <p style="font-size:.8125rem;font-weight:700;color:#1E1E1E">${esc(r.name)}</p>
+        <p style="font-size:.75rem;color:#888">${esc(r.role)}</p>
+      </div>
+    </div>
+  `).join('\n');
+
+  return `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#FFF8F0;color:#1E1E1E">
+  <div class="top-banner">🔥 Direct B2B Wholesale Importer &amp; Exporter of Waterproof, Anti-Tarnish &amp; Korean Jewellery Across USA — Low $100 USD MOV</div>
+
+  <header>
+    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" style="height:52px;width:auto"></a>
+    <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
+  </header>
+
+  <section style="background:linear-gradient(180deg,#FFF8F0 0%,#fef3e2 100%);border-bottom:1px solid #e8dcc8;padding:4rem 1.5rem;text-align:center">
+    <div style="max-width:800px;margin:0 auto">
+      <span style="display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#1E1E1E;background:rgba(255,198,41,.2);border:1px solid rgba(255,198,41,.5);padding:.25rem .75rem;border-radius:9999px;margin-bottom:1rem">Direct B2B Importer &amp; Exporter · USA Wholesale</span>
+      <h1 style="font-family:Georgia,serif;font-size:2.5rem;font-weight:700;line-height:1.2;margin-bottom:1rem;color:#1E1E1E">Direct Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery Across USA</h1>
+      <p style="font-size:1.0625rem;color:#555;margin-bottom:2rem;line-height:1.6">Supplying US boutiques, retail stores, and online sellers in 2,249 cities across all 50 states with certified-purity, trending designs. Fast 4–7 day express air delivery via DHL &amp; FedEx · Low $100 USD MOV · Zero item MOQ.</p>
+      <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer" style="font-size:1rem;padding:.75rem 1.75rem">${WA_ICON} WhatsApp for Catalog &amp; Linesheet</a>
+    </div>
+  </section>
+
+  <section style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-bottom:3rem">
+      <div style="background:#fff;border:1px solid #e8dcc8;border-radius:1rem;padding:1.5rem">
+        <h3 style="font-size:1rem;font-weight:700;color:#1E1E1E;margin-bottom:.5rem">🌐 Direct Factory Importer</h3>
+        <p style="font-size:.875rem;color:#666">No middleman markups. Factory-direct pricing connecting US fashion retailers straight with manufacturing floors.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #e8dcc8;border-radius:1rem;padding:1.5rem">
+        <h3 style="font-size:1rem;font-weight:700;color:#1E1E1E;margin-bottom:.5rem">💧 100% Anti-Tarnish Guarantee</h3>
+        <p style="font-size:.875rem;color:#666">PVD 18K gold plated on surgical stainless steel. Completely waterproof and sweatproof for daily wear without fading.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #e8dcc8;border-radius:1rem;padding:1.5rem">
+        <h3 style="font-size:1rem;font-weight:700;color:#1E1E1E;margin-bottom:.5rem">📈 Social Media Trending</h3>
+        <p style="font-size:.875rem;color:#666">Hyper-viral Pinterest and Instagram aesthetics curated weekly for rapid retail inventory turnover.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #e8dcc8;border-radius:1rem;padding:1.5rem">
+        <h3 style="font-size:1rem;font-weight:700;color:#1E1E1E;margin-bottom:.5rem">🛒 Low $100 MOV · Zero Item MOQ</h3>
+        <p style="font-size:.875rem;color:#666">Freely mix and match rings, earrings, necklaces, and bracelets. Express 4–7 day DHL/FedEx air delivery door-to-door.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1200px;margin:0 auto;padding:0 1.5rem 3rem">
+    <div style="background:linear-gradient(135deg,#fffbf0 0%,#fff5d6 100%);border:1px solid #FFC629;border-radius:1.25rem;padding:2rem">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem">
+        <span style="font-size:1.5rem;color:#FFC629">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1E1E1E">What Business Owners Say</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">
+        ${reviewsGridHtml}
+      </div>
+    </div>
+  </section>
+
+  <section id="product-lines" style="max-width:1200px;margin:0 auto;padding:3rem 1.5rem">
+    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">Our 6 Specialised Product Lines</h2>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">Direct imported, trend-scouted collections — available for US wholesale</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem">
+      ${nicheCards}
+    </div>
+
+    <h2 id="states" style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
+    <p style="text-align:center;color:#666;margin-bottom:2rem">Serving retail boutiques across all 50 US States</p>
+    ${stateGrid}
+  </section>
+
+  <section style="background:#1E1E1E;color:#fff;padding:4rem 1.5rem;text-align:center">
+    <div style="max-width:600px;margin:0 auto">
+      <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Source Direct from <span style="color:#FFC629">${esc(BRAND_NAME)}</span>?</h2>
+      <p style="opacity:.7;margin-bottom:2rem">Minimum Order Value: $100 USD · No Item MOQ · Express Air Freight · Purity Certified</p>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:.5rem;background:#FFC629;color:#1E1E1E;font-weight:700;border-radius:.5rem;padding:1rem 2rem;font-size:1.0625rem;text-decoration:none">${WA_ICON} WhatsApp Arora Group</a>
+    </div>
+  </section>
+
+  <footer style="background:#1E1E1E;border-top:1px solid #333;padding:2.5rem 1.5rem">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
+        <div>
+          <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
+          <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct B2B Importer, Exporter &amp; Wholesale Supplier Across USA</p>
+        </div>
+        <div>
+          <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Company</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <a href="${BASE_URL}/about" style="color:#ffffff60;text-decoration:none;font-size:.875rem">About Us</a>
+            <a href="${BASE_URL}/contact" style="color:#ffffff60;text-decoration:none;font-size:.875rem">Contact Us</a>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Follow Us</p>
+          <div style="display:flex;gap:1rem;align-items:center">
+            <a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            <a href="${YOUTUBE_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="${FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" style="color:#ffffff50" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #ffffff15;padding-top:1rem">
+        <p style="font-size:.75rem;color:#ffffff30;text-align:center">&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>`;
+}
+
+function injectHomepagePrerender(): void {
+  const viteIndexPath = path.join(OUT_DIR, 'index.html');
+  if (!existsSync(viteIndexPath)) {
+    console.warn('⚠ dist/public/index.html not found — skipping homepage prerender');
+    return;
+  }
+  let html = readFileSync(viteIndexPath, 'utf-8');
+  const content = renderHomepageContent();
+
+  const seoTitle = `${BRAND_NAME} | Direct B2B Jewellery Importer, Exporter & Wholesale Supplier Across USA`;
+  const metaDesc = `${BRAND_NAME} — USA direct B2B wholesale importer & exporter of Korean, fashion, anti-tarnish & 18K gold-plated jewellery. Low $100 MOV, zero item MOQ. WhatsApp for catalog.`;
+
+  html = html.replace(/<title>.*?<\/title>/, `<title>${esc(seoTitle)}</title>`);
+  html = html.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${esc(metaDesc)}" />`);
+
+  const injected = html.replace(
+    /<div id="root"><\/div>/,
+    `<div id="root">${content}</div>`,
+  );
+  if (injected === html) {
+    console.warn('⚠ Could not find <div id="root"></div> in index.html — homepage prerender skipped');
+    return;
+  }
+  writeFileSync(viteIndexPath, injected, 'utf-8');
+  console.log('✅ Homepage pre-rendered into dist/public/index.html');
+}
+
+function writeSitemapBucket(name: string, slugs: string[], lastmod: string): string[] {
+  const chunkCount = Math.ceil(slugs.length / SITEMAP_URL_CAP);
+  const writtenFiles: string[] = [];
+
+  for (let i = 0; i < chunkCount; i++) {
+    const chunk = slugs.slice(i * SITEMAP_URL_CAP, (i + 1) * SITEMAP_URL_CAP);
+    const filename = chunkCount === 1 ? `sitemap-${name}.xml` : `sitemap-${name}-${i + 1}.xml`;
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${chunk.map(s => `  <url>
+    <loc>${BASE_URL}/${s}/</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+    writeFileSync(path.join(SITEMAP_DIR, filename), xml, 'utf-8');
+    writeFileSync(path.join(OUT_DIR, filename), xml, 'utf-8');
+    writtenFiles.push(filename);
+  }
+
+  return writtenFiles;
+}
+
+// ── Main Build Execution ────────────────────────────────────────────────────
+
+console.log('🇺🇸 Starting Dedicated US SSG Pre-rendering…');
+
+const US_STATE_REGION: Record<string, string> = {
+  CA: 'west', WA: 'west', OR: 'west', NV: 'west', AZ: 'west', UT: 'west', ID: 'west', MT: 'west', WY: 'west', CO: 'west', NM: 'west', AK: 'west', HI: 'west',
+  TX: 'south', FL: 'south', GA: 'south', NC: 'south', SC: 'south', VA: 'south', TN: 'south', AL: 'south', LA: 'south', MS: 'south', AR: 'south', KY: 'south', WV: 'south', OK: 'south', MD: 'south', DE: 'south',
+  IL: 'midwest', OH: 'midwest', MI: 'midwest', IN: 'midwest', WI: 'midwest', MN: 'midwest', IA: 'midwest', MO: 'midwest', KS: 'midwest', NE: 'midwest', ND: 'midwest', SD: 'midwest',
+  NY: 'northeast', PA: 'northeast', NJ: 'northeast', MA: 'northeast', CT: 'northeast', RI: 'northeast', NH: 'northeast', VT: 'northeast', ME: 'northeast'
+};
+
+const usLocsPath = path.join(__dirname, '..', '..', 'data', 'us-locations.json');
+const usLocs: Array<any> = JSON.parse(readFileSync(usLocsPath, 'utf-8'));
+const nicheKeys = Object.keys(NICHE_DESC);
+const intentKeys = ['wholesaler', 'supplier', 'manufacturer', 'importer'];
+
+const slugEntries: Array<{ slug: string; page_type: string; region: string }> = [];
+const usPagesMap = new Map<string, any>();
+
+// 1. Generate City Pages for ALL 2,249 US cities (2,249 cities x 6 niches = 13,494 pages)
+for (const loc of usLocs) {
+  const reg = US_STATE_REGION[loc.state_code] ?? 'midwest';
+  for (const nicheKey of nicheKeys) {
+    const slug = `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`;
+    slugEntries.push({ slug, page_type: 'city', region: `us-${reg}` });
+
+    usPagesMap.set(slug, {
+      id: loc.id,
+      page_type: 'city',
+      slug,
+      title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_code}`,
+      h1_heading: `${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_name} (${loc.state_code})`,
+      niche_key: nicheKey,
+      intent_type: 'wholesaler',
+      target_city: `${loc.place_name}, ${loc.state_code}`,
+      target_state: loc.state_name,
+      state_slug: loc.state_name.toLowerCase().replace(/\s+/g, '-'),
+      region: `us-${reg}`,
+      related_city_pages: [],
+      related_state_pages: [],
+    });
+  }
+}
+
+// 2. Generate State Landing Pages (50 US States x 6 niches x 4 intents = 1,200 pages)
+for (const st of ALL_US_STATES) {
+  const reg = US_STATE_REGION[st.state_code || ''] ?? 'midwest';
+  const citiesInState = usLocs.filter(l => l.state_name.toLowerCase() === st.state_name.toLowerCase() || l.state_code === st.state_code);
+
+  for (const nicheKey of nicheKeys) {
+    for (const intent of intentKeys) {
+      const slug = `${nicheKey}-${intent}-${st.state_slug}`;
+      slugEntries.push({ slug, page_type: 'state', region: `us-${reg}` });
+
+      const inNoun = INTENT_NOUN[intent] || 'Wholesaler';
+
+      usPagesMap.set(slug, {
+        id: `state-${st.state_slug}-${nicheKey}-${intent}`,
+        page_type: 'state',
+        slug,
+        title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} ${inNoun} in ${st.state_name}`,
+        h1_heading: `${NICHE_DESC[nicheKey]} ${inNoun} in ${st.state_name} (${st.state_code || ''})`,
+        niche_key: nicheKey,
+        intent_type: intent,
+        target_city: null,
+        target_state: st.state_name,
+        state_slug: st.state_slug,
+        region: `us-${reg}`,
+        related_city_pages: citiesInState.map(loc => ({
+          slug: `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`,
+          title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_code}`,
+          h1_heading: `${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_name} (${loc.state_code})`
+        })),
+        related_state_pages: ALL_US_STATES.filter(other => other.state_slug !== st.state_slug).slice(0, 6).map(other => ({
+          slug: `${nicheKey}-${intent}-${other.state_slug}`,
+          title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} ${inNoun} in ${other.state_name}`,
+          h1_heading: `${NICHE_DESC[nicheKey]} ${inNoun} in ${other.state_name}`
+        }))
+      });
+    }
+  }
+
+  // 3. Dedicated State Directory Pages (e.g. /al, /alabama) with exact 5-column grid
+  const stateDirData = {
+    id: `state-dir-${st.state_slug}`,
+    page_type: 'state_directory',
+    state_name: st.state_name,
+    state_code: st.state_code,
+    state_slug: st.state_slug,
+    count: citiesInState.length,
+    cities: [...citiesInState].sort((a, b) => (b.population || 0) - (a.population || 0)),
+  };
+
+  if (st.state_code) {
+    const codeSlug = st.state_code.toLowerCase();
+    slugEntries.push({ slug: codeSlug, page_type: 'state_directory', region: `us-${reg}` });
+    usPagesMap.set(codeSlug, stateDirData);
+  }
+
+  slugEntries.push({ slug: st.state_slug, page_type: 'state_directory', region: `us-${reg}` });
+  usPagesMap.set(st.state_slug, stateDirData);
+
+  usPagesMap.set(`korean-jewellery-wholesaler-${st.state_slug}`, stateDirData);
+}
+
+// Populate related pages for city entries
+const allUsSlugs = Array.from(usPagesMap.values());
+for (const p of allUsSlugs) {
+  if (p.page_type === 'city') {
+    p.related_city_pages = allUsSlugs
+      .filter(other => other.niche_key === p.niche_key && other.target_state === p.target_state && other.slug !== p.slug && other.page_type === 'city')
+      .slice(0, 8)
+      .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
+    p.related_state_pages = ALL_US_STATES
+      .slice(0, 4)
+      .map(other => ({
+        slug: `${p.niche_key}-${p.intent_type}-${other.state_slug}`,
+        title: `${BRAND_NAME} | Direct ${NICHE_DESC[p.niche_key]} Wholesaler in ${other.state_name}`,
+        h1_heading: `${NICHE_DESC[p.niche_key]} Wholesaler in ${other.state_name}`
+      }));
+  }
+}
+
+console.log(`Generating HTML for ${slugEntries.length} US pages…`);
+
+const buckets: Record<string, string[]> = {
+  'us-west': [],
+  'us-south': [],
+  'us-midwest': [],
+  'us-northeast': [],
+};
+
+const pagesDir = path.join(OUT_DIR, 'pages');
+mkdirSync(pagesDir, { recursive: true });
+
+let generated = 0;
+for (const entry of slugEntries) {
+  const page = usPagesMap.get(entry.slug);
+  if (!page) continue;
+
+  const pageDir = path.join(OUT_DIR, entry.slug);
+  mkdirSync(pageDir, { recursive: true });
+
+  const html = page.page_type === 'state_directory'
+    ? renderStateDirectoryHtml(
+        ALL_US_STATES.find(s => s.state_code?.toLowerCase() === entry.slug || s.state_slug === entry.slug) || { state_name: page.state_name, state_slug: page.state_slug, state_code: page.state_code, region: page.region },
+        page.cities || [],
+        entry.slug
+      )
+    : renderSlugPage(page);
+
+  writeFileSync(path.join(pageDir, 'index.html'), html, 'utf-8');
+
+  // Also write JSON metadata for client hydration if needed
+  writeFileSync(
+    path.join(pagesDir, `${entry.slug}.json`),
+    JSON.stringify(page),
+    'utf-8',
+  );
+
+  const bucketKey = entry.region || 'us-midwest';
+  if (!buckets[bucketKey]) buckets[bucketKey] = [];
+  buckets[bucketKey].push(entry.slug);
+
+  generated++;
+  if (generated % 2500 === 0) {
+    console.log(`  … ${generated}/${slugEntries.length}`);
+  }
+}
+
+console.log(`✅ Generated ${generated} US HTML pages.`);
+
+injectHomepagePrerender();
+
+const today = new Date().toISOString().split('T')[0];
+const allSitemapFiles: string[] = [];
+
+for (const [name, slugs] of Object.entries(buckets)) {
+  const files = writeSitemapBucket(name, slugs, today);
+  let remaining = slugs.length;
+  for (const f of files) {
+    const count = Math.min(SITEMAP_URL_CAP, remaining);
+    console.log(`  sitemap ${f} — ${count} URLs`);
+    remaining -= count;
+  }
+  allSitemapFiles.push(...files);
+}
+
+const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allSitemapFiles.map(f => `  <sitemap>
+    <loc>${BASE_URL}/${f}</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>`).join('\n')}
+</sitemapindex>`;
+
+writeFileSync(path.join(SITEMAP_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
+writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), sitemapIndex, 'utf-8');
+console.log('✅ sitemap.xml written with', allSitemapFiles.length, 'regional sitemaps.');
+
+const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: ${BASE_URL}/sitemap.xml
+`;
+writeFileSync(path.join(OUT_DIR, 'robots.txt'), robotsTxt, 'utf-8');
+console.log('✅ robots.txt written.');
+
+writeFileSync(
+  path.join(OUT_DIR, 'cities.json'),
+  JSON.stringify(usLocs.map(l => ({ place_name: l.place_name, place_slug: l.place_slug, state_code: l.state_code, state_name: l.state_name, population: l.population, tier: l.tier }))),
+  'utf-8',
+);
+console.log('✅ cities.json written.');
+
+console.log('\n🎉 US SSG Complete.');
