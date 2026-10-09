@@ -1165,12 +1165,14 @@ for (const entry of slugEntries) {
 
   writeFileSync(path.join(pageDir, 'index.html'), html, 'utf-8');
 
-  // Also write JSON metadata for client hydration if needed
-  writeFileSync(
-    path.join(pagesDir, `${entry.slug}.json`),
-    JSON.stringify(page),
-    'utf-8',
-  );
+  // Only write JSON metadata for state directories (to stay under Cloudflare 20,000 file limit)
+  if (page.page_type === 'state_directory') {
+    writeFileSync(
+      path.join(pagesDir, `${entry.slug}.json`),
+      JSON.stringify(page),
+      'utf-8',
+    );
+  }
 
   const bucketKey = entry.region || 'us-midwest';
   if (!buckets[bucketKey]) buckets[bucketKey] = [];
