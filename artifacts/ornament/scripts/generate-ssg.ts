@@ -136,7 +136,10 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   const location = page.target_city ?? page.target_state;
   const waUrl = waLink(page.niche_key, page.intent_type, location);
   const canonicalUrl = `${BASE_URL}/${page.slug}/`;
-  const statePage = `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
+  const matchingUsState = isUSMode ? ALL_US_STATES.find(s => s.state_name.toLowerCase() === (page.target_state || '').toLowerCase() || s.state_slug === page.state_slug) : null;
+  const statePage = isUSMode && matchingUsState?.state_code
+    ? matchingUsState.state_code.toLowerCase()
+    : `${page.niche_key}-${page.intent_type}-${page.state_slug}`;
   const in_noun = INTENT_NOUN[page.intent_type] ?? (page.intent_type.charAt(0).toUpperCase() + page.intent_type.slice(1));
   const seoTitle = `${BRAND_NAME} | Direct ${nd} ${in_noun} in ${location}`;
   const metaDesc = getMetaDescription(BRAND_ID, nd, BRAND_NAME, location);
@@ -392,6 +395,377 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 </html>`;
 }
 
+// ── State Directory Template (matching hongdaplumbing.com UX) ──────────────
+
+function renderStateDirectoryHtml(
+  st: { state_name: string; state_slug: string; state_code?: string; region: string; count?: number },
+  citiesInState: Array<any>,
+  canonicalSlug: string
+): string {
+  const stateName = st.state_name;
+  const stateCode = st.state_code || '';
+  const cityCount = citiesInState.length;
+  const canonicalUrl = `${BASE_URL}/${canonicalSlug}/`;
+  const seoTitle = `Wholesale Jewellery in ${stateName} | ${BRAND_NAME}`;
+  const metaDesc = `Direct B2B wholesale importer, exporter & supplier of anti-tarnish, waterproof & Korean jewellery across ${stateName}. Browse all ${cityCount} cities with express air delivery & $100 MOV.`;
+  const waMsg = `Hi Arora Group Wholesale, I am a business owner in ${stateName}. Send me your latest B2B catalog of trending jewellery for my store.`;
+  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+
+  // Sort cities by population descending (top cities first like Hongda Plumbing)
+  const sortedCities = [...citiesInState].sort((a, b) => (b.population || 0) - (a.population || 0));
+
+  const cityCardsHtml = sortedCities.map(loc => {
+    const citySlug = `korean-jewellery-wholesaler-${loc.place_slug}-${(loc.state_code || stateCode).toLowerCase()}`;
+    const popFormatted = (loc.population || 0).toLocaleString('en-US');
+    return `<a href="${BASE_URL}/${citySlug}" class="city-card">
+      <span class="city-name">${esc(loc.place_name)}</span>
+      <span class="city-pop">Pop. ${popFormatted} &middot; Tier ${loc.tier || 1}</span>
+    </a>`;
+  }).join('\n      ');
+
+  const otherStatesHtml = ALL_US_STATES.map(other => {
+    const otherHref = `${BASE_URL}/${other.state_code ? other.state_code.toLowerCase() : other.state_slug}`;
+    return `<a href="${otherHref}" class="state-quick-link">${esc(other.state_name)} (${other.count || 0})</a>`;
+  }).join('\n      ');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(seoTitle)}</title>
+  <meta name="description" content="${esc(metaDesc)}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <meta property="og:title" content="${esc(seoTitle)}">
+  <meta property="og:description" content="${esc(metaDesc)}">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(seoTitle)}">
+  <meta name="twitter:description" content="${esc(metaDesc)}">
+  <meta name="twitter:image" content="${BASE_URL}/opengraph.jpg">
+  <meta name="google-site-verification" content="v1c9Cv2vYIXuW9jdlRh1U4fjwr9emd1BYjdeq-1ioh0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2746J0JPD8"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-2746J0JPD8');</script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0A0F1D;
+      color: #F8FAFC;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-banner {
+      background: #080D1A;
+      border-bottom: 1px solid #1E293B;
+      color: #FFC629;
+      text-align: center;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+    }
+    header {
+      background-color: #080D1A;
+      border-bottom: 1px solid #1E293B;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header-logo { height: 42px; width: auto; background: rgba(255,255,255,0.08); border-radius: 6px; padding: 2px 6px; }
+    .header-nav { display: flex; align-items: center; gap: 1.5rem; }
+    .header-nav a { color: #94A3B8; font-size: 0.875rem; font-weight: 500; transition: color 0.15s; }
+    .header-nav a:hover { color: #FFFFFF; }
+    .header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #FFC629;
+      color: #0A0F1D;
+      font-weight: 700;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .header-cta:hover { background-color: #e6b325; }
+    .hero {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 1.5rem;
+    }
+    .hero h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.025em;
+    }
+    .hero p {
+      color: #94A3B8;
+      font-size: 0.9375rem;
+      max-width: 820px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #FFC629;
+      color: #0A0F1D;
+      font-weight: 700;
+      border-radius: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 12px rgba(255,198,41,0.2);
+    }
+    .section-cities {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.25rem;
+    }
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: #94A3B8;
+      margin-bottom: 1.5rem;
+    }
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.625rem;
+    }
+    @media (min-width: 480px) { .city-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 768px) { .city-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (min-width: 1024px) { .city-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    .city-card {
+      background-color: #111827;
+      border: 1px solid #1F2937;
+      border-radius: 0.5rem;
+      padding: 0.875rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .city-card:hover {
+      background-color: #1E293B;
+      border-color: #475569;
+      transform: translateY(-2px);
+    }
+    .city-name {
+      color: #F8FAFC;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .city-pop {
+      color: #94A3B8;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+    .trust-section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      border-top: 1px solid #1E293B;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .trust-card {
+      background-color: #111827;
+      border: 1px solid #1F2937;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+    }
+    .trust-card h3 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.375rem;
+    }
+    .trust-card p {
+      font-size: 0.75rem;
+      color: #94A3B8;
+      line-height: 1.5;
+    }
+    .video-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    .video-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+    .video-section p {
+      font-size: 0.875rem;
+      color: #94A3B8;
+      margin-bottom: 1.5rem;
+    }
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid #1E293B;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+    }
+    .all-states-section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+      border-top: 1px solid #1E293B;
+    }
+    .all-states-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #FFC629;
+      margin-bottom: 1rem;
+    }
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+    }
+    .state-quick-link {
+      font-size: 0.75rem;
+      color: #94A3B8;
+      transition: color 0.15s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .state-quick-link:hover { color: #FFC629; }
+    footer {
+      background-color: #080D1A;
+      border-top: 1px solid #1E293B;
+      padding: 2rem 1.5rem;
+      font-size: 0.75rem;
+      color: #64748B;
+      text-align: center;
+    }
+  </style>
+  <script type="application/ld+json">${JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WholesaleStore",
+        "@id": `${canonicalUrl}#store`,
+        name: BRAND_NAME,
+        description: metaDesc,
+        url: canonicalUrl,
+        telephone: `+${WHATSAPP_NUMBER}`,
+        areaServed: stateName,
+        priceRange: "$$",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: stateName, item: canonicalUrl },
+        ],
+      },
+    ],
+  })}</script>
+</head>
+<body>
+  <div class="top-banner">Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(stateName)} · Low $100 MOV</div>
+  <header>
+    <div class="header-left">
+      <a href="${BASE_URL}"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" class="header-logo"></a>
+    </div>
+    <div class="header-nav">
+      <a href="${BASE_URL}/#states">All States</a>
+      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="header-cta">${WA_ICON} WhatsApp Inquiry</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Local Jewellery Wholesalers in ${esc(stateName)}</h1>
+    <p>Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, 18K gold-plated, and Korean jewellery across ${cityCount} cities in ${esc(stateName)}. Fast 4&ndash;7 day express air delivery via DHL &amp; FedEx &middot; Low $100 USD MOV &middot; Zero item MOQ.</p>
+    <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="hero-cta">${WA_ICON} WhatsApp Catalog &amp; MOV</a>
+  </section>
+
+  <section class="section-cities">
+    <h2 class="section-title">Cities in ${esc(stateName)}</h2>
+    <p class="section-subtitle">${cityCount} cities with direct wholesale jewellery supply</p>
+    <div class="city-grid">
+      ${cityCardsHtml}
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-grid">
+      <div class="trust-card">
+        <h3>🌐 Direct Importer &amp; Exporter</h3>
+        <p>No middlemen markups. Direct B2B wholesale supplier connecting ${esc(stateName)} fashion retailers with factory-floor pricing.</p>
+      </div>
+      <div class="trust-card">
+        <h3>💧 100% Anti-Tarnish Guarantee</h3>
+        <p>Engineered for heavy daily wear. Completely waterproof protective layers that never fade, turn green, or oxidize.</p>
+      </div>
+      <div class="trust-card">
+        <h3>📈 Pinterest &amp; Reel Trending</h3>
+        <p>We scout hyper-viral social media jewelry aesthetics so your boutique captures hot consumer trends before they fade.</p>
+      </div>
+      <div class="trust-card">
+        <h3>🛒 Low $100 MOV &middot; Zero MOQ</h3>
+        <p>Mix and match any rings, necklaces, or bracelets freely. Fast 4&ndash;7 day express air freight direct to ${esc(stateName)}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-section">
+    <h2>Meet the Founder — See the Collection Live</h2>
+    <p>Watch ${esc(BRAND_NAME)}'s founder walk through the full trending jewellery range available for direct wholesale to ${esc(stateName)} retailers.</p>
+    <div class="video-wrap">
+      <iframe loading="lazy" src="https://www.youtube.com/embed/${FOUNDER_VIDEO_ID}" title="${esc(BRAND_NAME)} Founder Showcase" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section class="all-states-section">
+    <div class="all-states-title">All 50 US States Wholesale Coverage</div>
+    <div class="states-grid">
+      ${otherStatesHtml}
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 ${esc(BRAND_NAME)}. All rights reserved. Direct B2B Wholesale Importer &amp; Exporter.</p>
+  </footer>
+</body>
+</html>`;
+}
+
 // ── Homepage pre-render ────────────────────────────────────────────────────
 
 function renderHomepageContent(): string {
@@ -416,12 +790,15 @@ function renderHomepageContent(): string {
   })).filter(g => g.states.length > 0);
 
   const stateGrid = statesByRegion.map(g => {
-    const links = g.states.map(s =>
-      `<a href="${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}" style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none;transition:all .15s ease">
+    const links = g.states.map(s => {
+      const stateHref = isUSMode && (s as any).state_code
+        ? `${BASE_URL}/${(s as any).state_code.toLowerCase()}`
+        : `${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}`;
+      return `<a href="${stateHref}" style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none;transition:all .15s ease">
         <span style="font-size:.8125rem;font-weight:600;color:#1E1E1E">${esc(s.state_name)}</span>
         ${(s as any).count ? `<span style="font-size:.6875rem;color:#666;background:#fef3e2;border:1px solid #e8dcc8;padding:.125rem .375rem;border-radius:999px;margin-left:auto">${(s as any).count} cities</span>` : ''}
-      </a>`
-    ).join('\n      ');
+      </a>`;
+    }).join('\n      ');
     return `<div style="margin-bottom:1.75rem">
       <h3 style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.2rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)}</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem">${links}</div>
@@ -501,7 +878,7 @@ function renderHomepageContent(): string {
       ${nicheCards}
     </div>
 
-    <h2 style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
+    <h2 id="states" style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:.5rem;color:#1E1E1E">State-Level Supply Coverage</h2>
     <p style="text-align:center;color:#666;margin-bottom:2rem">${scopeText}</p>
     ${stateGrid}
   </section>
@@ -685,6 +1062,29 @@ if (isUSMode) {
         });
       }
     }
+
+    // 3. Dedicated State Directory Pages (e.g. /al, /alabama) with exact 5-column grid
+    const stateDirData = {
+      id: `state-dir-${st.state_slug}`,
+      page_type: 'state_directory',
+      state_name: st.state_name,
+      state_code: st.state_code,
+      state_slug: st.state_slug,
+      count: citiesInState.length,
+      cities: [...citiesInState].sort((a, b) => (b.population || 0) - (a.population || 0)),
+    };
+
+    if (st.state_code) {
+      const codeSlug = st.state_code.toLowerCase();
+      slugEntries.push({ slug: codeSlug, page_type: 'state_directory', region: `us-${reg}` });
+      usPagesMap.set(codeSlug, stateDirData);
+    }
+
+    slugEntries.push({ slug: st.state_slug, page_type: 'state_directory', region: `us-${reg}` });
+    usPagesMap.set(st.state_slug, stateDirData);
+
+    // Also update korean-jewellery-wholesaler-${st.state_slug} to state_directory
+    usPagesMap.set(`korean-jewellery-wholesaler-${st.state_slug}`, stateDirData);
   }
 
   // Populate related pages for city entries
@@ -736,13 +1136,23 @@ for (const entry of slugEntries) {
   const page = isUSMode ? usPagesMap.get(entry.slug) : getPageBySlug(entry.slug);
   if (!page) continue;
 
-  const html = renderSlugPage(page);
+  let html: string;
+  if (page.page_type === 'state_directory') {
+    html = renderStateDirectoryHtml(
+      { state_name: page.state_name, state_slug: page.state_slug, state_code: page.state_code, region: entry.region, count: page.count },
+      page.cities,
+      entry.slug
+    );
+  } else {
+    html = renderSlugPage(page);
+  }
+
   const pageDir = path.join(OUT_DIR, entry.slug);
   mkdirSync(pageDir, { recursive: true });
   writeFileSync(path.join(pageDir, 'index.html'), html, 'utf-8');
 
-  // Write per-page JSON for state pages (and non-US mode) to keep total files within Cloudflare 20,000 limit
-  if (!isUSMode || entry.page_type === 'state') {
+  // Write per-page JSON for state pages and state directories
+  if (!isUSMode || entry.page_type === 'state' || entry.page_type === 'state_directory') {
     const pagesJsonDir = path.join(OUT_DIR, 'pages');
     mkdirSync(pagesJsonDir, { recursive: true });
     writeFileSync(path.join(pagesJsonDir, `${entry.slug}.json`), JSON.stringify(page), 'utf-8');

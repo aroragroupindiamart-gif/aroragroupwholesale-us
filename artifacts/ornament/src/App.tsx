@@ -8,6 +8,8 @@ import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import LandingPage from "@/pages/LandingPage";
+import StateDirectory from "@/pages/StateDirectory";
+import { ALL_US_STATES } from "@/lib/staticData";
 
 function useNormalizedLocation() {
   const [location, navigate] = useBrowserLocation();
@@ -26,13 +28,27 @@ const queryClient = new QueryClient({
   },
 });
 
+function SlugRouter({ params }: { params: { slug: string } }) {
+  const slug = (params.slug || "").toLowerCase();
+  const isState = ALL_US_STATES.some(
+    (s) =>
+      s.state_code?.toLowerCase() === slug ||
+      s.state_slug === slug ||
+      `korean-jewellery-wholesaler-${s.state_slug}` === slug
+  );
+  if (isState) {
+    return <StateDirectory slug={slug} />;
+  }
+  return <LandingPage />;
+}
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/:slug" component={LandingPage} />
+      <Route path="/:slug" component={SlugRouter} />
       <Route component={NotFound} />
     </Switch>
   );

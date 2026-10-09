@@ -245,7 +245,7 @@ export default function Home() {
       </section>
 
       {/* ─── STATE COVERAGE GRID ─────────────────────────────── */}
-      <section className="py-16 bg-white border-t border-amber-200">
+      <section id="states" className="py-16 bg-white border-t border-amber-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="font-serif text-3xl font-bold text-[#1E1E1E] text-center mb-2">
             State-Level Supply Coverage
@@ -260,23 +260,28 @@ export default function Home() {
                   {isUSBrand ? region : `${region} India`}
                 </h3>
                 <div className="grid grid-cols-1 gap-2 mt-1">
-                  {regionStates.map((s) => (
-                    <a
-                      key={s.state_slug}
-                      href={`/korean-jewellery-wholesaler-${s.state_slug}`}
-                      data-testid={`link-state-${s.state_slug}`}
-                      className="flex items-center justify-between p-2.5 bg-white border border-amber-200 rounded-lg hover:border-[#FFC629] hover:shadow-sm transition-all text-left group"
-                    >
-                      <span className="text-sm font-semibold text-[#1E1E1E] group-hover:underline">
-                        {s.state_name}
-                      </span>
-                      {s.count && (
-                        <span className="text-xs text-[#1E1E1E]/60 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-medium">
-                          {s.count} cities
+                  {regionStates.map((s) => {
+                    const stateHref = isUSBrand && s.state_code
+                      ? `/${s.state_code.toLowerCase()}`
+                      : `/korean-jewellery-wholesaler-${s.state_slug}`;
+                    return (
+                      <a
+                        key={s.state_slug}
+                        href={stateHref}
+                        data-testid={`link-state-${s.state_slug}`}
+                        className="flex items-center justify-between p-2.5 bg-white border border-amber-200 rounded-lg hover:border-[#FFC629] hover:shadow-sm transition-all text-left group"
+                      >
+                        <span className="text-sm font-semibold text-[#1E1E1E] group-hover:underline">
+                          {s.state_name}
                         </span>
-                      )}
-                    </a>
-                  ))}
+                        {s.count && (
+                          <span className="text-xs text-[#1E1E1E]/60 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-medium">
+                            {s.count} cities
+                          </span>
+                        )}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             ))}
