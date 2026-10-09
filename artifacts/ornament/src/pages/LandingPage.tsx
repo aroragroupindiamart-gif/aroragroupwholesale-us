@@ -58,6 +58,8 @@ const FAQS = (niche: string, city: string) => {
   ];
 };
 
+const isUSBrand = (import.meta.env.VITE_BRAND_ID || '').includes('-us');
+
 export default function LandingPage() {
   const { slug } = useParams<{ slug: string }>();
   const { data: page, isLoading, isError } = useStaticPage(slug ?? "");
@@ -71,7 +73,9 @@ export default function LandingPage() {
     ? `${BRAND_NAME} | Direct ${nd} ${intentNounCap} in ${locationLabel}`
     : '';
   const metaDescription = page
-    ? `Source viral, Pinterest-trending ${nd} direct from ${BRAND_NAME} in ${locationLabel}. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!`
+    ? (isUSBrand
+        ? `Direct B2B importer & exporter of anti-tarnish, Korean & waterproof ${nd} for US retailers in ${locationLabel}. Low $100 MOV, express air shipping across USA.`
+        : `Source viral, Pinterest-trending ${nd} direct from ${BRAND_NAME} in ${locationLabel}. Low ₹3,000 order value, 100% tarnish-free, zero item MOQ. Get our latest catalog via WhatsApp!`)
     : '';
 
   // useEffect MUST be before any early returns (Rules of Hooks)
@@ -163,7 +167,7 @@ export default function LandingPage() {
 
       {/* ─── TOP BANNER ────────────────────────────────────────── */}
       <div className="bg-[#1E1E1E] text-[#FFC629] text-center text-xs sm:text-sm font-semibold py-2.5 px-4">
-        🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to {locationLabel}
+        {isUSBrand ? `Direct Importer, Exporter & Wholesale Supplier of Anti-Tarnish, 18K Gold Plated & Korean Jewellery to ${locationLabel} · Low $100 MOV` : `🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${locationLabel}`}
       </div>
 
       {/* ─── NAV ─────────────────────────────────────────────── */}
@@ -213,7 +217,7 @@ export default function LandingPage() {
             <div className="mb-6">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#1E1E1E] bg-[#FFC629]/20 px-3 py-1 rounded-full mb-4">
                 <MapPin className="w-3 h-3" />
-                {page.region} India · Direct Premium Importer
+                {isUSBrand ? "Direct Importer, Exporter & Supplier · USA B2B Wholesale" : `${page.region} India · Direct Premium Importer`}
               </span>
               <h1
                 className="font-serif text-3xl sm:text-4xl font-bold text-[#1E1E1E] leading-tight mb-3"
@@ -222,10 +226,18 @@ export default function LandingPage() {
                 {page.h1_heading}
               </h1>
               <p className="text-[#1E1E1E]/70 text-base leading-relaxed">
-                {BRAND_NAME} is the premier source for{" "}
-                <strong>{nd} {intentNounCap}s in {locationLabel}</strong>
-                {" "}— India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs.
-                Skip outdated stock — source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.
+                {isUSBrand ? (
+                  <>
+                    <strong>{BRAND_NAME}</strong> is the direct <strong>importer, exporter, and wholesale supplier of anti-tarnish, Korean, and waterproof jewellery in {locationLabel}</strong> — supplying US fashion boutiques, retail stores, and online sellers with certified-purity, trending designs. Source factory-direct collections with fast 4-7 day express air delivery via DHL & FedEx and a low MOV of $100 USD with zero item-level MOQ.
+                  </>
+                ) : (
+                  <>
+                    {BRAND_NAME} is the premier source for{" "}
+                    <strong>{nd} {intentNounCap}s in {locationLabel}</strong>
+                    {" "}— India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs.
+                    Skip outdated stock — source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.
+                  </>
+                )}
               </p>
             </div>
 
@@ -404,25 +416,49 @@ export default function LandingPage() {
                 })}
               </div>
 
-              {page.related_city_pages.length > 0 && (
+              {page.page_type === 'state' && page.related_city_pages.length > 0 ? (
+                <div className="mb-8">
+                  <h3 className="font-serif text-xl font-bold text-[#1E1E1E] mb-2">
+                    Cities &amp; Districts Covered in {page.target_state} ({page.related_city_pages.length} Cities)
+                  </h3>
+                  <p className="text-sm text-[#1E1E1E]/60 mb-4">
+                    Direct wholesale B2B express delivery across all municipalities and retail markets in {page.target_state}:
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                    {page.related_city_pages.map((link) => {
+                      const cityLabel = link.h1_heading ? link.h1_heading.replace(/.* in /, '').split(',')[0].trim() : (link.title.split("|")[1] || link.title).trim();
+                      return (
+                        <a
+                          key={link.slug}
+                          href={`/${link.slug}`}
+                          className="flex items-center justify-between p-2.5 bg-white border border-amber-200 rounded-lg text-xs font-semibold text-[#1E1E1E] hover:border-[#FFC629] hover:bg-amber-50 transition-colors"
+                        >
+                          <span className="truncate">{cityLabel}</span>
+                          <span className="text-[#FFC629] font-bold ml-1">→</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : page.related_city_pages.length > 0 ? (
                 <>
                   <h3 className="font-semibold text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-3">
                     {nd} Supply in Nearby Cities — {page.target_state}
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                    {page.related_city_pages.slice(0, 5).map((link) => (
-                      <Link
+                    {page.related_city_pages.slice(0, 10).map((link) => (
+                      <a
                         key={link.slug}
                         href={`/${link.slug}`}
                         data-testid={`link-related-city-${link.slug}`}
                         className="text-xs text-[#1E1E1E]/70 hover:text-[#1E1E1E] hover:bg-[#FFC629]/10 px-3 py-2 rounded-lg border border-amber-200 transition-colors truncate"
                       >
                         {link.h1_heading ? link.h1_heading.replace(/.* in /, '') : (link.title.split("|")[1] || link.title).trim()}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </>
-              )}
+              ) : null}
             </section>
 
             <Link

@@ -93,8 +93,8 @@ export default function Home() {
             </a>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-[#1E1E1E]/60">
-            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '4,980' : '3,792'}</strong> pages</span>
-            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '630' : '122'}</strong> cities</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '14,694' : '3,792'}</strong> pages</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '2,249' : '122'}</strong> cities</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '50' : '36'}</strong> states {isUSBrand ? 'covered' : '& UTs'}</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">6</strong> product lines</span>
             <span className="flex items-center gap-1.5">✓ MOV <strong className="text-[#1E1E1E]">{isUSBrand ? '$100 USD' : '₹3,000'}</strong></span>
@@ -132,7 +132,7 @@ export default function Home() {
               <span className="text-[#FFC629] text-xl tracking-wider">★★★★★</span>
               <span className="font-serif text-2xl font-bold text-[#1E1E1E]">5.0</span>
             </div>
-            <p className="text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-2">10 Google Reviews · Verified Retailers</p>
+            <p className="text-[#1E1E1E]/50 text-xs uppercase tracking-widest mb-2">Google Reviews · Verified Retailers</p>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E1E1E]">What Business Owners Say</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -156,7 +156,7 @@ export default function Home() {
           Our 6 Specialised Product Lines
         </h2>
         <p className="text-[#1E1E1E]/60 text-center mb-8">
-          Each line manufactured in-house with certified purity standards — available for direct wholesale across India
+          {isUSBrand ? "Direct importer, exporter, and supplier of anti-tarnish and trending jewellery for US retailers" : "Each line manufactured in-house with certified purity standards — available for direct wholesale across India"}
         </p>
 
         {/* ── City search widget ── */}
@@ -212,7 +212,7 @@ export default function Home() {
               const icon = NICHE_ICONS[niche.niche_key] ?? "💍";
               const exampleSlug = `${niche.niche_key}-wholesaler-${selectedCity.slug}`;
               return (
-                <Link
+                <a
                   key={niche.niche_key}
                   href={`/${exampleSlug}`}
                   data-testid={`card-niche-${niche.niche_key}`}
@@ -224,7 +224,7 @@ export default function Home() {
                   <span className="text-sm font-semibold text-[#1E1E1E] leading-snug">
                     {niche.display_name}
                   </span>
-                </Link>
+                </a>
               );
             })}
           </div>
@@ -232,14 +232,14 @@ export default function Home() {
         {/* Supply type sub-links */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           {INTENT_LABELS.map((intent) => (
-            <Link
+            <a
               key={intent.key}
               href={`/korean-jewellery-${intent.key}-${selectedCity.slug}`}
               data-testid={`link-intent-${intent.key}`}
               className="px-4 py-1.5 rounded-full border border-amber-200 bg-white text-sm text-[#1E1E1E]/60 hover:border-[#FFC629] hover:text-[#1E1E1E] transition-colors"
             >
               {intent.label}s
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -261,7 +261,7 @@ export default function Home() {
                 </h3>
                 <div className="grid grid-cols-1 gap-2 mt-1">
                   {regionStates.map((s) => (
-                    <Link
+                    <a
                       key={s.state_slug}
                       href={`/korean-jewellery-wholesaler-${s.state_slug}`}
                       data-testid={`link-state-${s.state_slug}`}
@@ -275,7 +275,7 @@ export default function Home() {
                           {s.count} cities
                         </span>
                       )}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -288,10 +288,10 @@ export default function Home() {
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
           {[
-            { icon: "🌐", title: "Direct Global Importing", desc: "No trading middlemen or agent markups. We source directly from international jewelry hubs at true factory-floor pricing." },
+            { icon: "🌐", title: isUSBrand ? "Direct Importer & Exporter" : "Direct Global Importing", desc: isUSBrand ? "Direct B2B wholesale importer and exporter connecting US retailers with certified-purity jewellery. No middlemen markups." : "No trading middlemen or agent markups. We source directly from international jewelry hubs at true factory-floor pricing." },
             { icon: "💧", title: "100% Tarnish-Free Guarantee", desc: "Engineered for heavy daily wear. Completely waterproof protective layers that will not fade, turn green, or oxidize." },
             { icon: "📈", title: "Pinterest & Reel Trending", desc: "We scout and source hyper-viral social media jewelry aesthetics so your store captures hot consumer trends before they fade." },
-            { icon: "🛒", title: "Flexible Small-Batch Sourcing", desc: "Zero item-level MOQ. Mix and match any assortment of rings, anklets, or necklaces. MOV just ₹3,000." },
+            { icon: "🛒", title: "Flexible Small-Batch Sourcing", desc: isUSBrand ? "Zero item-level MOQ. Mix and match any assortment of rings, anklets, or necklaces. MOV just $100 USD." : "Zero item-level MOQ. Mix and match any assortment of rings, anklets, or necklaces. MOV just ₹3,000." },
           ].map((item) => (
             <div key={item.title} className="bg-white border border-amber-200 rounded-xl p-6 shadow-sm">
               <div className="text-3xl mb-3">{item.icon}</div>
@@ -309,7 +309,7 @@ export default function Home() {
             Ready to Source Direct from <span className="text-[#FFC629]">{BRAND_NAME}</span>?
           </h2>
           <p className="text-white/60 mb-6">
-            Minimum Order Value: ₹3,000 · No Item MOQ · GST Invoice · Insured Freight · Purity Certified
+            {isUSBrand ? "Minimum Order Value: $100 USD · No Item MOQ · Express DHL & FedEx Air Delivery · Certified Purity" : "Minimum Order Value: ₹3,000 · No Item MOQ · GST Invoice · Insured Freight · Purity Certified"}
           </p>
           <WhatsAppButton className="text-base px-10 py-4 text-lg" />
         </div>

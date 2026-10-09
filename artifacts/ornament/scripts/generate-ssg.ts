@@ -282,7 +282,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   })}</script>
 </head>
 <body>
-  <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}</div>
+  <div class="top-banner">${isUSMode ? `Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(location)} · Low $100 MOV` : `🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)}`}</div>
   <header>
     <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
@@ -295,9 +295,11 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
   </nav>
   <main>
     <div class="content-body">
-      <span class="badge">&#x25CE; ${esc(page.region)} India · Direct Premium Importer</span>
+      <span class="badge">&#x25CE; ${isUSMode ? 'Direct Importer, Exporter &amp; Supplier · USA B2B Wholesale' : `${esc(page.region)} India · Direct Premium Importer`}</span>
       <h1>${esc(page.h1_heading)}</h1>
-      <p class="lead">${esc(BRAND_NAME)} is the premier source for <strong>${esc(nd)} ${esc(in_noun)}s in ${esc(location)}</strong> — India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs. Source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.</p>
+      <p class="lead">${isUSMode
+        ? `${esc(BRAND_NAME)} is the direct <strong>importer, exporter, and wholesale supplier of anti-tarnish, Korean, and waterproof jewellery in ${esc(location)}</strong> — supplying US fashion boutiques, retail stores, and online sellers with certified-purity, trending designs. Source direct factory collections with fast 4-7 day express air delivery via DHL &amp; FedEx and a low MOV of $100 USD with zero item-level MOQ.`
+        : `${esc(BRAND_NAME)} is the premier source for <strong>${esc(nd)} ${esc(in_noun)}s in ${esc(location)}</strong> — India's direct factory importer serving business owners and retailers with certified-purity, globally-sourced designs. Source Pinterest-trending pieces with insured freight and a low MOV of ₹3,000 with no item-level restrictions.`}</p>
       <img loading="lazy" src="/opengraph.jpg" alt="${esc(nd)} ${esc(in_noun)} in ${esc(location)} by ${esc(BRAND_NAME)}" style="width:100%;border-radius:.75rem;margin-bottom:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.08)">
       <h2 class="section-h">See the Collection — Watch the Founder Showcase</h2>
       <p style="font-size:.875rem;color:#666;margin-bottom:.875rem">${esc(BRAND_NAME)}'s founder walks through the full ${esc(nd)} range available for wholesale to ${esc(location)} retailers.</p>
@@ -306,30 +308,42 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
       </div>
       ${reviewStripHtml}
       <div class="trust-badges">
-        <div class="trust-badge">🌐 Direct Global Importing (No Middlemen)</div>
+        <div class="trust-badge">🌐 ${isUSMode ? 'Direct Importer &amp; Exporter (No Middlemen)' : 'Direct Global Importing (No Middlemen)'}</div>
         <div class="trust-badge">💧 100% Tarnish-Free Guarantee</div>
         <div class="trust-badge">📈 Pinterest &amp; Reel Trending</div>
-        <div class="trust-badge">🛒 Flexible Small-Batch Sourcing — MOV ₹3,000</div>
+        <div class="trust-badge">🛒 Flexible Small-Batch Sourcing — MOV ${isUSMode ? '$100 USD' : '₹3,000'}</div>
       </div>
       <div class="cta-box">
-        <h2>Inquire About ${esc(nd)} — Direct from Our Factory to ${esc(location)}</h2>
+        <h2>Inquire About ${esc(nd)} — Direct Factory Supply to ${esc(location)}</h2>
         <p>WhatsApp us your business requirements — get MOV, purity certificate, and a custom catalogue within 4 hours.</p>
         <a class="wa-cta" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp ${esc(BRAND_NAME)}</a>
       </div>
       <h2 class="section-h">Trend-Dominant ${esc(nd)} for ${esc(location)} Retailers — Designs That Sell Out Fast</h2>
-      <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer and trend scout supplying ${esc(location)}'s most forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping business owners cash in on fast-moving social media jewelry trends before they fade.</p>
-      <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ₹3,000 with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
+      <p><strong>${esc(BRAND_NAME)}</strong> is the direct importer, exporter, and trend scout supplying ${esc(location)}'s most forward-thinking retailers with <strong>Pinterest-famous aesthetics, trending Korean styles, and waterproof anti-tarnish pieces that sell out instantly.</strong> Every collection is engineered for maximum retail turnover — helping business owners cash in on fast-moving social media jewelry trends before they fade.</p>
+      <p>We update our ${esc(nd)} catalogue rapidly so your shelves stay stocked with fresh, highly shareable items your customers are already searching for. <strong>${esc(BRAND_NAME)}</strong> offers a <strong>Minimum Order Value of just ${isUSMode ? '$100 USD' : '₹3,000'} with no item-level MOQ</strong> — mix and match any designs freely. Scalable <strong>customisation and co-branding options</strong> available for established wholesale accounts across ${esc(page.target_state)}.</p>
       <h2 class="section-h">Wholesale FAQ — ${esc(nd)} from ${esc(BRAND_NAME)}</h2>
       ${faqs.map(({ q, a }) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('\n      ')}
+      
+      ${page.page_type === 'state' && page.related_city_pages.length > 0 ? `
+      <h2 class="section-h" style="margin-top:2.5rem">Cities &amp; Districts Covered in ${esc(page.target_state)} (${page.related_city_pages.length} Cities)</h2>
+      <p style="font-size:.875rem;color:#666;margin-bottom:1rem">Direct wholesale B2B express delivery across all municipalities, commercial districts, and retail markets in ${esc(page.target_state)}:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;margin-bottom:2rem">
+        ${page.related_city_pages.map(r => {
+          const cityLabel = r.h1_heading ? r.h1_heading.replace(/.* in /, '').split(',')[0].trim() : (r.title.split('|')[1] || r.title).trim();
+          return `<a href="${BASE_URL}/${esc(r.slug)}" style="display:flex;align-items:center;justify-content:space-between;padding:.625rem .875rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none;font-size:.8125rem;font-weight:600;color:#1E1E1E"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(cityLabel)}</span><span style="font-size:.6875rem;color:#FFC629;font-weight:700">&rarr;</span></a>`;
+        }).join('\n        ')}
+      </div>
+      ` : ''}
+
       <p class="section-label" style="margin-top:1.5rem">Other ${esc(BRAND_NAME)} Product Lines in ${esc(location)}</p>
       <div class="related-grid">${otherNicheLinks}</div>
-      ${page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
+      ${page.page_type === 'city' && page.related_city_pages.length > 0 ? `<p class="section-label" style="margin-top:1.5rem">${esc(nd)} Supply in Nearby Cities</p><div class="related-grid">${relatedCityLinks}</div>` : ''}
       <a href="${BASE_URL}" style="display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;color:#666;margin-top:1rem">&larr; Back to ${esc(BRAND_NAME)}</a>
     </div>
     <aside>
       <div class="cta-card">
         <h3>${esc(nd)} — ${esc(location)}</h3>
-        <p>Direct premium import supply. MOV ₹3,000. No item MOQ. GST invoice included.</p>
+        <p>${isUSMode ? 'Direct importer & exporter. MOV $100 USD. No item MOQ. Express air shipping.' : 'Direct premium import supply. MOV ₹3,000. No item MOQ. GST invoice included.'}</p>
         <a href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Arora Group</a>
       </div>
       <div class="info-card">
@@ -338,7 +352,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
         <div class="info-row"><span>Role</span><span>${esc(page.intent_type)}</span></div>
         <div class="info-row"><span>Serving</span><span>${esc(location)}</span></div>
         <div class="info-row"><span>State</span><span>${esc(page.target_state)}</span></div>
-        <div class="info-row"><span>MOV</span><span>₹3,000</span></div>
+        <div class="info-row"><span>MOV</span><span>${isUSMode ? '$100 USD' : '₹3,000'}</span></div>
       </div>
       <div class="info-card">
         <h4>Supply Type</h4>
@@ -423,10 +437,10 @@ function renderHomepageContent(): string {
     + '</div>'
   ).join('\n        ');
 
-  const bannerText = isUSMode ? "🇺🇸 Source the Season's Most Viral Jewelry Designs Direct for US Boutiques — Minimum Order Value: $100 USD" : "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000";
-  const badgeText = isUSMode ? "Direct Importer & Wholesaler · Shipping to All 50 US States" : "Direct Importer & Wholesaler · Pan-India";
-  const heroTitleText = isUSMode ? `${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across USA` : `${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across India`;
-  const heroDescText = isUSMode ? "Direct B2B wholesale importer supplying US fashion boutiques, e-commerce sellers, and retail stores across all 50 states with Pinterest-trending Korean, anti-tarnish, and 18k gold-plated jewelry. Express 4-7 day air delivery via DHL & FedEx." : "We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.";
+  const bannerText = isUSMode ? "Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery — Shipping Across All 50 US States · Low $100 MOV" : "🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory Across India — Minimum Order Value: ₹3,000";
+  const badgeText = isUSMode ? "Direct Importer, Exporter &amp; Wholesale Supplier · Anti-Tarnish &amp; Korean Jewellery" : "Direct Importer & Wholesaler · Pan-India";
+  const heroTitleText = isUSMode ? `${esc(BRAND_NAME)}: <span style="color:#FFC629">Importer, Exporter &amp; Supplier</span> of Anti-Tarnish Jewellery` : `${esc(BRAND_NAME)}: <span style="color:#FFC629">Viral, Trend-Driven</span> Jewelry Supply Across India`;
+  const heroDescText = isUSMode ? "Direct B2B wholesale importer, exporter, and supplier of waterproof anti-tarnish, Korean, and 18k gold-plated jewellery for US boutiques, e-commerce sellers, and retail stores across all 50 states. Express 4-7 day air delivery via DHL & FedEx · Low $100 USD MOV · Zero item MOQ." : "We are India's direct premium importer and trend scout for fast-selling jewelry. From viral Instagram aesthetics to high-demand Pinterest styles, we source and supply retail brands and online sellers in every major city with globally-imported, premium collections your customers are already hunting for. Skip the outdated stock — get the exact trending designs, direct to your door.";
   const scopeText = isUSMode ? "Arora Group Wholesale USA dispatches direct to retailers across all 50 US States" : "Arora Group Wholesale dispatches direct to retailers across all 36 Indian states and union territories";
   const movText = isUSMode ? "$100 USD" : "₹3,000";
 
@@ -447,8 +461,8 @@ function renderHomepageContent(): string {
         <a href="#product-lines" style="display:inline-flex;align-items:center;background:#fff;color:#1E1E1E;font-weight:600;border:1px solid #e8dcc8;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Our Product Lines</a>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;font-size:.875rem;color:#666">
-        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '4,980' : '3,780'}</strong> pages</span>
-        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '630' : '122'}</strong> cities</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '14,694' : '3,780'}</strong> pages</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '2,249' : '122'}</strong> cities</span>
         <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '50' : '36'}</strong> states</span>
         <span>&#x2713; <strong style="color:#1E1E1E">6</strong> product lines</span>
         <span>&#x2713; MOV <strong style="color:#1E1E1E">${movText}</strong></span>
@@ -604,14 +618,13 @@ let usPagesMap = new Map<string, any>();
 if (isUSMode) {
   const usLocsPath = path.join(__dirname, '..', '..', 'data', 'us-locations.json');
   const usLocs: Array<any> = JSON.parse(readFileSync(usLocsPath, 'utf-8'));
-  const filteredLocs = usLocs.sort((a, b) => (b.population || 0) - (a.population || 0)).slice(0, 630);
   const nicheKeys = Object.keys(NICHE_DESC);
   const intentKeys = ['wholesaler', 'supplier', 'manufacturer', 'importer'];
 
   slugEntries = [];
 
-  // 1. Generate City Pages (630 cities x 6 niches = 3,780 pages)
-  for (const loc of filteredLocs) {
+  // 1. Generate City Pages for ALL 2,249 US cities (2,249 cities x 6 niches = 13,494 pages)
+  for (const loc of usLocs) {
     const reg = US_STATE_REGION[loc.state_code] ?? 'midwest';
     for (const nicheKey of nicheKeys) {
       const slug = `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`;
@@ -638,7 +651,7 @@ if (isUSMode) {
   // 2. Generate State Landing Pages (50 US States x 6 niches x 4 intents = 1,200 pages)
   for (const st of ALL_US_STATES) {
     const reg = US_STATE_REGION[st.state_code || ''] ?? 'midwest';
-    const citiesInState = filteredLocs.filter(l => l.state_name.toLowerCase() === st.state_name.toLowerCase() || l.state_code === st.state_code);
+    const citiesInState = usLocs.filter(l => l.state_name.toLowerCase() === st.state_name.toLowerCase() || l.state_code === st.state_code);
 
     for (const nicheKey of nicheKeys) {
       for (const intent of intentKeys) {
@@ -659,7 +672,7 @@ if (isUSMode) {
           target_state: st.state_name,
           state_slug: st.state_slug,
           region: `us-${reg}`,
-          related_city_pages: (citiesInState.length > 0 ? citiesInState : filteredLocs).slice(0, 12).map(loc => ({
+          related_city_pages: citiesInState.map(loc => ({
             slug: `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`,
             title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_code}`,
             h1_heading: `${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_name} (${loc.state_code})`
@@ -679,7 +692,7 @@ if (isUSMode) {
   for (const p of allUsSlugs) {
     if (p.page_type === 'city') {
       p.related_city_pages = allUsSlugs
-        .filter(other => other.niche_key === p.niche_key && other.slug !== p.slug && other.page_type === 'city')
+        .filter(other => other.niche_key === p.niche_key && other.target_state === p.target_state && other.slug !== p.slug && other.page_type === 'city')
         .slice(0, 8)
         .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
       p.related_state_pages = ALL_US_STATES
@@ -728,10 +741,12 @@ for (const entry of slugEntries) {
   mkdirSync(pageDir, { recursive: true });
   writeFileSync(path.join(pageDir, 'index.html'), html, 'utf-8');
 
-  // Write per-page JSON so the React SPA can load data without the API server
-  const pagesJsonDir = path.join(OUT_DIR, 'pages');
-  mkdirSync(pagesJsonDir, { recursive: true });
-  writeFileSync(path.join(pagesJsonDir, `${entry.slug}.json`), JSON.stringify(page), 'utf-8');
+  // Write per-page JSON for state pages (and non-US mode) to keep total files within Cloudflare 20,000 limit
+  if (!isUSMode || entry.page_type === 'state') {
+    const pagesJsonDir = path.join(OUT_DIR, 'pages');
+    mkdirSync(pagesJsonDir, { recursive: true });
+    writeFileSync(path.join(pagesJsonDir, `${entry.slug}.json`), JSON.stringify(page), 'utf-8');
+  }
 
   const bucket = BUCKET_MAP[entry.region] ?? 'east-central';
   buckets[bucket].push(entry.slug);
