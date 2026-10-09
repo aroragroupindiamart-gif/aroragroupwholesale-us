@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { FOUNDER_VIDEO_ID, REVIEWS, INSTAGRAM_URL, YOUTUBE_URL, FACEBOOK_URL } from '../src/lib/brandConstants.js';
+import { ALL_US_STATES } from '../src/lib/staticData.js';
 import { getMetaDescription, getFaqs } from '../../../scripts/content-spinner.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -381,18 +382,7 @@ function renderSlugPage(page: ReturnType<typeof getPageBySlug>): string {
 
 function renderHomepageContent(): string {
   const niches = getAllNiches();
-  const states = isUSMode ? [
-    { state_name: 'California', state_slug: 'california', region: 'US West' },
-    { state_name: 'Texas', state_slug: 'texas', region: 'US South' },
-    { state_name: 'Florida', state_slug: 'florida', region: 'US South' },
-    { state_name: 'New York', state_slug: 'new-york', region: 'US Northeast' },
-    { state_name: 'Illinois', state_slug: 'illinois', region: 'US Midwest' },
-    { state_name: 'Georgia', state_slug: 'georgia', region: 'US South' },
-    { state_name: 'North Carolina', state_slug: 'north-carolina', region: 'US South' },
-    { state_name: 'Ohio', state_slug: 'ohio', region: 'US Midwest' },
-    { state_name: 'Washington', state_slug: 'washington', region: 'US West' },
-    { state_name: 'Pennsylvania', state_slug: 'pennsylvania', region: 'US Northeast' }
-  ] : getAllStates();
+  const states = isUSMode ? ALL_US_STATES : getAllStates();
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Arora Group Wholesale USA, I am a US business owner. Send me your latest B2B catalog of trending jewelry for my store.")}`;
 
   const defaultCitySlug = isUSMode ? 'los-angeles-ca' : 'new-delhi';
@@ -413,11 +403,14 @@ function renderHomepageContent(): string {
 
   const stateGrid = statesByRegion.map(g => {
     const links = g.states.map(s =>
-      `<a href="${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}" style="font-size:.8125rem;color:#444;padding:.375rem .625rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none">${esc(s.state_name)}</a>`
+      `<a href="${BASE_URL}/korean-jewellery-wholesaler-${s.state_slug}" style="display:flex;align-items:center;justify-content:space-between;padding:.5rem .75rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;text-decoration:none;transition:all .15s ease">
+        <span style="font-size:.8125rem;font-weight:600;color:#1E1E1E">${esc(s.state_name)}</span>
+        ${(s as any).count ? `<span style="font-size:.6875rem;color:#666;background:#fef3e2;border:1px solid #e8dcc8;padding:.125rem .375rem;border-radius:999px;margin-left:auto">${(s as any).count} cities</span>` : ''}
+      </a>`
     ).join('\n      ');
-    return `<div style="margin-bottom:1.5rem">
-      <h3 style="font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.125rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)}</h3>
-      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">${links}</div>
+    return `<div style="margin-bottom:1.75rem">
+      <h3 style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FFC629;background:#1E1E1E;display:inline-block;padding:.2rem .5rem;border-radius:.25rem;margin-bottom:.75rem">${esc(g.region)}</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem">${links}</div>
     </div>`;
   }).join('\n');
 
@@ -454,7 +447,7 @@ function renderHomepageContent(): string {
         <a href="#product-lines" style="display:inline-flex;align-items:center;background:#fff;color:#1E1E1E;font-weight:600;border:1px solid #e8dcc8;border-radius:.5rem;padding:.875rem 1.5rem;font-size:1rem;text-decoration:none">Our Product Lines</a>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;font-size:.875rem;color:#666">
-        <span>&#x2713; <strong style="color:#1E1E1E">3,780</strong> pages</span>
+        <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '4,980' : '3,780'}</strong> pages</span>
         <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '630' : '122'}</strong> cities</span>
         <span>&#x2713; <strong style="color:#1E1E1E">${isUSMode ? '50' : '36'}</strong> states</span>
         <span>&#x2713; <strong style="color:#1E1E1E">6</strong> product lines</span>
@@ -613,8 +606,11 @@ if (isUSMode) {
   const usLocs: Array<any> = JSON.parse(readFileSync(usLocsPath, 'utf-8'));
   const filteredLocs = usLocs.sort((a, b) => (b.population || 0) - (a.population || 0)).slice(0, 630);
   const nicheKeys = Object.keys(NICHE_DESC);
+  const intentKeys = ['wholesaler', 'supplier', 'manufacturer', 'importer'];
 
   slugEntries = [];
+
+  // 1. Generate City Pages (630 cities x 6 niches = 3,780 pages)
   for (const loc of filteredLocs) {
     const reg = US_STATE_REGION[loc.state_code] ?? 'midwest';
     for (const nicheKey of nicheKeys) {
@@ -639,17 +635,61 @@ if (isUSMode) {
     }
   }
 
-  // Populate related city pages for US entries
+  // 2. Generate State Landing Pages (50 US States x 6 niches x 4 intents = 1,200 pages)
+  for (const st of ALL_US_STATES) {
+    const reg = US_STATE_REGION[st.state_code || ''] ?? 'midwest';
+    const citiesInState = filteredLocs.filter(l => l.state_name.toLowerCase() === st.state_name.toLowerCase() || l.state_code === st.state_code);
+
+    for (const nicheKey of nicheKeys) {
+      for (const intent of intentKeys) {
+        const slug = `${nicheKey}-${intent}-${st.state_slug}`;
+        slugEntries.push({ slug, page_type: 'state', region: `us-${reg}` });
+
+        const inNoun = INTENT_NOUN[intent] || 'Wholesaler';
+
+        usPagesMap.set(slug, {
+          id: `state-${st.state_slug}-${nicheKey}-${intent}`,
+          page_type: 'state',
+          slug,
+          title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} ${inNoun} in ${st.state_name}`,
+          h1_heading: `${NICHE_DESC[nicheKey]} ${inNoun} in ${st.state_name} (${st.state_code || ''})`,
+          niche_key: nicheKey,
+          intent_type: intent,
+          target_city: null,
+          target_state: st.state_name,
+          state_slug: st.state_slug,
+          region: `us-${reg}`,
+          related_city_pages: (citiesInState.length > 0 ? citiesInState : filteredLocs).slice(0, 12).map(loc => ({
+            slug: `${nicheKey}-wholesaler-${loc.place_slug}-${loc.state_code.toLowerCase()}`,
+            title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_code}`,
+            h1_heading: `${NICHE_DESC[nicheKey]} Wholesaler in ${loc.place_name}, ${loc.state_name} (${loc.state_code})`
+          })),
+          related_state_pages: ALL_US_STATES.filter(other => other.state_slug !== st.state_slug).slice(0, 6).map(other => ({
+            slug: `${nicheKey}-${intent}-${other.state_slug}`,
+            title: `${BRAND_NAME} | Direct ${NICHE_DESC[nicheKey]} ${inNoun} in ${other.state_name}`,
+            h1_heading: `${NICHE_DESC[nicheKey]} ${inNoun} in ${other.state_name}`
+          }))
+        });
+      }
+    }
+  }
+
+  // Populate related pages for city entries
   const allUsSlugs = Array.from(usPagesMap.values());
   for (const p of allUsSlugs) {
-    p.related_city_pages = allUsSlugs
-      .filter(other => other.niche_key === p.niche_key && other.slug !== p.slug)
-      .slice(0, 8)
-      .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
-    p.related_state_pages = allUsSlugs
-      .filter(other => other.niche_key === p.niche_key && other.target_state === p.target_state && other.slug !== p.slug)
-      .slice(0, 4)
-      .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
+    if (p.page_type === 'city') {
+      p.related_city_pages = allUsSlugs
+        .filter(other => other.niche_key === p.niche_key && other.slug !== p.slug && other.page_type === 'city')
+        .slice(0, 8)
+        .map(other => ({ slug: other.slug, title: other.title, h1_heading: other.h1_heading }));
+      p.related_state_pages = ALL_US_STATES
+        .slice(0, 4)
+        .map(other => ({
+          slug: `${p.niche_key}-${p.intent_type}-${other.state_slug}`,
+          title: `${BRAND_NAME} | Direct ${NICHE_DESC[p.niche_key]} Wholesaler in ${other.state_name}`,
+          h1_heading: `${NICHE_DESC[p.niche_key]} Wholesaler in ${other.state_name}`
+        }));
+    }
   }
 } else {
   slugEntries = getAllSlugs();

@@ -1,7 +1,9 @@
 export interface StateInfo {
   state_name: string;
   state_slug: string;
+  state_code?: string;
   region: string;
+  count?: number;
 }
 
 export const STATES: StateInfo[] = [
@@ -41,4 +43,57 @@ export const STATES: StateInfo[] = [
   { state_name: 'Nagaland', state_slug: 'nagaland', region: 'North-East' },
   { state_name: 'Sikkim', state_slug: 'sikkim', region: 'North-East' },
   { state_name: 'Tripura', state_slug: 'tripura', region: 'North-East' },
+];
+
+export const ALL_US_STATES: StateInfo[] = [
+  { state_name: "Alabama", state_slug: "alabama", state_code: "AL", region: "US South", count: 39 },
+  { state_name: "Alaska", state_slug: "alaska", state_code: "AK", region: "US West", count: 32 },
+  { state_name: "Arizona", state_slug: "arizona", state_code: "AZ", region: "US West", count: 51 },
+  { state_name: "Arkansas", state_slug: "arkansas", state_code: "AR", region: "US South", count: 36 },
+  { state_name: "California", state_slug: "california", state_code: "CA", region: "US West", count: 116 },
+  { state_name: "Colorado", state_slug: "colorado", state_code: "CO", region: "US West", count: 48 },
+  { state_name: "Connecticut", state_slug: "connecticut", state_code: "CT", region: "US Northeast", count: 35 },
+  { state_name: "Delaware", state_slug: "delaware", state_code: "DE", region: "US South", count: 30 },
+  { state_name: "Florida", state_slug: "florida", state_code: "FL", region: "US South", count: 97 },
+  { state_name: "Georgia", state_slug: "georgia", state_code: "GA", region: "US South", count: 59 },
+  { state_name: "Hawaii", state_slug: "hawaii", state_code: "HI", region: "US West", count: 32 },
+  { state_name: "Idaho", state_slug: "idaho", state_code: "ID", region: "US West", count: 32 },
+  { state_name: "Illinois", state_slug: "illinois", state_code: "IL", region: "US Midwest", count: 59 },
+  { state_name: "Indiana", state_slug: "indiana", state_code: "IN", region: "US Midwest", count: 45 },
+  { state_name: "Iowa", state_slug: "iowa", state_code: "IA", region: "US Midwest", count: 35 },
+  { state_name: "Kansas", state_slug: "kansas", state_code: "KS", region: "US Midwest", count: 34 },
+  { state_name: "Kentucky", state_slug: "kentucky", state_code: "KY", region: "US South", count: 36 },
+  { state_name: "Louisiana", state_slug: "louisiana", state_code: "LA", region: "US South", count: 39 },
+  { state_name: "Maine", state_slug: "maine", state_code: "ME", region: "US Northeast", count: 31 },
+  { state_name: "Maryland", state_slug: "maryland", state_code: "MD", region: "US South", count: 40 },
+  { state_name: "Massachusetts", state_slug: "massachusetts", state_code: "MA", region: "US Northeast", count: 44 },
+  { state_name: "Michigan", state_slug: "michigan", state_code: "MI", region: "US Midwest", count: 54 },
+  { state_name: "Minnesota", state_slug: "minnesota", state_code: "MN", region: "US Midwest", count: 42 },
+  { state_name: "Mississippi", state_slug: "mississippi", state_code: "MS", region: "US South", count: 32 },
+  { state_name: "Missouri", state_slug: "missouri", state_code: "MO", region: "US Midwest", count: 46 },
+  { state_name: "Montana", state_slug: "montana", state_code: "MT", region: "US West", count: 32 },
+  { state_name: "Nebraska", state_slug: "nebraska", state_code: "NE", region: "US Midwest", count: 33 },
+  { state_name: "Nevada", state_slug: "nevada", state_code: "NV", region: "US West", count: 33 },
+  { state_name: "New Hampshire", state_slug: "new-hampshire", state_code: "NH", region: "US Northeast", count: 31 },
+  { state_name: "New Jersey", state_slug: "new-jersey", state_code: "NJ", region: "US Northeast", count: 52 },
+  { state_name: "New Mexico", state_slug: "new-mexico", state_code: "NM", region: "US West", count: 31 },
+  { state_name: "New York", state_slug: "new-york", state_code: "NY", region: "US Northeast", count: 88 },
+  { state_name: "North Carolina", state_slug: "north-carolina", state_code: "NC", region: "US South", count: 56 },
+  { state_name: "North Dakota", state_slug: "north-dakota", state_code: "ND", region: "US Midwest", count: 31 },
+  { state_name: "Ohio", state_slug: "ohio", state_code: "OH", region: "US Midwest", count: 60 },
+  { state_name: "Oklahoma", state_slug: "oklahoma", state_code: "OK", region: "US South", count: 35 },
+  { state_name: "Oregon", state_slug: "oregon", state_code: "OR", region: "US West", count: 36 },
+  { state_name: "Pennsylvania", state_slug: "pennsylvania", state_code: "PA", region: "US Northeast", count: 60 },
+  { state_name: "Rhode Island", state_slug: "rhode-island", state_code: "RI", region: "US Northeast", count: 31 },
+  { state_name: "South Carolina", state_slug: "south-carolina", state_code: "SC", region: "US South", count: 40 },
+  { state_name: "South Dakota", state_slug: "south-dakota", state_code: "SD", region: "US Midwest", count: 31 },
+  { state_name: "Tennessee", state_slug: "tennessee", state_code: "TN", region: "US South", count: 50 },
+  { state_name: "Texas", state_slug: "texas", state_code: "TX", region: "US South", count: 105 },
+  { state_name: "Utah", state_slug: "utah", state_code: "UT", region: "US West", count: 34 },
+  { state_name: "Vermont", state_slug: "vermont", state_code: "VT", region: "US Northeast", count: 31 },
+  { state_name: "Virginia", state_slug: "virginia", state_code: "VA", region: "US South", count: 50 },
+  { state_name: "Washington", state_slug: "washington", state_code: "WA", region: "US West", count: 50 },
+  { state_name: "West Virginia", state_slug: "west-virginia", state_code: "WV", region: "US South", count: 33 },
+  { state_name: "Wisconsin", state_slug: "wisconsin", state_code: "WI", region: "US Midwest", count: 43 },
+  { state_name: "Wyoming", state_slug: "wyoming", state_code: "WY", region: "US West", count: 29 }
 ];

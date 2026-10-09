@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "wouter";
 import { BRAND_NAME, WHATSAPP_NUMBER, NICHE_ICONS, NICHE_DISPLAY, FOUNDER_VIDEO_ID, REVIEWS, TOP_BANNER, HERO_BADGE, HERO_TITLE, HERO_DESCRIPTION } from "@/lib/brandConfig";
-import { STATES } from "@/lib/staticData";
+import { STATES, ALL_US_STATES } from "@/lib/staticData";
 import SiteFooter from "@/components/SiteFooter";
 import { useCitySearch } from "@/hooks/use-city-search";
 
@@ -35,25 +35,7 @@ function WhatsAppButton({ className = "" }: { className?: string }) {
 
 const isUSBrand = (import.meta.env.VITE_BRAND_ID || '').includes('-us');
 
-const US_STATES = [
-  { state_name: 'California', state_slug: 'california', region: 'US West' },
-  { state_name: 'Texas', state_slug: 'texas', region: 'US South' },
-  { state_name: 'Florida', state_slug: 'florida', region: 'US South' },
-  { state_name: 'New York', state_slug: 'new-york', region: 'US Northeast' },
-  { state_name: 'Illinois', state_slug: 'illinois', region: 'US Midwest' },
-  { state_name: 'Georgia', state_slug: 'georgia', region: 'US South' },
-  { state_name: 'North Carolina', state_slug: 'north-carolina', region: 'US South' },
-  { state_name: 'Ohio', state_slug: 'ohio', region: 'US Midwest' },
-  { state_name: 'Washington', state_slug: 'washington', region: 'US West' },
-  { state_name: 'Pennsylvania', state_slug: 'pennsylvania', region: 'US Northeast' },
-  { state_name: 'Arizona', state_slug: 'arizona', region: 'US West' },
-  { state_name: 'Massachusetts', state_slug: 'massachusetts', region: 'US Northeast' },
-  { state_name: 'Virginia', state_slug: 'virginia', region: 'US South' },
-  { state_name: 'Michigan', state_slug: 'michigan', region: 'US Midwest' },
-  { state_name: 'Colorado', state_slug: 'colorado', region: 'US West' },
-];
-
-const DISPLAY_STATES = isUSBrand ? US_STATES : STATES;
+const DISPLAY_STATES = isUSBrand ? ALL_US_STATES : STATES;
 const REGION_ORDER = isUSBrand ? ["US West", "US South", "US Midwest", "US Northeast"] : ["North", "South", "West", "East", "Central", "North-East"];
 
 const NICHES = Object.entries(NICHE_DISPLAY).map(([niche_key, display_name]) => ({ niche_key, display_name }));
@@ -111,11 +93,11 @@ export default function Home() {
             </a>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-[#1E1E1E]/60">
-            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">3,792</strong> pages</span>
-            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">122</strong> cities</span>
-            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">36</strong> states &amp; UTs</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '4,980' : '3,792'}</strong> pages</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '630' : '122'}</strong> cities</span>
+            <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">{isUSBrand ? '50' : '36'}</strong> states {isUSBrand ? 'covered' : '& UTs'}</span>
             <span className="flex items-center gap-1.5">✓ <strong className="text-[#1E1E1E]">6</strong> product lines</span>
-            <span className="flex items-center gap-1.5">✓ MOV <strong className="text-[#1E1E1E]">₹3,000</strong></span>
+            <span className="flex items-center gap-1.5">✓ MOV <strong className="text-[#1E1E1E]">{isUSBrand ? '$100 USD' : '₹3,000'}</strong></span>
           </div>
         </div>
       </section>
@@ -271,28 +253,34 @@ export default function Home() {
           <p className="text-[#1E1E1E]/60 text-center mb-10">
             {isUSBrand ? `${BRAND_NAME} dispatches direct to retailers across all 50 US States` : `${BRAND_NAME} dispatches direct to retailers across all 36 Indian states and union territories`}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {STATES_BY_REGION.map(({ region, states: regionStates }) => (
-                <div key={region} className="bg-[#FFF8F0] border border-amber-200 rounded-xl p-5">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC629] mb-3 bg-[#1E1E1E] inline-block px-2 py-0.5 rounded">
-                    {isUSBrand ? region : `${region} India`}
-                  </h3>
-                  <ul className="space-y-1 mt-2">
-                    {regionStates.map((s) => (
-                      <li key={s.state_slug}>
-                        <Link
-                          href={`/korean-jewellery-wholesaler-${s.state_slug}`}
-                          data-testid={`link-state-${s.state_slug}`}
-                          className="text-sm text-[#1E1E1E]/70 hover:text-[#1E1E1E] hover:underline transition-colors"
-                        >
-                          {s.state_name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {STATES_BY_REGION.map(({ region, states: regionStates }) => (
+              <div key={region} className="bg-[#FFF8F0] border border-amber-200 rounded-xl p-5 flex flex-col gap-3">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFC629] bg-[#1E1E1E] inline-block px-2.5 py-1 rounded w-fit">
+                  {isUSBrand ? region : `${region} India`}
+                </h3>
+                <div className="grid grid-cols-1 gap-2 mt-1">
+                  {regionStates.map((s) => (
+                    <Link
+                      key={s.state_slug}
+                      href={`/korean-jewellery-wholesaler-${s.state_slug}`}
+                      data-testid={`link-state-${s.state_slug}`}
+                      className="flex items-center justify-between p-2.5 bg-white border border-amber-200 rounded-lg hover:border-[#FFC629] hover:shadow-sm transition-all text-left group"
+                    >
+                      <span className="text-sm font-semibold text-[#1E1E1E] group-hover:underline">
+                        {s.state_name}
+                      </span>
+                      {s.count && (
+                        <span className="text-xs text-[#1E1E1E]/60 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-medium">
+                          {s.count} cities
+                        </span>
+                      )}
+                    </Link>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
