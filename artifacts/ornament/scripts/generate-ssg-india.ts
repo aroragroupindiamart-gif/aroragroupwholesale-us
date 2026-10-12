@@ -111,25 +111,25 @@ function renderSlugPage(page: any): string {
 
   const relatedCityLinks = (page.related_city_pages || []).map((r: any) => {
     const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
-    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+    return `<a href="${BASE_URL}/${esc(r.slug)}/">${esc(label)}</a>`;
   }).join('\n          ');
 
   const relatedStateLinks = (page.related_state_pages || []).map((r: any) => {
     const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
-    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+    return `<a href="${BASE_URL}/${esc(r.slug)}/">${esc(label)}</a>`;
   }).join('\n          ');
 
   const intentLinks = ['wholesaler', 'supplier', 'manufacturer', 'importer'].map(intent => {
     const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
     const active = intent === page.intent_type ? ' class="active"' : '';
-    return `<a href="${BASE_URL}/${esc(targetSlug)}"${active}>${intent}s</a>`;
+    return `<a href="${BASE_URL}/${esc(targetSlug)}/"${active}>${intent}s</a>`;
   }).join('\n          ');
 
   const otherNicheLinks = Object.entries(NICHE_DESC)
     .filter(([k]) => k !== page.niche_key)
     .map(([k, name]) => {
       const s = `${k}-${page.intent_type}-${locationSlug}`;
-      return `<a href="${BASE_URL}/${esc(s)}">${esc(name)} ${esc(inNoun)} in ${esc(location)}</a>`;
+      return `<a href="${BASE_URL}/${esc(s)}/">${esc(name)} ${esc(inNoun)} in ${esc(location)}</a>`;
     }).join('\n          ');
 
   const reviewStripHtml = '<div style="margin-bottom:1.75rem">'
@@ -225,8 +225,8 @@ function renderSlugPage(page: any): string {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: `${BASE_URL}/` },
+          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}/` },
           ...(page.target_city
             ? [{ "@type": "ListItem", position: 3, name: page.target_city, item: canonicalUrl }]
             : []),
@@ -246,12 +246,12 @@ function renderSlugPage(page: any): string {
 <body>
   <div class="top-banner">🔥 Source the Season's Most Viral Jewelry Designs Direct-from-Factory to ${esc(location)} · Low ₹3,000 MOV</div>
   <header>
-    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
+    <a href="${BASE_URL}/" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
   </header>
   <nav class="breadcrumb">
-    <a href="${BASE_URL}">Home</a><span>/</span>
-    <a href="${BASE_URL}/${esc(statePage)}">${esc(page.target_state)}</a>
+    <a href="${BASE_URL}/">Home</a><span>/</span>
+    <a href="${BASE_URL}/${esc(statePage)}/">${esc(page.target_state)}</a>
     ${page.target_city ? `<span>/</span><span>${esc(page.target_city)}</span>` : ''}
     <span>/</span><span>${esc(nd)}</span>
   </nav>
@@ -376,8 +376,8 @@ function renderSlugPage(page: any): string {
       <div>
         <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Company</p>
         <div style="display:flex;flex-direction:column;gap:.375rem">
-          <a href="${BASE_URL}/about" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
-          <a href="${BASE_URL}/contact" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
+          <a href="${BASE_URL}/about/" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
+          <a href="${BASE_URL}/contact/" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
         </div>
       </div>
       <div>
@@ -510,5 +510,35 @@ writeFileSync(
   'utf-8',
 );
 console.log('✅ cities.json written.');
+
+function injectHomepagePrerender(): void {
+  const viteIndexPath = path.join(OUT_DIR, 'index.html');
+  if (!existsSync(viteIndexPath)) {
+    console.warn('⚠ dist/public/index.html not found — skipping homepage prerender');
+    return;
+  }
+  let html = readFileSync(viteIndexPath, 'utf-8');
+
+  const seoTitle = `${BRAND_NAME} | Direct Jewellery Importer & Wholesaler Across India`;
+  const metaDesc = `${BRAND_NAME} — India's direct premium importer of Korean, fashion, anti-tarnish & gold-plated jewellery. MOV ₹3,000, zero item MOQ. WhatsApp for wholesale inquiry.`;
+
+  html = html.replace(/<title>.*?<\/title>/, `<title>${esc(seoTitle)}</title>`);
+  html = html.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${esc(metaDesc)}" />`);
+  html = html.replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${esc(seoTitle)}" />`);
+  html = html.replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${esc(metaDesc)}" />`);
+
+  if (/<link rel="canonical"[^>]*>/.test(html)) {
+    html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${BASE_URL}/" />`);
+  } else {
+    html = html.replace(/<meta name="robots"[^>]*>/, `$& \n    <link rel="canonical" href="${BASE_URL}/" />`);
+  }
+
+  writeFileSync(viteIndexPath, html, 'utf-8');
+  console.log('✅ Homepage pre-rendered with canonical tag into dist/public/index.html');
+}
+
+injectHomepagePrerender();
 
 console.log('\n🎉 India SSG Complete.');

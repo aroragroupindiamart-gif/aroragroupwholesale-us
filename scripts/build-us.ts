@@ -123,6 +123,10 @@ const headersContent = `/*
 `;
 
 const redirectsContent = `# Cloudflare Pages Clean Redirects
+https://www.aroragroupinc.com/* https://aroragroupinc.com/:splat 301
+http://www.aroragroupinc.com/* https://aroragroupinc.com/:splat 301
+http://aroragroupinc.com/* https://aroragroupinc.com/:splat 301
+
 /sitemap.xml /sitemap.xml 200
 /* /index.html 200
 `;

@@ -113,25 +113,25 @@ function renderSlugPage(page: any): string {
 
   const relatedCityLinks = (page.related_city_pages || []).map((r: any) => {
     const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
-    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+    return `<a href="${BASE_URL}/${esc(r.slug)}/">${esc(label)}</a>`;
   }).join('\n          ');
 
   const relatedStateLinks = (page.related_state_pages || []).map((r: any) => {
     const label = r.h1_heading ? r.h1_heading.replace(/.* in /, '') : (r.title.split('|')[1] || r.title).trim();
-    return `<a href="${BASE_URL}/${esc(r.slug)}">${esc(label)}</a>`;
+    return `<a href="${BASE_URL}/${esc(r.slug)}/">${esc(label)}</a>`;
   }).join('\n          ');
 
   const intentLinks = ['wholesaler', 'supplier', 'manufacturer', 'importer'].map(intent => {
     const targetSlug = `${page.niche_key}-${intent}-${locationSlug}`;
     const active = intent === page.intent_type ? ' class="active"' : '';
-    return `<a href="${BASE_URL}/${esc(targetSlug)}"${active}>${intent}s</a>`;
+    return `<a href="${BASE_URL}/${esc(targetSlug)}/"${active}>${intent}s</a>`;
   }).join('\n          ');
 
   const otherNicheLinks = Object.entries(NICHE_DESC)
     .filter(([k]) => k !== page.niche_key)
     .map(([k, name]) => {
       const s = `${k}-${page.intent_type}-${locationSlug}`;
-      return `<a href="${BASE_URL}/${esc(s)}">${esc(name)} ${esc(inNoun)} in ${esc(location)}</a>`;
+      return `<a href="${BASE_URL}/${esc(s)}/">${esc(name)} ${esc(inNoun)} in ${esc(location)}</a>`;
     }).join('\n          ');
 
   const reviewStripHtml = '<div style="margin-bottom:1.75rem">'
@@ -230,8 +230,8 @@ function renderSlugPage(page: any): string {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: `${BASE_URL}/` },
+          { "@type": "ListItem", position: 2, name: page.target_state, item: `${BASE_URL}/${statePage}/` },
           ...(page.target_city
             ? [{ "@type": "ListItem", position: 3, name: page.target_city, item: canonicalUrl }]
             : []),
@@ -251,12 +251,12 @@ function renderSlugPage(page: any): string {
 <body>
   <div class="top-banner">Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(location)} · Low $100 MOV</div>
   <header>
-    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
+    <a href="${BASE_URL}/" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:52px;width:auto"></a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
   </header>
   <nav class="breadcrumb">
-    <a href="${BASE_URL}">Home</a><span>/</span>
-    <a href="${BASE_URL}/${esc(statePage)}">${esc(page.target_state)}</a>
+    <a href="${BASE_URL}/">Home</a><span>/</span>
+    <a href="${BASE_URL}/${esc(statePage)}/">${esc(page.target_state)}</a>
     ${page.target_city ? `<span>/</span><span>${esc(page.target_city)}</span>` : ''}
     <span>/</span><span>${esc(nd)}</span>
   </nav>
@@ -381,8 +381,8 @@ function renderSlugPage(page: any): string {
       <div>
         <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.5rem">Company</p>
         <div style="display:flex;flex-direction:column;gap:.375rem">
-          <a href="${BASE_URL}/about" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
-          <a href="${BASE_URL}/contact" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
+          <a href="${BASE_URL}/about/" style="color:#aaa;text-decoration:none;font-size:.75rem">About Us</a>
+          <a href="${BASE_URL}/contact/" style="color:#aaa;text-decoration:none;font-size:.75rem">Contact Us</a>
         </div>
       </div>
       <div>
@@ -423,7 +423,7 @@ function renderStateDirectoryHtml(
   const cityCardsHtml = sortedCities.map(loc => {
     const citySlug = `korean-jewellery-wholesaler-${loc.place_slug}-${(loc.state_code || stateCode).toLowerCase()}`;
     const popFormatted = (loc.population || 0).toLocaleString('en-US');
-    return `<a href="${BASE_URL}/${citySlug}" class="city-card">
+    return `<a href="${BASE_URL}/${citySlug}/" class="city-card">
       <span class="city-name">${esc(loc.place_name)}</span>
       <span class="city-pop">Pop. ${popFormatted} &middot; Tier ${loc.tier || 1}</span>
     </a>`;
@@ -431,7 +431,7 @@ function renderStateDirectoryHtml(
 
   const otherStatesHtml = ALL_US_STATES.map(other => {
     const otherHref = `${BASE_URL}/${other.state_code ? other.state_code.toLowerCase() : other.state_slug}`;
-    return `<a href="${otherHref}" class="state-quick-link">${esc(other.state_name)} (${other.count || 0})</a>`;
+    return `<a href="${otherHref}/" class="state-quick-link">${esc(other.state_name)} (${other.count || 0})</a>`;
   }).join('\n      ');
 
   return `<!DOCTYPE html>
@@ -725,7 +725,7 @@ function renderStateDirectoryHtml(
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+          { "@type": "ListItem", position: 1, name: "Home", item: `${BASE_URL}/` },
           { "@type": "ListItem", position: 2, name: stateName, item: canonicalUrl },
         ],
       },
@@ -736,7 +736,7 @@ function renderStateDirectoryHtml(
   <div class="top-banner">Direct Importer, Exporter &amp; Wholesale Supplier of Anti-Tarnish, 18K Gold Plated &amp; Korean Jewellery to ${esc(stateName)} · Low $100 MOV</div>
   <header>
     <div class="header-left">
-      <a href="${BASE_URL}"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" class="header-logo"></a>
+      <a href="${BASE_URL}/"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" class="header-logo"></a>
     </div>
     <div class="header-nav">
       <a href="${BASE_URL}/#states">All States</a>
@@ -815,7 +815,7 @@ function renderHomepageContent(): string {
 
   const defaultCitySlug = 'los-angeles-ca';
   const nicheCards = niches.map(n => {
-    const href = `${BASE_URL}/${n.niche_key}-wholesaler-${defaultCitySlug}`;
+    const href = `${BASE_URL}/${n.niche_key}-wholesaler-${defaultCitySlug}/`;
     return `<a href="${href}" style="display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;background:#fff;border:1px solid #e8dcc8;border-radius:.75rem;text-decoration:none;color:inherit">
       <span style="font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#1E1E1E">${esc(n.display_name)}</span>
       <span style="font-size:.8125rem;color:#666">Wholesalers · Suppliers · Importers</span>
@@ -834,7 +834,7 @@ function renderHomepageContent(): string {
       <h3 style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:.75rem">${esc(group.region)}</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem">
         ${group.states.map(s => {
-          const stateHref = `${BASE_URL}/${s.state_code ? s.state_code.toLowerCase() : s.state_slug}`;
+          const stateHref = `${BASE_URL}/${s.state_code ? s.state_code.toLowerCase() : s.state_slug}/`;
           return `<a href="${stateHref}" style="display:flex;justify-content:space-between;align-items:center;padding:.625rem 1rem;background:#fff;border:1px solid #e8dcc8;border-radius:.5rem;font-size:.875rem;color:#1E1E1E;text-decoration:none">
             <span>${esc(s.state_name)}</span>
             <span style="font-size:.75rem;color:#999">${s.count} cities &rarr;</span>
@@ -859,7 +859,7 @@ function renderHomepageContent(): string {
   <div class="top-banner">🔥 Direct B2B Wholesale Importer &amp; Exporter of Waterproof, Anti-Tarnish &amp; Korean Jewellery Across USA — Low $100 USD MOV</div>
 
   <header>
-    <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" style="height:52px;width:auto"></a>
+    <a href="${BASE_URL}/" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="${esc(BRAND_NAME)}" style="height:52px;width:auto"></a>
     <a class="wa-btn" href="${waUrl}" target="_blank" rel="noopener noreferrer">${WA_ICON} WhatsApp Inquiry</a>
   </header>
 
@@ -929,14 +929,14 @@ function renderHomepageContent(): string {
     <div style="max-width:1200px;margin:0 auto">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
         <div>
-          <a href="${BASE_URL}" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
+          <a href="${BASE_URL}/" style="display:inline-flex;align-items:center;text-decoration:none"><img src="/arora-group-logo.png" alt="Arora Group Wholesale" style="height:40px;width:auto;background:#fff;border-radius:4px;padding:2px 6px"></a>
           <p style="margin-top:.375rem;font-size:.75rem;color:#ffffff80">Direct B2B Importer, Exporter &amp; Wholesale Supplier Across USA</p>
         </div>
         <div>
           <p style="font-size:.625rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#ffffff40;margin-bottom:.625rem">Company</p>
           <div style="display:flex;flex-direction:column;gap:.5rem">
-            <a href="${BASE_URL}/about" style="color:#ffffff60;text-decoration:none;font-size:.875rem">About Us</a>
-            <a href="${BASE_URL}/contact" style="color:#ffffff60;text-decoration:none;font-size:.875rem">Contact Us</a>
+            <a href="${BASE_URL}/about/" style="color:#ffffff60;text-decoration:none;font-size:.875rem">About Us</a>
+            <a href="${BASE_URL}/contact/" style="color:#ffffff60;text-decoration:none;font-size:.875rem">Contact Us</a>
           </div>
         </div>
         <div>
@@ -974,6 +974,12 @@ function injectHomepagePrerender(): void {
   html = html.replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${esc(metaDesc)}" />`);
   html = html.replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${esc(seoTitle)}" />`);
   html = html.replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${esc(metaDesc)}" />`);
+
+  if (/<link rel="canonical"[^>]*>/.test(html)) {
+    html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${BASE_URL}/" />`);
+  } else {
+    html = html.replace(/<meta name="robots"[^>]*>/, `$& \n    <link rel="canonical" href="${BASE_URL}/" />`);
+  }
 
   const injected = html.replace(
     /<div id="root"><\/div>/,

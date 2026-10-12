@@ -123,6 +123,10 @@ const headersContent = `/*
 `;
 
 const redirectsContent = `# Cloudflare Pages Clean Redirects
+https://www.aroragroupwholesale.net/* https://aroragroupwholesale.net/:splat 301
+http://www.aroragroupwholesale.net/* https://aroragroupwholesale.net/:splat 301
+http://aroragroupwholesale.net/* https://aroragroupwholesale.net/:splat 301
+
 /sitemap.xml /sitemap.xml 200
 /* /index.html 200
 `;
